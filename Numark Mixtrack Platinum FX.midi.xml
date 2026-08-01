@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MixxxControllerPreset schemaVersion="1" mixxxVersion="2.3.0+">
   <info>
-    <name>Numark Mixtrack Platinum FX QGazQ</name>
-    <author>QGazQ tweaks of Octopussy based on mapping from h67ma, bad1dea5, photoenix, Matthew Nicholson, Ending, Kaj Bostrom</author>
+    <name>Numark Mixtrack Platinum FX</name>
+    <author>
+      Johan JANIN, based on the work of QGazQ, Octopussy, h67ma, bad1dea5, photoenix, Matthew Nicholson, Ending &amp; Kaj Bostrom
+    </author>
     <description>Mapping for the Numark Mixtrack Platinum FX.</description>
     <forums>https://mixxx.discourse.group/t/numark-mixtrack-platinum-fx-mapping/19985</forums>
   </info>
