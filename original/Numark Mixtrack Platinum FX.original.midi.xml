@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MixxxControllerPreset schemaVersion="1" mixxxVersion="2.3.0+">
   <info>
-    <name>Numark Mixtrack Platinum FX</name>
-    <author>
-      Johan JANIN, based on the work of QGazQ, Octopussy, h67ma, bad1dea5, photoenix, Matthew Nicholson, Ending &amp; Kaj Bostrom
-    </author>
+    <name>Numark Mixtrack Platinum FX QGazQ</name>
+    <author>QGazQ tweaks of Octopussy based on mapping from h67ma, bad1dea5, photoenix, Matthew Nicholson, Ending, Kaj Bostrom</author>
     <description>Mapping for the Numark Mixtrack Platinum FX.</description>
     <forums>https://mixxx.discourse.group/t/numark-mixtrack-platinum-fx-mapping/19985</forums>
   </info>
@@ -12,7 +10,7 @@
     <scriptfiles>
       <file functionprefix="" filename="lodash.mixxx.js" />
       <file functionprefix="" filename="midi-components-0.0.js" />
-      <file functionprefix="MixtrackPlatinumFX" filename="Numark-Mixtrack-Platinum-FX-scripts.js" />
+      <file functionprefix="MixtrackPlatinumFX" filename="Numark-Mixtrack-Platinum-FX-scripts-qgazq.js" />
     </scriptfiles>
     <controls>
       <!-- Main gain -->
@@ -3423,7 +3421,7 @@
       <!-- FX enable switch -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__effects[1].inputs.toggle</key>
+        <key>MixtrackPlatinumFX.effect[0].enableSwitch</key>
         <status>0xB8</status>
         <midino>0x03</midino>
         <options>
@@ -3432,7 +3430,7 @@
       </control>
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__effects[2].inputs.toggle</key>
+        <key>MixtrackPlatinumFX.effect[1].enableSwitch</key>
         <status>0xB9</status>
         <midino>0x03</midino>
         <options>

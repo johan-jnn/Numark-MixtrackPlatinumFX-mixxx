@@ -8,7 +8,7 @@ Download the required files and place them directly inside your [Mixxx controlle
 
 ### Required files
 
-- [The midi mapping](./Numark%20Mixtrack%20Platinum%20FX.midi.xml)
+- [The midi mapping](./Numark%20Mixtrack%20Platinum%20FX.xml)
 - [The configuration](./Numark-Mixtrack-Platinum-FX-config.js)
 - [The scripting](./Numark-Mixtrack-Platinum-FX-scripts.js)
 
