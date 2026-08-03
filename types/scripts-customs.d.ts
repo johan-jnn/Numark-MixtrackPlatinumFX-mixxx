@@ -17,6 +17,9 @@ namespace mpfx {
     effects: [Effect, Effect, Effect];
     enabled: boolean;
     dryWetKnob: components.Pot;
+
+    clearSelection(this: this): void;
+    selectAll(this: this): void;
   }
 
   interface Effect extends components.ComponentContainer {

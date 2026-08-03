@@ -3303,7 +3303,7 @@
       <!-- FX HPF button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect1</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[1].select</key>
         <status>0x98</status>
         <midino>0x00</midino>
         <options>
@@ -3313,7 +3313,7 @@
       <!-- FX HPF button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect1</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[1].deselect</key>
         <status>0x88</status>
         <midino>0x00</midino>
         <options>
@@ -3323,7 +3323,7 @@
       <!-- FX LPF button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect2</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[2].select</key>
         <status>0x98</status>
         <midino>0x01</midino>
         <options>
@@ -3333,7 +3333,7 @@
       <!-- FX LPF button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect2</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[2].deselect</key>
         <status>0x88</status>
         <midino>0x01</midino>
         <options>
@@ -3343,7 +3343,7 @@
       <!-- FX flanger button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect3</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[3].select</key>
         <status>0x98</status>
         <midino>0x02</midino>
         <options>
@@ -3353,7 +3353,7 @@
       <!-- FX flanger button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].effect3</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].effects[3].deselect</key>
         <status>0x88</status>
         <midino>0x02</midino>
         <options>
@@ -3363,7 +3363,7 @@
       <!-- FX echo button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect1</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[1].select</key>
         <status>0x99</status>
         <midino>0x03</midino>
         <options>
@@ -3373,7 +3373,7 @@
       <!-- FX echo button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect1</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[1].deselect</key>
         <status>0x89</status>
         <midino>0x03</midino>
         <options>
@@ -3383,7 +3383,7 @@
       <!-- FX reverb button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect2</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[2].select</key>
         <status>0x99</status>
         <midino>0x04</midino>
         <options>
@@ -3393,7 +3393,7 @@
       <!-- FX reverb button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect2</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[2].deselect</key>
         <status>0x89</status>
         <midino>0x04</midino>
         <options>
@@ -3403,7 +3403,7 @@
       <!-- FX phaser button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect3</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[3].select</key>
         <status>0x99</status>
         <midino>0x05</midino>
         <options>
@@ -3413,7 +3413,7 @@
       <!-- FX phaser button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].effect3</key>
+        <key>MixtrackPlatinumFX.__effects.units[2].effects[3].deselect</key>
         <status>0x89</status>
         <midino>0x05</midino>
         <options>

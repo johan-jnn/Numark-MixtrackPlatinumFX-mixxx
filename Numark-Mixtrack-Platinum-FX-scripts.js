@@ -4,7 +4,15 @@ var MixtrackPlatinumFX = {
    */
   CONFIG: {
     FX: {
-      // set this to "super" to make it require to use the super key
+      /**
+       * If this is `true`, then the fx are in toggle mode
+       * If this is `false`, then the fx are in select mode
+       *
+       * toggle mode -> tap an effect to enable it, then tap it again to disable it
+       * select mode -> tap an effect to enable it and deselect the other one
+       *
+       * Note that "shift" switches mode
+       */
       toggleable: true,
     },
     waveforms: {
@@ -178,10 +186,25 @@ var MixtrackPlatinumFX = {
     this.id = effect;
     this.selected = false;
 
+    this.inputs = {
+      select: () => {
+        this.switch(true);
+      },
+      deselect: () => {
+        this.switch(false);
+      },
+      toggle: (channel, control, value, status) => {
+        this.switch(value == this.mpfx.BYTES_VALUES.true);
+      },
+    };
+
     /**
      * @type {(typeof this)['switch']}
      */
     this.switch = function (active) {
+      if (active && this.mpfx.$shifting == this.mpfx.CONFIG.FX.toggleable) {
+        unit.clearSelection();
+      }
       this.selected = active;
 
       engine.setValue(
@@ -231,6 +254,15 @@ var MixtrackPlatinumFX = {
     this.dryWetKnob = new components.Pot({
       group: `[EffectRack1_EffectUnit${unit}]`,
     });
+
+    /**@type {typeof this['clearSelection']} */
+    this.clearSelection = function () {
+      this.effects.forEach((e) => e.selected && e.switch(false));
+    };
+    /**@type {typeof this['selectAll']} */
+    this.selectAll = function () {
+      this.effects.forEach((e) => e.selected || e.switch(true));
+    };
 
     // To avoid confusion, we disable the effects in the headphone & master group
     engine.setValue(
