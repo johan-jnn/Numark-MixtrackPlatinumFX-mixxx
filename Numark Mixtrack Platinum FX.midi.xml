@@ -3200,7 +3200,7 @@
       </control>
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__effects.units[0].dryWetKnob.input</key>
+        <key>MixtrackPlatinumFX.__effects.units[1].dryWetKnob.input</key>
         <status>0xB8</status>
         <midino>0x04</midino>
         <options>
