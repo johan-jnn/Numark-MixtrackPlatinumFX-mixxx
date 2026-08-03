@@ -3191,7 +3191,7 @@
       <!-- FX dry/wet knob -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.effect[0].dryWetKnob.input</key>
+        <key>MixtrackPlatinumFX.__effects.units[0].dryWetKnob.input</key>
         <status>0xB8</status>
         <midino>0x04</midino>
         <options>
@@ -3200,7 +3200,7 @@
       </control>
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.effect[1].dryWetKnob.input</key>
+        <key>MixtrackPlatinumFX.__effects.units[0].dryWetKnob.input</key>
         <status>0xB8</status>
         <midino>0x04</midino>
         <options>
@@ -3423,7 +3423,7 @@
       <!-- FX enable switch -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__effects[1].inputs.toggle</key>
+        <key>MixtrackPlatinumFX.__effects.togglers.left.inputs.toggle</key>
         <status>0xB8</status>
         <midino>0x03</midino>
         <options>
@@ -3432,7 +3432,7 @@
       </control>
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__effects[2].inputs.toggle</key>
+        <key>MixtrackPlatinumFX.__effects.togglers.right.inputs.toggle</key>
         <status>0xB9</status>
         <midino>0x03</midino>
         <options>
