@@ -3831,7 +3831,7 @@
       </control>
       <control>
         <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
+        <key>MixtrackPlatinumFX.shift</key>
         <description>The shift key.</description>
         <status>0x90</status>
         <midino>0x20</midino>
@@ -3841,7 +3841,7 @@
       </control>
       <control>
         <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
+        <key>MixtrackPlatinumFX.unshift</key>
         <description>The shift key.</description>
         <status>0x80</status>
         <midino>0x20</midino>
@@ -3851,7 +3851,7 @@
       </control>
       <control>
         <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
+        <key>MixtrackPlatinumFX.shift</key>
         <description>The shift key.</description>
         <status>0x91</status>
         <midino>0x20</midino>
@@ -3861,7 +3861,7 @@
       </control>
       <control>
         <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
+        <key>MixtrackPlatinumFX.unshift</key>
         <description>The shift key.</description>
         <status>0x81</status>
         <midino>0x20</midino>

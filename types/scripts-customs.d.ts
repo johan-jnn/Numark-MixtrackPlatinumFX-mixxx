@@ -29,7 +29,7 @@ namespace mpfx {
 
   interface EffectUnit extends components.ComponentContainer {
     id: 1 | 2 | 3 | 4;
-    effects: Record<Effect["id"], Effect>;
+    effects: components.ComponentContainer & Record<Effect["id"], Effect>;
     enabled: boolean;
     dryWetKnob: components.Pot;
 
@@ -37,7 +37,7 @@ namespace mpfx {
     selectAll(this: this): void;
   }
 
-  interface Effect extends components.ComponentContainer {
+  interface Effect extends components.Button {
     id: 1 | 2 | 3;
     selected: boolean;
     /**

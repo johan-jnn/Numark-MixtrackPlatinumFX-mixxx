@@ -232,6 +232,7 @@ var MixtrackPlatinumFX = {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing Channel #${channel}`);
 
+    components.Component.call(this);
     this.id = channel;
     this.trackedBy = undefined;
   },
@@ -242,8 +243,11 @@ var MixtrackPlatinumFX = {
    */
   Effect: function (unit, effect) {
     MixtrackPlatinumFX.bindMPFX(this);
-
     this.mpfx.debug(`Initializing effect #${effect} from unit #${unit.id}`);
+
+    // todo -> Use the Button's methods
+    components.Button.call(this);
+
     this.id = effect;
     this.selected = false;
     this.toggleing = false;
@@ -290,10 +294,12 @@ var MixtrackPlatinumFX = {
      */
     this.switch = function (active) {
       if (active && this.mpfx.$shifting == this.mpfx.CONFIG.FX.toggleable) {
-        unit.clearSelection();
+        for (let i = 1; i <= 4; i++) {
+          this.mpfx.__components.effectUnits[i]?.clearSelection();
+        }
       }
-      this.selected = active;
 
+      this.selected = active;
       engine.setValue(
         `[EffectRack1_EffectUnit${unit.id}_Effect${this.id}]`,
         "enabled",
@@ -340,11 +346,14 @@ var MixtrackPlatinumFX = {
 
     components.ComponentContainer.call(this);
     this.id = unit;
-    this.effects = this.mpfx.keyBy([
+    const effects = [
       new this.mpfx.Effect(this, 1),
       new this.mpfx.Effect(this, 2),
       new this.mpfx.Effect(this, 3),
-    ]);
+    ];
+    this.effects = new components.ComponentContainer(
+      this.mpfx.keyBy(effects, "id"),
+    );
 
     this.enabled = false;
     this.dryWetKnob = new components.Pot({
@@ -353,11 +362,11 @@ var MixtrackPlatinumFX = {
 
     /**@type {typeof this['clearSelection']} */
     this.clearSelection = function () {
-      Object.values(this.effects).forEach((e) => e.selected && e.switch(false));
+      effects.forEach((e) => e.selected && e.switch(false));
     };
     /**@type {typeof this['selectAll']} */
     this.selectAll = function () {
-      Object.values(this.effects).forEach((e) => e.selected || e.switch(true));
+      effects.forEach((e) => e.selected || e.switch(true));
     };
 
     // To avoid confusion, we disable the effects in the headphone & master group
@@ -373,7 +382,7 @@ var MixtrackPlatinumFX = {
     );
 
     this.mpfx.$blinker.onUpdate((short, long) => {
-      Object.values(this.effects).forEach((effect) => {
+      effects.forEach((effect) => {
         effect.led(
           effect.selected && (effect.toggleing ? short : !this.enabled || long),
         );
@@ -629,10 +638,12 @@ var MixtrackPlatinumFX = {
   shift() {
     this.$shifting = true;
     this.__components.shift();
+    this.debug("DJ is shifting.");
   },
   unshift() {
     this.$shifting = false;
     this.__components.unshift();
+    this.debug("DJ is no longer shifting.");
   },
   /* #endregion */
 
@@ -733,7 +744,6 @@ var MixtrackPlatinumFX = {
       });
     },
   },
-
   /* #endregion */
 
   /* #region  Debug & Logs */
@@ -788,7 +798,10 @@ var MixtrackPlatinumFX = {
 for (const inheritance of [
   { parent: components.ComponentContainer, children: ["EffectUnit"] },
   { parent: components.Deck, children: ["Deck"] },
-  { parent: components.Component, children: ["Effect", "Channel"] },
+  {
+    parent: components.Component,
+    children: ["Effect", "Channel", "UnitToggler"],
+  },
 ]) {
   inheritance.children.forEach((key) => {
     MixtrackPlatinumFX[key].prototype = new inheritance.parent();
