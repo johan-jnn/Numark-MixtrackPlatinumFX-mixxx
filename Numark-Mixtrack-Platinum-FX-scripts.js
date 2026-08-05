@@ -14,6 +14,14 @@ var MixtrackPlatinumFX = {
        * Note that "shift" switches mode
        */
       toggleable: true,
+      /**
+       * Enable long-pressing to activate a fx only while you press it.
+       *
+       * `false` -> disable longPressing
+       * `true` -> enable longPressing (must press at least 2 leds blink long)
+       * `number` -> enable longPressing (must press the given miliseconds long)
+       */
+      longPressing: 600,
     },
     waveforms: {
       sync: true,
@@ -78,13 +86,14 @@ var MixtrackPlatinumFX = {
 
   /* #region Constants */
   BYTES_VALUES: {
-    true: 0x7f,
+    max: 0x7f,
+    true: 0x01,
     false: 0x00,
     /**
      * @param {number} value [0; 1]
      */
     range(value) {
-      return parseInt(this.true * Max.max(0, Math.min(1, value)));
+      return parseInt(this.max * Max.max(0, Math.min(1, value)));
     },
   },
   BYTES_MAP: {
@@ -163,16 +172,68 @@ var MixtrackPlatinumFX = {
 
   /* #region Components */
   /**
+   * @this {mpfx.Binded<mpfx.Deck>}
+   * @param {mpfx.Deck["id"]} id
+   * @param {mpfx.Channel | undefined} tracks If you want to automaticly track a channel
+   */
+  Deck: function (id, tracks) {
+    MixtrackPlatinumFX.bindMPFX(this);
+    this.mpfx.debug(
+      "Initializing",
+      id,
+      "deck (default channel:",
+      tracks?.id,
+      ")",
+    );
+
+    components.Deck.call(this, tracks?.id);
+    this.id = id;
+    Object.defineProperty(this, "group", {
+      get: () => this.tracks && `[Channel${this.tracks.id}]`,
+    });
+
+    /**@type {typeof this.track} */
+    this.track = function (channel, force = false) {
+      if (this.tracks) {
+        if (force) {
+          this.untrack();
+        } else {
+          this.mpfx.warn(
+            `Tried to track channel #${channel.id} but already tracking channel #${this.tracks.id}.`,
+          );
+        }
+      }
+      this.tracks = channel;
+      channel.trackedBy = this;
+      this.setCurrentDeck(this.group);
+      this.mpfx.debug(
+        `Deck #${this.id} is now tracking channel #${this.tracks.id} (group: ${this.group})`,
+      );
+    };
+    /**@type {typeof this.untrack} */
+    this.untrack = function () {
+      this.mpfx.debug(
+        `Deck #${this.id} will no longer track channel #${this.tracks?.id}`,
+      );
+      if (this.tracks) {
+        this.tracks = this.tracks.trackedBy = undefined;
+      }
+    };
+
+    if (tracks) {
+      this.track(tracks);
+    }
+  },
+  /**
    * @this mpfx.Binded<mpfx.Channel>
    * @param {mpfx.Channel['id']} channel
    */
   Channel: function (channel) {
     MixtrackPlatinumFX.bindMPFX(this);
-    components.Deck.call(this, channel);
-
     this.mpfx.debug(`Initializing Channel #${channel}`);
+
     this.id = channel;
-    this.tracked = false;
+    this.trackedBy = undefined;
   },
   /**
    * @this mpfx.Binded<mpfx.Effect>
@@ -185,16 +246,43 @@ var MixtrackPlatinumFX = {
     this.mpfx.debug(`Initializing effect #${effect} from unit #${unit.id}`);
     this.id = effect;
     this.selected = false;
+    this.toggleing = false;
+
+    let longPressingTM = 0;
 
     this.inputs = {
-      select: () => {
-        this.switch(true);
+      press: () => {
+        if (this.selected) {
+          this.toggleing = true;
+        } else {
+          this.switch(true);
+        }
+
+        engine.stopTimer(longPressingTM);
+        const { longPressing } = this.mpfx.CONFIG.FX;
+        if (longPressing) {
+          const duration =
+            longPressing === "boolean"
+              ? this.mpfx.CONFIG.leds.blink.delay * 2
+              : longPressing;
+
+          longPressingTM = engine.beginTimer(
+            duration,
+            () => {
+              this.toggleing = true;
+            },
+            true,
+          );
+        }
       },
-      deselect: () => {
-        this.switch(false);
-      },
-      toggle: (channel, control, value, status) => {
-        this.switch(value == this.mpfx.BYTES_VALUES.true);
+      release: () => {
+        engine.stopTimer(longPressingTM);
+
+        // user is not long-pressing the fx button
+        if (this.toggleing) {
+          this.toggleing = false;
+          this.switch(false);
+        }
       },
     };
 
@@ -238,17 +326,17 @@ var MixtrackPlatinumFX = {
    */
   EffectUnit: function (unit, channels) {
     MixtrackPlatinumFX.bindMPFX(this);
-    components.ComponentContainer.call(this);
-
     this.mpfx.debug(
       `Initializing Effect Unit #${unit} (Channels : ${channels.map((c) => c.id).join(", ")})`,
     );
+
+    components.ComponentContainer.call(this);
     this.id = unit;
-    this.effects = [
+    this.effects = this.mpfx.keyBy([
       new this.mpfx.Effect(this, 1),
       new this.mpfx.Effect(this, 2),
       new this.mpfx.Effect(this, 3),
-    ];
+    ]);
 
     this.enabled = false;
     this.dryWetKnob = new components.Pot({
@@ -257,11 +345,11 @@ var MixtrackPlatinumFX = {
 
     /**@type {typeof this['clearSelection']} */
     this.clearSelection = function () {
-      this.effects.forEach((e) => e.selected && e.switch(false));
+      Object.values(this.effects).forEach((e) => e.selected && e.switch(false));
     };
     /**@type {typeof this['selectAll']} */
     this.selectAll = function () {
-      this.effects.forEach((e) => e.selected || e.switch(true));
+      Object.values(this.effects).forEach((e) => e.selected || e.switch(true));
     };
 
     // To avoid confusion, we disable the effects in the headphone & master group
@@ -276,48 +364,80 @@ var MixtrackPlatinumFX = {
       0,
     );
 
-    this.mpfx.events.listen("shift", () => this.shift());
-    this.mpfx.events.listen("unshift", () => this.unshift());
+    this.mpfx.$blinker.onUpdate((short, long) => {
+      Object.values(this.effects).forEach((effect) => {
+        effect.led(
+          effect.selected &&
+            (!this.enabled || (effect.toggleing ? short : long)),
+        );
+      });
+    });
   },
   /**
    * @this mpfx.Binded<mpfx.UnitToggler>
+   * @param {mpfx.UnitToggler['id']} id
    * @param {mpfx.EffectUnit[]} units
    * @param {mpfx.Channel[]} channels
    */
-  UnitToggler: function (units, channels) {
+  UnitToggler: function (id, units, channels) {
     MixtrackPlatinumFX.bindMPFX(this);
+    this.mpfx.debug(
+      `Initalizing an unit switcher (controlling units ${units.map((u) => u.id)} on channels ${channels.map((c) => c.id)})`,
+    );
+
     components.Component.call(this);
 
-    this.mpfx.debug(
-      `Initalizing an unit switcher (controlling units ${units.map((u) => u.id)} on channels ${channels.map((c) => c.id)} channels)`,
-    );
+    this.id = id;
     this.units = units;
     this.channels = channels;
     this.syncChannels = false;
+    this.state = 0;
+
     this.inputs = {
       toggle: (channel, control, value, status) => {
         // The value can be either 0, 1 or 2 (for switch up/switch down)
-        this.switch(value != this.mpfx.BYTES_VALUES.false);
+        this.switch(value != this.mpfx.BYTES_VALUES.false, value);
       },
     };
 
     /**
      * @type {(typeof this)['switch']}
      */
-    this.switch = function (active) {
+    this.switch = function (active, state) {
+      if (typeof state === "undefined") {
+        state = +active;
+      }
+      this.state = state;
+
       for (const channel of this.channels) {
-        if (!(channel.tracked || this.syncChannels)) {
+        if (!(channel.trackedBy || this.syncChannels)) {
           continue;
         }
 
         for (const unit of this.units) {
+          this.mpfx.debug(
+            `${active ? "Enabling" : "Disabling"} effect unit #${unit.id} on channel #${channel.id}`,
+          );
+
           engine.setValue(
             `[EffectRack1_EffectUnit${unit.id}]`,
             `group_[Channel${channel.id}]_enable`,
             +active,
           );
+          unit.enabled = +active;
+        }
+      }
 
-          unit.effects.forEach((e) => e.led(e.selected && active));
+      // If we toggle off, we disable the effect units that are not enabled by the other toggler
+      if (!active) {
+        /**@type {mpfx.UnitToggler} */
+        const brother =
+          this.mpfx.__components.unitTogglers[
+            ["right", "left"][+(this.id === "right")]
+          ];
+
+        if (!brother.state) {
+          this.units.forEach((u) => (u.enabled = false));
         }
       }
     };
@@ -328,17 +448,31 @@ var MixtrackPlatinumFX = {
   $shifting: false,
   $blinker: {
     /**
-     * @typedef {<R>(on:boolean) => R} BlinkerCallback
+     * @typedef {<R>(short:boolean, long:boolean) => R} BlinkerCallback
      */
     timer: 0,
-    state: true,
+    state: {
+      long: false,
+      short: false,
+    },
     $$EVENT: "led_blink",
     enable() {
+      const short_delay = Math.floor(
+        MixtrackPlatinumFX.CONFIG.leds.blink.delay / 2,
+      );
+
       this.timer = engine.beginTimer(
-        MixtrackPlatinumFX.CONFIG.leds.blink.delay,
+        short_delay,
         () => {
-          this.state = !this.state;
-          MixtrackPlatinumFX.events.emit(this.$$EVENT, this.state);
+          this.state = {
+            short: !this.state.short,
+            long: this.state.short === !this.state.long,
+          };
+          MixtrackPlatinumFX.events.emit(
+            this.$$EVENT,
+            this.state.short,
+            this.state.long,
+          );
         },
         false,
       );
@@ -347,25 +481,19 @@ var MixtrackPlatinumFX = {
       if (this.timer) engine.stopTimer(this.timer);
     },
     /**
-     * @param {[number, number]} led
+     * @param {[number, number]} led The led's location byte code
      * @param {undefined|BlinkerCallback<boolean>} custom_callback If defined and returns `true`, then do not execute the default callback
      */
-    add(led, custom_callback) {
-      return this.toggled((on) => {
-        if (custom_callback?.(on)) return;
+    forLed(led, custom_callback, fast = false) {
+      return this.onUpdate((short, long) => {
+        if (custom_callback?.(short, long)) return;
         midi.sendShortMsg(
           ...led,
-          on
+          (fast ? long : short)
             ? MixtrackPlatinumFX.CONFIG.leds.high
             : MixtrackPlatinumFX.CONFIG.leds.low,
         );
       });
-    },
-    /**
-     * @param {BlinkerCallback} callback
-     */
-    toggled(callback) {
-      return MixtrackPlatinumFX.events.listen(this.$$EVENT, callback);
     },
     /**
      * @param {number} id
@@ -375,6 +503,12 @@ var MixtrackPlatinumFX = {
         MixtrackPlatinumFX.events.trigger(this.$$EVENT, id, false);
       }
       MixtrackPlatinumFX.events.unlisten(this.$$EVENT, id);
+    },
+    /**
+     * @param {BlinkerCallback} callback
+     */
+    onUpdate(callback) {
+      return MixtrackPlatinumFX.events.listen(this.$$EVENT, callback);
     },
   },
   /* #endregion */
@@ -389,34 +523,8 @@ var MixtrackPlatinumFX = {
    */
   "#debug": undefined,
 
-  /**
-   * @type {components.ComponentContainer & {
-   *  [key in mpfx.Channel['id']]: mpfx.Channel
-   * }}
-   */
-  __channels: undefined,
-  __effects: {
-    /**
-     * @type {components.ComponentContainer & {
-     *  [key in mpfx.EffectUnit['id']]: mpfx.EffectUnit
-     * }}
-     */
-    units: undefined,
-    /**
-     * @type {components.ComponentContainer & {
-     *  [key in mpfx.UnitToggler['id']]: mpfx.UnitToggler
-     * }}
-     */
-    togglers: undefined,
-  },
-  /**
-   * @type {components.ComponentContainer}
-   */
-  __browse: undefined,
-  /**
-   * @type {components.ComponentContainer}
-   */
-  __gain: undefined,
+  /**@type {mpfx.GlobalComponentContainer} */
+  __components: undefined,
 
   init(id, debug) {
     this.id = id;
@@ -439,51 +547,56 @@ var MixtrackPlatinumFX = {
     midi.sendSysexMsg(faderCutEnabler, faderCutEnabler.length);
     this.debug("Fader cuts pads enabled.");
 
-    // Initialize decks
-    this.__channels = new components.ComponentContainer();
+    // Registering components
+    this.__components = new components.ComponentContainer();
+
+    /**
+     * @type {typeof this.__components.channels}
+     */
+    const channels = new components.ComponentContainer();
     for (let channel = 1; channel <= 4; channel++) {
-      this.__channels[channel] = new this.Channel(channel);
-      // this.setRateRange(channel, this.CONFIG.pitch.ranges[0]);
+      channels[channel] = new this.Channel(channel);
     }
 
-    // Initialize effects units
-    this.__effects.units = new components.ComponentContainer();
+    /**@type {typeof this.__components.decks} */
+    const decks = new components.ComponentContainer();
+    decks.left = new this.Deck("left", channels[1]);
+    decks.right = new this.Deck("right", channels[2]);
+
+    /**
+     * Effect units
+     * @type {typeof this.__components.effectUnits}
+     */
+    const effectUnits = new components.ComponentContainer();
     for (let unit = 1; unit <= 2; unit++) {
-      this.__effects[unit] = new this.EffectUnit(unit, [
-        this.__channels[1 + (unit - 1)],
-        this.__channels[3 + (unit - 1)],
+      effectUnits[unit] = new this.EffectUnit(unit, [
+        channels[1 + (unit - 1)],
+        channels[3 + (unit - 1)],
       ]);
     }
-
-    // Initialize units togglers
-    this.__effects.togglers = new components.ComponentContainer();
-    this.__effects.togglers.left = this.UnitToggler(
-      [this.__effects.units[1], this.__effects.units[2]],
-      [this.__channels[1], this.__channels[3]],
+    /**
+     * Effect unit togglers
+     * @type {typeof this.__components.unitTogglers}
+     */
+    const unitTogglers = new components.ComponentContainer();
+    unitTogglers.left = new this.UnitToggler(
+      "left",
+      [effectUnits[1], effectUnits[2]],
+      [channels[1], channels[3]],
     );
-    this.__effects.togglers.right = this.UnitToggler(
-      [this.__effects.units[1], this.__effects.units[2]],
-      [this.__channels[2], this.__channels[4]],
+    unitTogglers.right = new this.UnitToggler(
+      "right",
+      [effectUnits[1], effectUnits[2]],
+      [channels[2], channels[4]],
     );
 
-    // FX Leds blinking
-    this.$blinker.toggled((on) => {
-      this.__effects.forEachComponentContainer(
-        /**
-         * @param {mpfx.EffectUnit} unit
-         */
-        (unit) => {
-          for (const effect of unit.effects) {
-            /**
-             * Light up only if selected.
-             * Blink when enabled.
-             */
-            const light = on && !unit.disabled; //effect.active && (unit.disabled || on);
-            effect.led(light);
-          }
-        },
-      );
+    Object.assign(this.__components, {
+      channels,
+      unitTogglers,
+      effectUnits,
+      decks,
     });
+    this.debug("All components has been registered and initialized.");
 
     // Don't know what that is
     midi.sendSysexMsg(
@@ -491,37 +604,12 @@ var MixtrackPlatinumFX = {
       this.SYSEX_BUFFERS.status.length,
     );
 
-    // Triggering all the components to initialize lights
-    this.__channels.forEachComponent((c) => c.trigger());
-    this.__effects.forEachComponent((c) => c.trigger());
-
     this.$blinker.enable();
 
     this.debug("Controller is now ready to be use !");
   },
   shutdown() {
     this.$blinker.disable();
-
-    // for (let i = 0; i < 4; i++) {
-    //   // update spinner and position indicator
-    //   midi.sendShortMsg(0xb0 | i, 0x3f, 0);
-    //   midi.sendShortMsg(0xb0 | i, 0x06, 0);
-    //   // keylock indicator
-    //   midi.sendShortMsg(0x80 | i, 0x0d, 0x00);
-    //   // turn off bpm arrows
-    //   midi.sendShortMsg(0x80 | i, 0x0a, 0x00); // down arrow off
-    //   midi.sendShortMsg(0x80 | i, 0x09, 0x00); // up arrow off
-
-    //   MixtrackPlatinumFX.sendScreenRateMidi(i + 1, 0);
-    //   midi.sendShortMsg(0x90 + i, 0x0e, 0);
-    //   MixtrackPlatinumFX.sendScreenBpmMidi(i + 1, 0);
-    //   MixtrackPlatinumFX.sendScreenTimeMidi(i + 1, 0);
-    //   MixtrackPlatinumFX.sendScreenDurationMidi(i + 1, 0);
-    // }
-
-    // // switch to decks 1 and 2
-    // midi.sendShortMsg(0x90, 0x08, 0x7f);
-    // midi.sendShortMsg(0x91, 0x08, 0x7f);
 
     midi.sendSysexMsg(
       this.SYSEX_BUFFERS.shutdown,
@@ -532,18 +620,13 @@ var MixtrackPlatinumFX = {
   /* #endregion */
 
   /* #region Tasks */
-  /**
-   * @param {mpfx.Channel} channel
-   * @param {number} range
-   */
-  setRateRange(channel, range) {
-    //engine.setParameter(group, "rateRange", (range-0.01)*0.25);
-    engine.setValue(`[Channel${channel}]`, "rateRange", range);
-    midi.sendShortMsg(
-      this.BYTES_MAP.channels.selector(channel),
-      this.BYTES_MAP.channels.rate,
-      range * 100,
-    );
+  shift() {
+    this.$shifting = true;
+    this.__components.shift();
+  },
+  unshift() {
+    this.$shifting = false;
+    this.__components.unshift();
   },
   /* #endregion */
 
@@ -560,6 +643,23 @@ var MixtrackPlatinumFX = {
    */
   bindMPFX(object, key = "mpfx") {
     return Object.assign(object, { [key]: MixtrackPlatinumFX });
+  },
+  /**
+   * @template {string|number} [K="id"]
+   * @template {string|number} KVal
+   * @template {object & {[key in K]: KVal}} O
+   *
+   * @param {O[]} entries
+   * @param {K} key
+   * @returns {Record<KVal, O>}
+   */
+  keyBy(entries, key = "id", overwrite = false) {
+    return entries.reduce((keyed, obj) => {
+      const _key = obj[key];
+      if (_key in keyed && !overwrite) return obj;
+      keyed[_key] = obj;
+      return keyed;
+    }, {});
   },
   events: {
     /**
@@ -601,6 +701,12 @@ var MixtrackPlatinumFX = {
     emit(event, ...data) {
       if (!(event in this["#callbacks"])) return;
       Object.values(this["#callbacks"][event]).forEach((cb) => cb(...data));
+    },
+    /**
+     * @param {string} event
+     */
+    emitter(event) {
+      return (...args) => this.emit(event, ...args);
     },
     /**
      * @param {string} event
@@ -646,17 +752,35 @@ var MixtrackPlatinumFX = {
       },
     });
   },
+  /**
+   * Print a message into the console
+   * @param {boolean} [force = false] If `false` (defaults), it requires to be in debug mode to be printed
+   * @param {"log" | "debug" | "warn" | "error"} [method="log"]
+   * @param  {...any} messages
+   */
+  print(force = false, method = "log", ...messages) {
+    if (!(force || this["#debug"])) return;
+    console[method](`[${this.__now().toString()}] [${this.id}]`, ...messages);
+  },
+  log(...messages) {
+    return this.print(false, "log", ...messages);
+  },
   debug(...messages) {
-    if (!this["#debug"]) return;
-    console.debug(`[${this.__now().toString()}] [${this.id}]`, ...messages);
+    return this.print(false, "debug", ...messages);
+  },
+  warn(...messages) {
+    return this.print(false, "warn", ...messages);
+  },
+  error(...messages) {
+    return this.print(true, "error", ...messages);
   },
   /* #endregion */
 };
 
 for (const inheritance of [
   { parent: components.ComponentContainer, children: ["EffectUnit"] },
-  { parent: components.Deck, children: ["Channel"] },
-  { parent: components.Component, children: ["Effect"] },
+  { parent: components.Deck, children: ["Deck"] },
+  { parent: components.Component, children: ["Effect", "Channel"] },
 ]) {
   inheritance.children.forEach((key) => {
     MixtrackPlatinumFX[key].prototype = new inheritance.parent();
