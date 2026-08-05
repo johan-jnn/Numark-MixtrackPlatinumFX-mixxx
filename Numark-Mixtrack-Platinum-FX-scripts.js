@@ -334,11 +334,9 @@ var MixtrackPlatinumFX = {
    * @todo Refactor code as the switch must controller the 2 Mixxx FX unit but enables only on the given channel
    * @todo Create a component "EffectSwitch" that takes the given channels
    */
-  EffectUnit: function (unit, channels) {
+  EffectUnit: function (unit) {
     MixtrackPlatinumFX.bindMPFX(this);
-    this.mpfx.debug(
-      `Initializing Effect Unit #${unit} (Channels : ${channels.map((c) => c.id).join(", ")})`,
-    );
+    this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
 
     components.ComponentContainer.call(this);
     this.id = unit;
@@ -377,8 +375,7 @@ var MixtrackPlatinumFX = {
     this.mpfx.$blinker.onUpdate((short, long) => {
       Object.values(this.effects).forEach((effect) => {
         effect.led(
-          effect.selected &&
-            (!this.enabled || (effect.toggleing ? short : long)),
+          effect.selected && (effect.toggleing ? short : !this.enabled || long),
         );
       });
     });
@@ -417,6 +414,7 @@ var MixtrackPlatinumFX = {
       if (typeof state === "undefined") {
         state = +active;
       }
+
       this.state = state;
 
       for (const channel of this.channels) {
@@ -434,20 +432,20 @@ var MixtrackPlatinumFX = {
             `group_[Channel${channel.id}]_enable`,
             +active,
           );
-          unit.enabled = +active;
-        }
-      }
 
-      // If we toggle off, we disable the effect units that are not enabled by the other toggler
-      if (!active) {
-        /**@type {mpfx.UnitToggler} */
-        const brother =
-          this.mpfx.__components.unitTogglers[
-            ["right", "left"][+(this.id === "right")]
-          ];
+          let enabled = active;
+          if (!active) {
+            // If we toggle off, we disable the effect units that are not enabled by the other toggler
+            const brother =
+              this.mpfx.__components.unitTogglers[
+                this.id === "right" ? "left" : "right"
+              ];
 
-        if (!brother.state) {
-          this.units.forEach((u) => (u.enabled = false));
+            if (brother.state && brother.units.find((u) => u.id == unit.id)) {
+              enabled = true;
+            }
+          }
+          unit.enabled = enabled;
         }
       }
     };
@@ -579,11 +577,9 @@ var MixtrackPlatinumFX = {
      */
     const effectUnits = new components.ComponentContainer();
     for (let unit = 1; unit <= 2; unit++) {
-      effectUnits[unit] = new this.EffectUnit(unit, [
-        channels[1 + (unit - 1)],
-        channels[3 + (unit - 1)],
-      ]);
+      effectUnits[unit] = new this.EffectUnit(unit);
     }
+
     /**
      * Effect unit togglers
      * @type {typeof this.__components.unitTogglers}
@@ -688,10 +684,12 @@ var MixtrackPlatinumFX = {
       /**
        * @type {number}
        */
-      const id = Object.keys(this["#callbacks"]).reduce(
-        (id, key) => Math.max(id, parseInt(key)),
-        1,
-      );
+      const id =
+        1 +
+        Object.keys(this["#callbacks"][event]).reduce(
+          (id, key) => Math.max(id, parseInt(key)),
+          1,
+        );
 
       this["#callbacks"][event][id] = callback;
       return id;
