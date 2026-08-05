@@ -249,7 +249,6 @@ var MixtrackPlatinumFX = {
     this.toggleing = false;
 
     let longPressingTM = 0;
-
     this.inputs = {
       press: () => {
         if (this.selected) {
@@ -315,6 +314,17 @@ var MixtrackPlatinumFX = {
         light,
       );
     };
+
+    // Current state
+    if (
+      engine.getValue(
+        `[EffectRack1_EffectUnit${unit.id}_Effect${this.id}]`,
+        "enabled",
+      )
+    ) {
+      this.selected = true;
+    }
+    this.led(this.selected);
   },
   /**
    * @this mpfx.Binded<mpfx.EffectUnit>
