@@ -43,25 +43,20 @@ namespace mpfx {
     id: 1 | 2 | 3;
   }
 
-  interface UnitToggler extends components.Component {
-    id: "left" | "right";
+  interface UnitToggler extends components.Button {
+    // left or right
+    id: 1 | 2;
     units: EffectUnit[];
     channels: Channel[];
-
     /**
-     * 0 -> disabled
-     * 1 -> turn up
-     * 2 -> turn down
+     * If the toggler is locked on, or just temporary activated
      */
-    state: 0 | 1 | 2;
+    isLocked: boolean;
     /**
      * If set to `true`, then it will activate the effect units on all channels even if it is not tracked by the controller
      * @default false
      */
     syncChannels: boolean;
-
-    switch(this: this, active: boolean, state?: this["state"]): void;
-    inputs: InputsRecord;
   }
 
   interface GlobalComponentContainer extends components.Component {

@@ -15,14 +15,14 @@ var MixtrackPlatinumFX = {
        */
       toggleable: true,
       /**
-       * Enable long-pressing to activate a fx only while you press it.
+       * Enable long-pressing to select/unselect a fx only while you press it.
        *
        * @type {boolean | number}
        * `false` -> disable longPressing
        * `true` -> enable longPressing (must press at least 2 leds blink long)
        * `number` -> enable longPressing (must press the given miliseconds long)
        */
-      longPressing: 600,
+      longPressing: true,
     },
     waveforms: {
       sync: true,
@@ -262,18 +262,12 @@ var MixtrackPlatinumFX = {
       isSelected: false,
       group: `[EffectRack1_EffectUnit${unit.id}_Effect${effect}]`,
       key: "enabled",
-      midi: this.mpfx.BYTES_MAP.fx.selector(unit.id, this.id),
+      midi: this.mpfx.BYTES_MAP.fx.selector(unit.id, effect),
       type:
         longPressTimeout === false ? this.types.toggle : this.types.powerWindow,
       longPressTimeout,
       inValueScale: (value) => !!value,
       output: (active) => {
-        if (active && this.isShifted === this.mpfx.CONFIG.FX.toggleable) {
-          for (let i = 1; i <= 4; i++) {
-            this.mpfx.__components.effectUnits[i]?.clearSelection();
-          }
-        }
-
         this.send(active ? this.on : this.off);
       },
 
@@ -290,10 +284,9 @@ var MixtrackPlatinumFX = {
 
         components.Button.prototype.inSetValue.call(this, value);
       },
+      shift: () => (this.isShifted = true),
+      unshift: () => (this.isShifted = false),
     });
-
-    // Current state
-    this.outSetValue(this.outValueScale(this.inGetValue()));
   },
   /**
    * @this mpfx.Binded<mpfx.EffectUnit>
@@ -303,7 +296,7 @@ var MixtrackPlatinumFX = {
    * @todo Refactor code as the switch must controller the 2 Mixxx FX unit but enables only on the given channel
    * @todo Create a component "EffectSwitch" that takes the given channels
    */
-  EffectUnit: function (unit) {
+  EffectUnit: function (unit, channels) {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
 
@@ -316,7 +309,7 @@ var MixtrackPlatinumFX = {
       new this.mpfx.Effect(this, 2),
       new this.mpfx.Effect(this, 3),
     ];
-    this.enableButtons = new components.ComponentContainer(
+    this.effects = new components.ComponentContainer(
       this.mpfx.keyBy(effects, "id"),
     );
     this.dryWetKnob = new components.Pot({
@@ -324,8 +317,8 @@ var MixtrackPlatinumFX = {
     });
     Object.defineProperty(this, "isEnabled", {
       get: () => {
-        for (let i = 1; i <= 4; i++) {
-          if (this.enableOnChannelButtons[i].inGetValue()) {
+        for (let i = 1; i <= 2; i++) {
+          if (this.enableOnChannelButtons[i]?.inGetValue()) {
             return true;
           }
         }
@@ -381,63 +374,62 @@ var MixtrackPlatinumFX = {
       `Initalizing an unit switcher (controlling units ${units.map((u) => u.id)} on channels ${channels.map((c) => c.id)})`,
     );
 
-    components.Component.call(this);
-
-    this.id = id;
-    this.units = units;
-    this.channels = channels;
-    this.syncChannels = false;
-    this.state = 0;
-
-    this.inputs = {
-      toggle: (channel, control, value, status) => {
-        // The value can be either 0, 1 or 2 (for switch up/switch down)
-        this.switch(value != this.mpfx.BYTES_VALUES.false, value);
+    components.Button.call(this, {
+      id,
+      units,
+      channels,
+      syncChannels: false,
+      type: components.Button.prototype.types.push,
+      isPress: (_, __, value) => {
+        return value;
       },
-    };
+      inGetValue: () => {
+        for (const channel of this.channels) {
+          if (!(channel.trackedBy || this.syncChannels)) {
+            continue;
+          }
 
-    /**
-     * @type {(typeof this)['switch']}
-     */
-    this.switch = function (active, state) {
-      if (typeof state === "undefined") {
-        state = +active;
-      }
-
-      this.state = state;
-
-      for (const channel of this.channels) {
-        if (!(channel.trackedBy || this.syncChannels)) {
-          continue;
-        }
-
-        for (const unit of this.units) {
-          this.mpfx.debug(
-            `${active ? "Enabling" : "Disabling"} effect unit #${unit.id} on channel #${channel.id}`,
-          );
-
-          engine.setValue(
-            `[EffectRack1_EffectUnit${unit.id}]`,
-            `group_[Channel${channel.id}]_enable`,
-            +active,
-          );
-
-          let enabled = active;
-          if (!active) {
-            // If we toggle off, we disable the effect units that are not enabled by the other toggler
-            const brother =
-              this.mpfx.__components.unitTogglers[
-                this.id === "right" ? "left" : "right"
-              ];
-
-            if (brother.state && brother.units.find((u) => u.id == unit.id)) {
-              enabled = true;
+          for (const unit of this.units) {
+            if (
+              engine.getValue(
+                `[EffectRack1_EffectUnit${unit.id}]`,
+                `group_[Channel${channel.id}]_enable`,
+              )
+            ) {
+              return 1;
             }
           }
-          unit.enabled = enabled;
         }
-      }
-    };
+
+        return 0;
+      },
+      inSetValue: (active) => {
+        this.isLocked = active === 0x2;
+
+        for (const channel of this.channels) {
+          if (!(channel.trackedBy || this.syncChannels)) {
+            continue;
+          }
+
+          for (const unit of this.units) {
+            this.mpfx.debug(
+              `${active ? "Enabling" : "Disabling"} effect unit #${unit.id} on channel #${channel.id}`,
+            );
+
+            engine.setValue(
+              `[EffectRack1_EffectUnit${unit.id}]`,
+              `group_[Channel${channel.id}]_enable`,
+              !!active,
+            );
+          }
+        }
+      },
+    });
+
+    for (const unit of units) {
+      unit.enableOnChannelButtons[id] = this;
+      this.mpfx.debug(unit.id, Object.keys(unit.enableOnChannelButtons));
+    }
   },
   /* #endregion */
 
@@ -573,17 +565,18 @@ var MixtrackPlatinumFX = {
      * Effect unit togglers
      * @type {typeof this.__components.unitTogglers}
      */
-    const unitTogglers = new components.ComponentContainer();
-    unitTogglers.left = new this.UnitToggler(
-      "left",
-      [effectUnits[1], effectUnits[2]],
-      [channels[1], channels[3]],
-    );
-    unitTogglers.right = new this.UnitToggler(
-      "right",
-      [effectUnits[1], effectUnits[2]],
-      [channels[2], channels[4]],
-    );
+    const unitTogglers = new components.ComponentContainer({
+      1: new this.UnitToggler(
+        1,
+        [effectUnits[1], effectUnits[2]],
+        [channels[1], channels[3]],
+      ),
+      2: new this.UnitToggler(
+        2,
+        [effectUnits[1], effectUnits[2]],
+        [channels[2], channels[4]],
+      ),
+    });
 
     Object.assign(this.__components, {
       channels,
@@ -779,11 +772,11 @@ for (const inheritance of [
   { parent: components.Deck, children: ["Deck"] },
   {
     parent: components.Component,
-    children: ["Channel", "UnitToggler"],
+    children: ["Channel"],
   },
   {
     parent: components.Button,
-    children: ["Effect"],
+    children: ["Effect", "UnitToggler"],
   },
   {
     parent: components.EffectUnit,
