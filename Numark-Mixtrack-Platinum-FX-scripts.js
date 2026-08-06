@@ -17,6 +17,7 @@ var MixtrackPlatinumFX = {
       /**
        * Enable long-pressing to activate a fx only while you press it.
        *
+       * @type {boolean | number}
        * `false` -> disable longPressing
        * `true` -> enable longPressing (must press at least 2 leds blink long)
        * `number` -> enable longPressing (must press the given miliseconds long)
@@ -245,92 +246,54 @@ var MixtrackPlatinumFX = {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing effect #${effect} from unit #${unit.id}`);
 
-    // todo -> Use the Button's methods
-    components.Button.call(this);
+    const { longPressing } = this.mpfx.CONFIG.FX;
+    const longPressTimeout =
+      longPressing !== false
+        ? typeof longPressing === "boolean"
+          ? this.mpfx.CONFIG.leds.blink.delay * 2
+          : longPressing
+        : false;
+    this.mpfx.debug(
+      `Long press behavior is ${longPressTimeout ? `enabled (tm: ${longPressTimeout}ms)` : "disabled"}.`,
+    );
 
-    this.id = effect;
-    this.selected = false;
-    this.toggleing = false;
-
-    let longPressingTM = 0;
-    this.inputs = {
-      press: () => {
-        if (this.selected) {
-          this.toggleing = true;
-        } else {
-          this.switch(true);
+    components.Button.call(this, {
+      id: effect,
+      isSelected: false,
+      group: `[EffectRack1_EffectUnit${unit.id}_Effect${effect}]`,
+      key: "enabled",
+      midi: this.mpfx.BYTES_MAP.fx.selector(unit.id, this.id),
+      type:
+        longPressTimeout === false ? this.types.toggle : this.types.powerWindow,
+      longPressTimeout,
+      inValueScale: (value) => !!value,
+      output: (active) => {
+        if (active && this.isShifted === this.mpfx.CONFIG.FX.toggleable) {
+          for (let i = 1; i <= 4; i++) {
+            this.mpfx.__components.effectUnits[i]?.clearSelection();
+          }
         }
 
-        engine.stopTimer(longPressingTM);
-        const { longPressing } = this.mpfx.CONFIG.FX;
-        if (longPressing) {
-          const duration =
-            longPressing === "boolean"
-              ? this.mpfx.CONFIG.leds.blink.delay * 2
-              : longPressing;
-
-          longPressingTM = engine.beginTimer(
-            duration,
-            () => {
-              this.toggleing = true;
-            },
-            true,
-          );
-        }
+        this.send(active ? this.on : this.off);
       },
-      release: () => {
-        engine.stopTimer(longPressingTM);
 
-        // user is not long-pressing the fx button
-        if (this.toggleing) {
-          this.toggleing = false;
-          this.switch(false);
-        }
+      outSetValue: (value) => {
+        this.isSelected = !!value;
+        this.send(this.isSelected ? this.on : this.off);
       },
-    };
-
-    /**
-     * @type {(typeof this)['switch']}
-     */
-    this.switch = function (active) {
-      if (active && this.mpfx.$shifting == this.mpfx.CONFIG.FX.toggleable) {
-        for (let i = 1; i <= 4; i++) {
-          this.mpfx.__components.effectUnits[i]?.clearSelection();
+      inSetValue: (value) => {
+        if (value && this.isShifted == this.mpfx.CONFIG.FX.toggleable) {
+          for (let i = 1; i <= 4; i++) {
+            this.mpfx.__components.effectUnits[i]?.clearSelection();
+          }
         }
-      }
 
-      this.selected = active;
-      engine.setValue(
-        `[EffectRack1_EffectUnit${unit.id}_Effect${this.id}]`,
-        "enabled",
-        +active,
-      );
-      this.led(active);
-    };
-    /**
-     * @type {(typeof this)['led']}
-     */
-    this.led = function (light) {
-      if (typeof light === "boolean") {
-        light = [this.mpfx.CONFIG.leds.low, this.mpfx.CONFIG.leds.high][+light];
-      }
-
-      midi.sendShortMsg(
-        ...this.mpfx.BYTES_MAP.fx.selector(unit.id, this.id),
-        light,
-      );
-    };
+        components.Button.prototype.inSetValue.call(this, value);
+      },
+    });
 
     // Current state
-    if (
-      engine.getValue(
-        `[EffectRack1_EffectUnit${unit.id}_Effect${this.id}]`,
-        "enabled",
-      )
-    ) {
-      this.selected = true;
-    }
-    this.led(this.selected);
+    this.outSetValue(this.outValueScale(this.inGetValue()));
   },
   /**
    * @this mpfx.Binded<mpfx.EffectUnit>
@@ -344,29 +307,42 @@ var MixtrackPlatinumFX = {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
 
-    components.ComponentContainer.call(this);
+    components.EffectUnit.call(this, unit, true);
     this.id = unit;
+
+    /**@type {mpfx.Effect[]} */
     const effects = [
       new this.mpfx.Effect(this, 1),
       new this.mpfx.Effect(this, 2),
       new this.mpfx.Effect(this, 3),
     ];
-    this.effects = new components.ComponentContainer(
+    this.enableButtons = new components.ComponentContainer(
       this.mpfx.keyBy(effects, "id"),
     );
-
-    this.enabled = false;
     this.dryWetKnob = new components.Pot({
       group: `[EffectRack1_EffectUnit${unit}]`,
+    });
+    Object.defineProperty(this, "isEnabled", {
+      get: () => {
+        for (let i = 1; i <= 4; i++) {
+          if (this.enableOnChannelButtons[i].inGetValue()) {
+            return true;
+          }
+        }
+
+        return false;
+      },
     });
 
     /**@type {typeof this['clearSelection']} */
     this.clearSelection = function () {
-      effects.forEach((e) => e.selected && e.switch(false));
+      effects.forEach((e) => e.inGetValue() && e.inSetValue(0));
     };
     /**@type {typeof this['selectAll']} */
     this.selectAll = function () {
-      effects.forEach((e) => e.selected || e.switch(true));
+      effects.forEach(
+        (e) => e.inGetValue() || e.inSetValue(e.inValueScale(e.max)),
+      );
     };
 
     // To avoid confusion, we disable the effects in the headphone & master group
@@ -383,11 +359,15 @@ var MixtrackPlatinumFX = {
 
     this.mpfx.$blinker.onUpdate((short, long) => {
       effects.forEach((effect) => {
-        effect.led(
-          effect.selected && (effect.toggleing ? short : !this.enabled || long),
-        );
+        const on =
+          effect.inGetValue() &&
+          (effect.isLongPressed ? short : !this.isEnabled || long);
+
+        effect.send(on ? effect.on : effect.off);
       });
     });
+
+    this.init();
   },
   /**
    * @this mpfx.Binded<mpfx.UnitToggler>
@@ -796,11 +776,18 @@ var MixtrackPlatinumFX = {
 };
 
 for (const inheritance of [
-  { parent: components.ComponentContainer, children: ["EffectUnit"] },
   { parent: components.Deck, children: ["Deck"] },
   {
     parent: components.Component,
-    children: ["Effect", "Channel", "UnitToggler"],
+    children: ["Channel", "UnitToggler"],
+  },
+  {
+    parent: components.Button,
+    children: ["Effect"],
+  },
+  {
+    parent: components.EffectUnit,
+    children: ["EffectUnit"],
   },
 ]) {
   inheritance.children.forEach((key) => {

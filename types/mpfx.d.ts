@@ -27,28 +27,20 @@ namespace mpfx {
     trackedBy?: Deck;
   }
 
-  interface EffectUnit extends components.ComponentContainer {
+  interface EffectUnit extends components.EffectUnit {
     id: 1 | 2 | 3 | 4;
     effects: components.ComponentContainer & Record<Effect["id"], Effect>;
-    enabled: boolean;
-    dryWetKnob: components.Pot;
+    get isEnabled(): boolean;
 
     clearSelection(this: this): void;
     selectAll(this: this): void;
+
+    enableOnChannelButtons: components.EffectUnit["enableOnChannelButtons"] &
+      Record<Channel["id"], components.Button>;
   }
 
   interface Effect extends components.Button {
     id: 1 | 2 | 3;
-    selected: boolean;
-    /**
-     * True only if in "longPressing" mode or if the leds is pressed while already selected
-     */
-    toggleing: boolean;
-
-    switch(this: this, active: boolean): void;
-    led(this: this, light: boolean | number): void;
-
-    inputs: InputsRecord;
   }
 
   interface UnitToggler extends components.Component {

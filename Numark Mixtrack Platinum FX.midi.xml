@@ -3303,7 +3303,7 @@
       <!-- FX HPF button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[1].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[1].input</key>
         <status>0x98</status>
         <midino>0x00</midino>
         <options>
@@ -3313,7 +3313,7 @@
       <!-- FX HPF button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[1].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[1].input</key>
         <status>0x88</status>
         <midino>0x00</midino>
         <options>
@@ -3323,7 +3323,7 @@
       <!-- FX LPF button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[2].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[2].input</key>
         <status>0x98</status>
         <midino>0x01</midino>
         <options>
@@ -3333,7 +3333,7 @@
       <!-- FX LPF button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[2].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[2].input</key>
         <status>0x88</status>
         <midino>0x01</midino>
         <options>
@@ -3343,7 +3343,7 @@
       <!-- FX flanger button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[3].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[3].input</key>
         <status>0x98</status>
         <midino>0x02</midino>
         <options>
@@ -3353,7 +3353,7 @@
       <!-- FX flanger button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit1]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[3].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[1].effects[3].input</key>
         <status>0x88</status>
         <midino>0x02</midino>
         <options>
@@ -3363,7 +3363,7 @@
       <!-- FX echo button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[1].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[1].input</key>
         <status>0x99</status>
         <midino>0x03</midino>
         <options>
@@ -3373,7 +3373,7 @@
       <!-- FX echo button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[1].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[1].input</key>
         <status>0x89</status>
         <midino>0x03</midino>
         <options>
@@ -3383,7 +3383,7 @@
       <!-- FX reverb button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[2].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[2].input</key>
         <status>0x99</status>
         <midino>0x04</midino>
         <options>
@@ -3393,7 +3393,7 @@
       <!-- FX reverb button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[2].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[2].input</key>
         <status>0x89</status>
         <midino>0x04</midino>
         <options>
@@ -3403,7 +3403,7 @@
       <!-- FX phaser button (press) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[3].inputs.press</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[3].input</key>
         <status>0x99</status>
         <midino>0x05</midino>
         <options>
@@ -3413,7 +3413,7 @@
       <!-- FX phaser button (release) -->
       <control>
         <group>[EffectRack1_EffectUnit2]</group>
-        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[3].inputs.release</key>
+        <key>MixtrackPlatinumFX.__components.effectUnits[2].effects[3].input</key>
         <status>0x89</status>
         <midino>0x05</midino>
         <options>
@@ -3829,6 +3829,7 @@
           <script-binding />
         </options>
       </control>
+      <!-- Shift (left) -->
       <control>
         <group>[Master]</group>
         <key>MixtrackPlatinumFX.shift</key>
@@ -3839,6 +3840,7 @@
           <script-binding />
         </options>
       </control>
+      <!-- Shift release (left) -->
       <control>
         <group>[Master]</group>
         <key>MixtrackPlatinumFX.unshift</key>
@@ -3849,6 +3851,7 @@
           <script-binding />
         </options>
       </control>
+      <!-- Shift (right) -->
       <control>
         <group>[Master]</group>
         <key>MixtrackPlatinumFX.shift</key>
@@ -3859,51 +3862,12 @@
           <script-binding />
         </options>
       </control>
+      <!-- Shift release (right) -->
       <control>
         <group>[Master]</group>
         <key>MixtrackPlatinumFX.unshift</key>
         <description>The shift key.</description>
         <status>0x81</status>
-        <midino>0x20</midino>
-        <options>
-          <script-binding />
-        </options>
-      </control>
-      <control>
-        <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
-        <description>The shift key.</description>
-        <status>0x92</status>
-        <midino>0x20</midino>
-        <options>
-          <script-binding />
-        </options>
-      </control>
-      <control>
-        <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
-        <description>The shift key.</description>
-        <status>0x82</status>
-        <midino>0x20</midino>
-        <options>
-          <script-binding />
-        </options>
-      </control>
-      <control>
-        <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
-        <description>The shift key.</description>
-        <status>0x93</status>
-        <midino>0x20</midino>
-        <options>
-          <script-binding />
-        </options>
-      </control>
-      <control>
-        <group>[Master]</group>
-        <key>MixtrackPlatinumFX.shiftToggle</key>
-        <description>The shift key.</description>
-        <status>0x83</status>
         <midino>0x20</midino>
         <options>
           <script-binding />

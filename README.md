@@ -9,17 +9,18 @@ Download the required files and place them directly inside your [Mixxx controlle
 ### Required files
 
 - [The midi mapping](./Numark%20Mixtrack%20Platinum%20FX.xml)
-- [The configuration](./Numark-Mixtrack-Platinum-FX-config.js)
 - [The scripting](./Numark-Mixtrack-Platinum-FX-scripts.js)
 
 Soon I'll auto-publish a .zip archive to make this process even easier for you !
 
 ## Configuration
 
-// TODO
+You can view the configuration under the `CONFIG` key of the script.
+All the configurations and behaviors are described directly there.
 
 ## Developpement
 
 ### Typing files
 
 Typing files are in the [types directory](./types), and are originally downloaded from the [Mixxx's source code](https://github.com/search?q=repo%3Amixxxdj%2Fmixxx+path%3Ares%2F**%2F*.d.ts&type=code).
+An additionnal [mpfx.d.ts](./types/mpfx.d.ts) file contains the types for this controller mapping.
