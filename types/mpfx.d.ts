@@ -3,23 +3,38 @@ namespace mpfx {
     [key in Key]: typeof MixtrackPlatinumFX;
   };
   type InputsRecord = Record<string, midi.InputCallback>;
+  type ContainerOf<Type, IdKey = "id"> = components.ComponentContainer &
+    Record<Type[IdKey], Type>;
 
-  /**
-   * Controller's physical deck
-   */
-  interface Deck extends components.Deck {
-    id: "left" | "right";
-    tracks?: Channel;
-    get group(): string | undefined;
+  interface Deck extends components.Component {
+    // Left or right
+    id: 1 | 2;
 
-    track(this: this, channel: Channel, force = false): void;
-    untrack(this: this): void;
+    /**
+     * The channel this deck is currently tracking
+     */
+    channel: Channel;
+    _trackable: Channel[];
+
+    play: components.PlayButton;
+    cue: components.CueButton;
+    sync: components.SyncButton;
+
+    switchDeckInput: midi.InputCallback;
+    /**
+     * Set the new tracked channel
+     */
+    track(channel: Channel | Channel["id"]): Channel;
+    /**
+     * Tracks the next trackable channel
+     */
+    switch(): ReturnType<Deck["track"]>;
   }
 
   /**
    * See a channel like a Mixxx's deck
    */
-  interface Channel extends components.ComponentContainer {
+  interface Channel extends components.Component {
     id: 1 | 2 | 3 | 4;
     /**
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
@@ -27,45 +42,63 @@ namespace mpfx {
     trackedBy?: Deck;
   }
 
+  interface Effect extends components.Button {
+    id: 1 | 2 | 3;
+    get isSelected(): boolean;
+    get isFocused(): boolean;
+
+    select(): void;
+    unselect(): void;
+    focus(): void;
+    unfocus(): void;
+
+    led(power: boolean | number): void;
+  }
+
   interface EffectUnit extends components.EffectUnit {
     id: 1 | 2 | 3 | 4;
-    effects: components.ComponentContainer & Record<Effect["id"], Effect>;
-    get isEnabled(): boolean;
+    [key: Effect["id"]]: Effect;
+    get effects(): Effect[];
+
+    get isSending(): boolean;
+    get focusedEffect(): Effect | null;
 
     clearSelection(this: this): void;
     selectAll(this: this): void;
 
-    enableOnChannelButtons: components.EffectUnit["enableOnChannelButtons"] &
-      Record<Channel["id"], components.Button>;
+    clearFocus(this: this): void;
+    focusNext(this: this): void;
+    focusPrevious(this: this): void;
+
+    send(channel: Channel): void;
+    unsend(channel: Channel): void;
+    isSendingTo(channel: Channel): boolean;
   }
 
-  interface Effect extends components.Button {
-    id: 1 | 2 | 3;
+  interface EffectPad extends components.ComponentContainer {
+    [key: EffectUnit["id"]]: EffectUnit;
+    get units(): EffectUnit[];
   }
 
-  interface UnitToggler extends components.Button {
+  interface EffectPadSender extends components.Button {
     // left or right
     id: 1 | 2;
-    units: EffectUnit[];
-    channels: Channel[];
-    /**
-     * If the toggler is locked on, or just temporary activated
-     */
-    isLocked: boolean;
-    /**
-     * If set to `true`, then it will activate the effect units on all channels even if it is not tracked by the controller
-     * @default false
-     */
-    syncChannels: boolean;
+    get isSending(): boolean;
+
+    _pad: EffectPad;
+    _channels: Channel[];
+  }
+
+  interface EffectMixer extends components.ComponentContainer {
+    pad: EffectPad;
+    senders: ContainerOf<EffectPadSender>;
+    beats: components.Pot;
+    tap: components.Button;
   }
 
   interface GlobalComponentContainer extends components.Component {
-    effectUnits: components.ComponentContainer &
-      Record<EffectUnit["id"], EffectUnit>;
-    unitTogglers: components.ComponentContainer &
-      Record<UnitToggler["id"], UnitToggler>;
-
-    channels: components.ComponentContainer & Record<Channel["id"], Channel>;
-    decks: components.ComponentContainer & Record<Deck["id"], Deck>;
+    channels: ContainerOf<Channel>;
+    decks: ContainerOf<Deck>;
+    effects: EffectMixer;
   }
 }

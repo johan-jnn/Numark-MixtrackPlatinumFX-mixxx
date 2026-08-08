@@ -23,6 +23,11 @@ var MixtrackPlatinumFX = {
        * `number` -> enable longPressing (must press the given miliseconds long)
        */
       longPressing: true,
+      /**
+       * By default, enabling effect on a deck will enable only on channel this deck refers to.
+       * Set this to `true` to also enable the effect on the deck's trackable channels that are not tracked.
+       */
+      sendToHidden: false,
     },
     waveforms: {
       sync: true,
@@ -173,59 +178,6 @@ var MixtrackPlatinumFX = {
 
   /* #region Components */
   /**
-   * @this {mpfx.Binded<mpfx.Deck>}
-   * @param {mpfx.Deck["id"]} id
-   * @param {mpfx.Channel | undefined} tracks If you want to automaticly track a channel
-   */
-  Deck: function (id, tracks) {
-    MixtrackPlatinumFX.bindMPFX(this);
-    this.mpfx.debug(
-      "Initializing",
-      id,
-      "deck (default channel:",
-      tracks?.id,
-      ")",
-    );
-
-    components.Deck.call(this, tracks?.id);
-    this.id = id;
-    Object.defineProperty(this, "group", {
-      get: () => this.tracks && `[Channel${this.tracks.id}]`,
-    });
-
-    /**@type {typeof this.track} */
-    this.track = function (channel, force = false) {
-      if (this.tracks) {
-        if (force) {
-          this.untrack();
-        } else {
-          this.mpfx.warn(
-            `Tried to track channel #${channel.id} but already tracking channel #${this.tracks.id}.`,
-          );
-        }
-      }
-      this.tracks = channel;
-      channel.trackedBy = this;
-      this.setCurrentDeck(this.group);
-      this.mpfx.debug(
-        `Deck #${this.id} is now tracking channel #${this.tracks.id} (group: ${this.group})`,
-      );
-    };
-    /**@type {typeof this.untrack} */
-    this.untrack = function () {
-      this.mpfx.debug(
-        `Deck #${this.id} will no longer track channel #${this.tracks?.id}`,
-      );
-      if (this.tracks) {
-        this.tracks = this.tracks.trackedBy = undefined;
-      }
-    };
-
-    if (tracks) {
-      this.track(tracks);
-    }
-  },
-  /**
    * @this mpfx.Binded<mpfx.Channel>
    * @param {mpfx.Channel['id']} channel
    */
@@ -233,9 +185,76 @@ var MixtrackPlatinumFX = {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing Channel #${channel}`);
 
-    components.Component.call(this);
-    this.id = channel;
-    this.trackedBy = undefined;
+    components.Component.call(this, {
+      id: channel,
+      group: `[Channel${channel}]`,
+      trackedBy: undefined,
+    });
+  },
+  /**
+   * @this mpfx.Binded<mpfx.Deck>
+   * @param {mpfx.Deck['id']} id
+   * @param {mpfx.Channel[]} channels The channels this deck can track. The first listed channel will be tracked by default
+   */
+  Deck: function (id, channels) {
+    MixtrackPlatinumFX.bindMPFX(this);
+
+    if (!channels?.length) {
+      this.mpfx.error(
+        `Unable to initalize deck #${id} : no trackable channels given.`,
+      );
+      return;
+    }
+
+    this.mpfx.debug(
+      `Initializing Deck #${id} (tracking channels ${channels.map((c) => c.id)})`,
+    );
+
+    components.Component.call(this, {
+      id,
+      _trackable: channels,
+
+      /**@type {typeof this.track} */
+      track: (channel) => {
+        if (typeof channel === "number") {
+          channel = this.mpfx.__components.channels[channel];
+        }
+        if (!channels.find((c) => c.id === channel?.id)) {
+          this.mpfx.warn(
+            `Trying to track untrackable channel ${channel?.id} on deck #${this.id}.`,
+          );
+          return;
+        }
+
+        if (this.channel) {
+          this.mpfx.debug(
+            `Deck #${this.id} is no longer tracking channel ${this.channel.id}`,
+          );
+          this.channel.trackedBy = undefined;
+        }
+        this.channel = channel;
+        this.channel.trackedBy = this;
+
+        this.mpfx.debug(
+          `Deck #${this.id} is now tracking channel ${channel.id}`,
+        );
+      },
+      switch: () => {
+        this.mpfx.debug(`Switching channel on deck #${this.id}...`);
+
+        const currentIndex = this._trackable.findIndex(
+          (c) => c.id === this.channel?.id,
+        );
+        if (currentIndex < 0) {
+          return this.track(this._trackable[0]);
+        }
+
+        const nextIndex = (currentIndex + 1) % this._trackable.length;
+        return this.track(this._trackable[nextIndex]);
+      },
+    });
+
+    this.switch();
   },
   /**
    * @this mpfx.Binded<mpfx.Effect>
@@ -259,49 +278,103 @@ var MixtrackPlatinumFX = {
 
     components.Button.call(this, {
       id: effect,
-      isSelected: false,
       group: `[EffectRack1_EffectUnit${unit.id}_Effect${effect}]`,
       key: "enabled",
       midi: this.mpfx.BYTES_MAP.fx.selector(unit.id, effect),
       type:
         longPressTimeout === false ? this.types.toggle : this.types.powerWindow,
       longPressTimeout,
-      inValueScale: (value) => !!value,
-      output: (active) => {
-        this.send(active ? this.on : this.off);
+      inValueScale: (value) => value > 0,
+      output: (value) => {
+        this.led(this.outValueScale(value));
       },
 
       outSetValue: (value) => {
-        this.isSelected = !!value;
-        this.send(this.isSelected ? this.on : this.off);
+        this.led(value);
       },
       inSetValue: (value) => {
         if (value && this.isShifted == this.mpfx.CONFIG.FX.toggleable) {
-          for (let i = 1; i <= 4; i++) {
-            this.mpfx.__components.effectUnits[i]?.clearSelection();
-          }
+          this.mpfx.__components.effects.pad.units.forEach((u) =>
+            u.clearSelection(),
+          );
         }
 
-        components.Button.prototype.inSetValue.call(this, value);
+        components.Button.prototype.inSetValue.call(this, +value);
       },
       shift: () => (this.isShifted = true),
       unshift: () => (this.isShifted = false),
+
+      select: () => {
+        this.inGetValue() || this.inSetValue(this.inValueScale(this.max));
+      },
+      unselect: () => {
+        this.inGetValue() && this.inSetValue(0);
+      },
+      focus: () => {
+        this.isFocused ||
+          engine.setValue(unit.group, "focused_effect", this.id);
+      },
+      unfocus: () => {
+        this.isFocused && engine.setValue(unit.group, "focused_effect", 0);
+      },
+      shutdown: () => {
+        this.led(0);
+      },
+
+      /**@type {typeof this.led} */
+      led: (on) => {
+        if (typeof on === "boolean") {
+          on = this[["off", "on"][+on]];
+        }
+
+        this.send(on);
+      },
+    });
+
+    Object.defineProperties(this, {
+      isSelected: {
+        get: () => !!this.inGetValue(),
+      },
+      isFocused: {
+        get: () => unit.focusedEffect?.id === this.id,
+      },
+      /**
+       * The bellow is used to detect when the DJ is starting long-pressing the
+       * effect. This is used to focus/unfocus the effect
+       */
+      isLongPressed: {
+        get: () => {
+          return this["#isLongPressedProxy"] ?? false;
+        },
+        set: (longPressed) => {
+          this["#isLongPressedProxy"] = !!longPressed;
+          if (!unit.isSending) {
+            if (longPressed) {
+              this.focus();
+            } else {
+              this.unfocus();
+            }
+          }
+        },
+      },
     });
   },
   /**
    * @this mpfx.Binded<mpfx.EffectUnit>
    * @param {mpfx.EffectUnit['id']} unit
-   * @param {mpfx.Channel[]} channels Active the effect unit for those channels (if there are active)
-   *
-   * @todo Refactor code as the switch must controller the 2 Mixxx FX unit but enables only on the given channel
-   * @todo Create a component "EffectSwitch" that takes the given channels
    */
-  EffectUnit: function (unit, channels) {
+  EffectUnit: function (unit) {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
-
     components.EffectUnit.call(this, unit, true);
+
     this.id = unit;
+    /**
+     * ? This value is increased/decreased to know if this effect unit is sending to any channels
+     * ? This avoid looping through channels
+     * @type {Set<mpfx.Channel['id']>}
+     */
+    let sendingCache = new Set();
 
     /**@type {mpfx.Effect[]} */
     const effects = [
@@ -309,128 +382,206 @@ var MixtrackPlatinumFX = {
       new this.mpfx.Effect(this, 2),
       new this.mpfx.Effect(this, 3),
     ];
-    this.effects = new components.ComponentContainer(
-      this.mpfx.keyBy(effects, "id"),
-    );
-    this.dryWetKnob = new components.Pot({
-      group: `[EffectRack1_EffectUnit${unit}]`,
-    });
-    Object.defineProperty(this, "isEnabled", {
-      get: () => {
-        for (let i = 1; i <= 2; i++) {
-          if (this.enableOnChannelButtons[i]?.inGetValue()) {
-            return true;
-          }
-        }
-
-        return false;
+    Object.assign(this, this.mpfx.keyBy(effects, "id"));
+    Object.defineProperties(this, {
+      isSending: {
+        get: () => {
+          return !!sendingCache.size;
+        },
+      },
+      focusedEffect: {
+        get: () => {
+          /**@type {0 | mpfx.Effect['id']} */
+          const focusedIndex = engine.getValue(this.group, "focused_effect");
+          return focusedIndex ? this[focusedIndex] : null;
+        },
+      },
+      effects: {
+        get: () => {
+          return new Array(3)
+            .fill(null)
+            .map((_, i) => this[i + 1])
+            .filter(Boolean);
+        },
       },
     });
 
+    // To avoid confusion, we disable the effects in the headphone & master group
+    engine.setValue(this.group, "group_[Headphone]_enable", 0);
+    engine.setValue(this.group, "group_[Master]_enable", 0);
+
     /**@type {typeof this['clearSelection']} */
     this.clearSelection = function () {
-      effects.forEach((e) => e.inGetValue() && e.inSetValue(0));
+      effects.forEach((e) => e.unselect());
     };
     /**@type {typeof this['selectAll']} */
     this.selectAll = function () {
-      effects.forEach(
-        (e) => e.inGetValue() || e.inSetValue(e.inValueScale(e.max)),
+      effects.forEach((e) => e.select());
+    };
+    /**@type {typeof this.send} */
+    this.send = function (channel) {
+      if (this.isSendingTo(channel)) {
+        this.mpfx.warn(
+          `EffectUnit #${this.id} is already sending to channel ${channel.id}.`,
+        );
+        return;
+      }
+
+      engine.setValue(this.group, `group_${channel.group}_enable`, 1);
+      sendingCache.add(channel.id);
+      this.mpfx.log(
+        `EffectUnit #${this.id} is sending to channel ${channel.id}`,
       );
     };
+    /**@type {typeof this.unsend} */
+    this.unsend = function (channel) {
+      if (!this.isSendingTo(channel)) {
+        console.warn(
+          `EffectUnit #${this.id} is not sending to channel ${channel.id}.`,
+        );
+        return;
+      }
 
-    // To avoid confusion, we disable the effects in the headphone & master group
-    engine.setValue(
-      `[EffectRack1_EffectUnit${unit}]`,
-      "group_[Headphone]_enable",
-      0,
-    );
-    engine.setValue(
-      `[EffectRack1_EffectUnit${unit}]`,
-      "group_[Master]_enable",
-      0,
-    );
+      engine.setValue(this.group, `group_${channel.group}_enable`, 0);
+      sendingCache.delete(channel.id);
+      this.mpfx.log(
+        `EffectUnit #${this.id} is not longer sending to channel ${channel.id}`,
+      );
+    };
+    /**@type {typeof this.isSendingTo} */
+    this.isSendingTo = function (channel) {
+      return sendingCache.has(channel.id);
+    };
+
+    this.clearFocus = function () {
+      this.focusedEffect?.unfocus();
+    };
+    this.focusNext = function () {
+      const focused = this.focusedEffect;
+      if (focused) {
+        effects.at(focused.id % 3);
+      } else {
+        effects[0].focus();
+      }
+    };
+    this.focusPrevious = function () {
+      const focused = this.focusedEffect;
+      if (focused) {
+        effects.at(focused.id - 2);
+      } else {
+        effects.at(-1).focus();
+      }
+    };
 
     this.mpfx.$blinker.onUpdate((short, long) => {
       effects.forEach((effect) => {
         const on =
-          effect.inGetValue() &&
-          (effect.isLongPressed ? short : !this.isEnabled || long);
-
-        effect.send(on ? effect.on : effect.off);
+          effect.isLongPressed || effect.isFocused
+            ? short
+            : effect.isSelected && (this.isSending ? long : true);
+        effect.led(on);
       });
     });
 
     this.init();
   },
   /**
-   * @this mpfx.Binded<mpfx.UnitToggler>
-   * @param {mpfx.UnitToggler['id']} id
+   * @this mpfx.Binded<mpfx.EffectPad>
    * @param {mpfx.EffectUnit[]} units
+   */
+  EffectPad: function (units) {
+    MixtrackPlatinumFX.bindMPFX(this);
+    components.ComponentContainer.call(this, this.mpfx.keyBy(units, "id"));
+    Object.defineProperties(this, {
+      units: {
+        get: () => {
+          return new Array(4)
+            .fill(null)
+            .map((_, i) => this[i + 1])
+            .filter(Boolean);
+        },
+      },
+    });
+  },
+  /**
+   * @this {mpfx.Binded<mpfx.EffectPadSender>}
+   * @param {mpfx.EffectPadSender['id']} sender
+   * @param {mpfx.EffectPad} pad
    * @param {mpfx.Channel[]} channels
    */
-  UnitToggler: function (id, units, channels) {
+  EffectPadSender: function (sender, pad, channels) {
     MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(
-      `Initalizing an unit switcher (controlling units ${units.map((u) => u.id)} on channels ${channels.map((c) => c.id)})`,
+      `Initializing effect pad sender #${sender} for channels ${channels.map((c) => c.id)}.`,
     );
 
     components.Button.call(this, {
-      id,
-      units,
-      channels,
-      syncChannels: false,
+      id: sender,
+      _pad: pad,
+      _channels: channels,
       type: components.Button.prototype.types.push,
-      isPress: (_, __, value) => {
-        return value;
-      },
+      inValueScale: (value) => value && 1,
       inGetValue: () => {
-        for (const channel of this.channels) {
-          if (!(channel.trackedBy || this.syncChannels)) {
-            continue;
-          }
-
-          for (const unit of this.units) {
-            if (
-              engine.getValue(
-                `[EffectRack1_EffectUnit${unit.id}]`,
-                `group_[Channel${channel.id}]_enable`,
-              )
-            ) {
-              return 1;
+        const { sendToHidden } = this.mpfx.CONFIG.FX;
+        for (const channel of this._channels) {
+          if (!(sendToHidden || channel.trackedBy)) continue;
+          for (const unit of this._pad.units) {
+            if (unit.isSendingTo(channel)) {
+              return true;
             }
           }
         }
 
-        return 0;
+        return false;
       },
-      inSetValue: (active) => {
-        this.isLocked = active === 0x2;
+      inSetValue: (value) => {
+        const { sendToHidden } = this.mpfx.CONFIG.FX;
 
-        for (const channel of this.channels) {
-          if (!(channel.trackedBy || this.syncChannels)) {
-            continue;
+        for (const channel of this._channels) {
+          if (!(sendToHidden || channel.trackedBy)) continue;
+          for (const unit of this._pad.units) {
+            if (value) {
+              unit.send(channel);
+            } else {
+              unit.unsend(channel);
+            }
           }
+        }
+      },
 
-          for (const unit of this.units) {
-            this.mpfx.debug(
-              `${active ? "Enabling" : "Disabling"} effect unit #${unit.id} on channel #${channel.id}`,
+      connect: () => {
+        components.Button.prototype.connect.call(this);
+
+        // Bellow, we refresh the unit-sent boolean if
+        // for exemple the user manually clicks on a "send to channel" button
+        for (const channel of this._channels) {
+          for (const unit of this._pad.units) {
+            const con = engine.makeConnection(
+              unit.group,
+              `group_${channel.group}_enable`,
+              (value) => {
+                if (value != unit.isSendingTo(channel)) {
+                  value ? unit.send(channel) : unit.unsend(channel);
+                }
+              },
             );
 
-            engine.setValue(
-              `[EffectRack1_EffectUnit${unit.id}]`,
-              `group_[Channel${channel.id}]_enable`,
-              !!active,
-            );
+            if (!con) {
+              this.mpfx.error(
+                `Unable to connect unit #${unit.id} and channel #${channel.id} to Mixxx.`,
+              );
+              continue;
+            }
+
+            this.connections.push(con);
           }
         }
       },
     });
 
-    for (const unit of units) {
-      unit.enableOnChannelButtons[id] = this;
-      this.mpfx.debug(unit.id, Object.keys(unit.enableOnChannelButtons));
-    }
+    this.connect();
   },
+
   /* #endregion */
 
   /* #region States */
@@ -468,21 +619,6 @@ var MixtrackPlatinumFX = {
     },
     disable() {
       if (this.timer) engine.stopTimer(this.timer);
-    },
-    /**
-     * @param {[number, number]} led The led's location byte code
-     * @param {undefined|BlinkerCallback<boolean>} custom_callback If defined and returns `true`, then do not execute the default callback
-     */
-    forLed(led, custom_callback, fast = false) {
-      return this.onUpdate((short, long) => {
-        if (custom_callback?.(short, long)) return;
-        midi.sendShortMsg(
-          ...led,
-          (fast ? long : short)
-            ? MixtrackPlatinumFX.CONFIG.leds.high
-            : MixtrackPlatinumFX.CONFIG.leds.low,
-        );
-      });
     },
     /**
      * @param {number} id
@@ -532,9 +668,9 @@ var MixtrackPlatinumFX = {
     this.debug("Lightshow exited.");
 
     // Enable "fader cuts" pads
-    const faderCutEnabler = this.SYSEX_BUFFERS.enableFaderCuts("top");
-    midi.sendSysexMsg(faderCutEnabler, faderCutEnabler.length);
-    this.debug("Fader cuts pads enabled.");
+    // const faderCutEnabler = this.SYSEX_BUFFERS.enableFaderCuts("top");
+    // midi.sendSysexMsg(faderCutEnabler, faderCutEnabler.length);
+    // this.debug("Fader cuts pads enabled.");
 
     // Registering components
     this.__components = new components.ComponentContainer();
@@ -549,40 +685,36 @@ var MixtrackPlatinumFX = {
 
     /**@type {typeof this.__components.decks} */
     const decks = new components.ComponentContainer();
-    decks.left = new this.Deck("left", channels[1]);
-    decks.right = new this.Deck("right", channels[2]);
+    decks[1] = new this.Deck(1, [channels[1], channels[3]]);
+    decks[2] = new this.Deck(2, [channels[2], channels[4]]);
 
-    /**
-     * Effect units
-     * @type {typeof this.__components.effectUnits}
-     */
-    const effectUnits = new components.ComponentContainer();
-    for (let unit = 1; unit <= 2; unit++) {
-      effectUnits[unit] = new this.EffectUnit(unit);
-    }
+    /* #region Effect Mixer */
+    /**@type {typeof this.__components.effects} */
+    const effects = new components.ComponentContainer();
 
-    /**
-     * Effect unit togglers
-     * @type {typeof this.__components.unitTogglers}
-     */
-    const unitTogglers = new components.ComponentContainer({
-      1: new this.UnitToggler(
-        1,
-        [effectUnits[1], effectUnits[2]],
-        [channels[1], channels[3]],
-      ),
-      2: new this.UnitToggler(
-        2,
-        [effectUnits[1], effectUnits[2]],
-        [channels[2], channels[4]],
-      ),
+    /**@type {typeof effects.pad} */
+    const pad = new this.EffectPad([
+      new this.EffectUnit(1),
+      new this.EffectUnit(2),
+    ]);
+
+    /**@type {typeof effects.senders} */
+    const senders = new components.ComponentContainer();
+    senders[1] = new this.EffectPadSender(1, pad, [channels[1], channels[3]]);
+    senders[2] = new this.EffectPadSender(2, pad, [channels[2], channels[4]]);
+
+    // todo -> Tap and Beats
+
+    Object.assign(effects, {
+      pad,
+      senders,
     });
+    /* #endregion */
 
     Object.assign(this.__components, {
-      channels,
-      unitTogglers,
-      effectUnits,
       decks,
+      channels,
+      effects,
     });
     this.debug("All components has been registered and initialized.");
 
@@ -769,18 +901,21 @@ var MixtrackPlatinumFX = {
 };
 
 for (const inheritance of [
-  { parent: components.Deck, children: ["Deck"] },
   {
     parent: components.Component,
-    children: ["Channel"],
+    children: ["Channel", "Deck"],
   },
   {
     parent: components.Button,
-    children: ["Effect", "UnitToggler"],
+    children: ["Effect", "EffectPadSender"],
   },
   {
     parent: components.EffectUnit,
     children: ["EffectUnit"],
+  },
+  {
+    parent: components.ComponentContainer,
+    children: ["EffectPad"],
   },
 ]) {
   inheritance.children.forEach((key) => {
