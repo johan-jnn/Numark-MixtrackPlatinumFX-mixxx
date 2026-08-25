@@ -29,6 +29,7 @@ namespace mpfx {
      * Tracks the next trackable channel
      */
     switch(): ReturnType<Deck["track"]>;
+    updateScreen(): void;
   }
 
   /**

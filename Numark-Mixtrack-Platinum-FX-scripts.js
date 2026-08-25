@@ -235,6 +235,13 @@ var MixtrackPlatinumFX = {
         this.channel = channel;
         this.channel.trackedBy = this;
 
+        // Force track to the given channel.
+        midi.sendShortMsg(
+          this.mpfx.BYTES_MAP.channels.selector(channel.id),
+          0x08,
+          0x7f,
+        );
+
         this.mpfx.debug(
           `Deck #${this.id} is now tracking channel ${channel.id}`,
         );
@@ -252,6 +259,7 @@ var MixtrackPlatinumFX = {
         const nextIndex = (currentIndex + 1) % this._trackable.length;
         return this.track(this._trackable[nextIndex]);
       },
+      updateScreen: () => {},
     });
 
     this.switch();
@@ -724,7 +732,11 @@ var MixtrackPlatinumFX = {
       this.SYSEX_BUFFERS.status.length,
     );
 
-    this.$blinker.enable();
+    // this.$blinker.enable();
+
+    for (let i = 1; i <= 2; i++) {
+      this.__components.decks[i].track(this.__components.channels[i]);
+    }
 
     this.debug("Controller is now ready to be use !");
   },
