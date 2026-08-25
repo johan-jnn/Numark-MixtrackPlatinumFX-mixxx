@@ -87,6 +87,14 @@ var MixtrackPlatinumFX = {
        */
       sizes: [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
     },
+    screen: {
+      time: {
+        /**
+         * If this is `true` the time marker will be the remaining time instead of the elapsed time.
+         */
+        showRemainingInsteadOfElapsed: false,
+      },
+    },
   },
   // -------------------------------------------------
 
@@ -159,7 +167,7 @@ var MixtrackPlatinumFX = {
   },
   SYSEX_BUFFERS: {
     exitDemoLightshow: [0xf0, 0x7e, 0x00, 0x06, 0x01, 0xf7],
-    status: [0xf0, 0x00, 0x20, 0x7f, 0x03, 0x01, 0xf7],
+    handshake: [0xf0, 0x00, 0x20, 0x7f, 0x03, 0x01, 0xf7],
     shutdown: [0xf0, 0x00, 0x20, 0x7f, 0x02, 0xf7],
 
     /**
@@ -189,6 +197,27 @@ var MixtrackPlatinumFX = {
       id: channel,
       group: `[Channel${channel}]`,
       trackedBy: undefined,
+      /**@type {typeof this.getLoadedTrackInfo} */
+      getLoadedTrackInfo: () => {
+        const hasLoaded = engine.getValue(this.group, "track_loaded");
+        if (!hasLoaded) return null;
+
+        const duration = engine.getValue(this.group, "duration");
+
+        return {
+          elapsed: engine.getValue(this.group, "playposition") * duration,
+          key: engine.getValue(this.group, "key"),
+          rateRange: engine.getValue(this.group, "rateRange"),
+          bpm: engine.getValue(this.group, "bpm"),
+          rate: engine.getValue(this.group, "rate") * -1,
+
+          metadata: {
+            duration,
+            bpm: engine.getValue(this.group, "file_bpm"),
+            key: engine.getValue(this.group, "file_key"),
+          },
+        };
+      },
     });
   },
   /**
@@ -259,7 +288,36 @@ var MixtrackPlatinumFX = {
         const nextIndex = (currentIndex + 1) % this._trackable.length;
         return this.track(this._trackable[nextIndex]);
       },
-      updateScreen: () => {},
+      updateScreen: () => {
+        const info = this.channel.getLoadedTrackInfo();
+        if (!info) {
+          this.mpfx.warn(
+            `Aborting deck ${this.id}'s screen update as its channel (#${this.channel.id}) does not have loaded track.`,
+          );
+          return;
+        }
+
+        const screenBufPrefix = [0xf0, 0x00, 0x20, 0x7f, this.channel.id];
+        const time = this.mpfx.CONFIG.screen.time.showRemainingInsteadOfElapsed
+          ? info.metadata.duration - info.elapsed
+          : info.elapsed;
+
+        const values = [
+          this.mpfx.intToBytes(parseInt(info.bpm * 10) * 10, 6, true),
+          this.mpfx.intToBytes(info.rate * 1e4, 6),
+          this.mpfx.intToBytes(parseInt(info.metadata.duration * 100) * 10),
+          this.mpfx.intToBytes(time * 1e3),
+        ];
+
+        for (let field = 0; field < values.length; field++) {
+          midi.sendSysexMsg([
+            ...screenBufPrefix,
+            field + 1,
+            ...values[field],
+            0xf7,
+          ]);
+        }
+      },
     });
 
     this.switch();
@@ -728,14 +786,16 @@ var MixtrackPlatinumFX = {
 
     // Don't know what that is
     midi.sendSysexMsg(
-      this.SYSEX_BUFFERS.status,
-      this.SYSEX_BUFFERS.status.length,
+      this.SYSEX_BUFFERS.handshake,
+      this.SYSEX_BUFFERS.handshake.length,
     );
 
     // this.$blinker.enable();
 
+    // Automaticly track channel 1 and 2 to be sure the script and controller are synced
     for (let i = 1; i <= 2; i++) {
       this.__components.decks[i].track(this.__components.channels[i]);
+      this.__components.decks[i].updateScreen();
     }
 
     this.debug("Controller is now ready to be use !");
@@ -794,6 +854,26 @@ var MixtrackPlatinumFX = {
       keyed[_key] = obj;
       return keyed;
     }, {});
+  },
+  /**
+   * Encodes an integer to an array of byte
+   * @param {number} int The number to encode (this number will be passing in the parseInt function to ensure it's an integer)
+   * @param {number} [bytes=8] The length of the encoded bytes (default to 8).
+   * @param {boolean} [skipSignMarker=false] If `true`, the sign marker will not be added. If `false` (default), the sign marker will replace the first byte.
+   */
+  intToBytes(int, bytes = 8, skipSignMarker = false) {
+    // Ensure the given int is not floating
+    int = parseInt(int);
+
+    const buffer = [];
+    for (let shift = 0; shift < bytes * 4; shift += 4) {
+      buffer.unshift((int >> shift) & 0xf);
+    }
+    if (!skipSignMarker) {
+      buffer[0] = 0x07 + +(int >= 0);
+    }
+
+    return buffer;
   },
   events: {
     /**

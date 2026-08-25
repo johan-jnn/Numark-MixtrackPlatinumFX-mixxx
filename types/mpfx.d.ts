@@ -6,6 +6,19 @@ namespace mpfx {
   type ContainerOf<Type, IdKey = "id"> = components.ComponentContainer &
     Record<Type[IdKey], Type>;
 
+  interface trackStateInformations {
+    metadata: {
+      bpm: number;
+      duration: number;
+      key: number;
+    };
+    rate: number;
+    rateRange: number;
+    elapsed: number;
+    key: number;
+    bpm: number;
+  }
+
   interface Deck extends components.Component {
     // Left or right
     id: 1 | 2;
@@ -41,6 +54,11 @@ namespace mpfx {
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
      */
     trackedBy?: Deck;
+    /**
+     * Get the loaded track informations of this channel.
+     * If the channel does not have track, it returns `null`
+     */
+    getLoadedTrackInfo(): null | trackStateInformations;
   }
 
   interface Effect extends components.Button {
