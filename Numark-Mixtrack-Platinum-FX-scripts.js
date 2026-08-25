@@ -203,9 +203,11 @@ var MixtrackPlatinumFX = {
         if (!hasLoaded) return null;
 
         const duration = engine.getValue(this.group, "duration");
+        const position = engine.getValue(this.group, "playposition");
 
         return {
-          elapsed: engine.getValue(this.group, "playposition") * duration,
+          elapsed: position * duration,
+          position,
           key: engine.getValue(this.group, "key"),
           rateRange: engine.getValue(this.group, "rateRange"),
           bpm: engine.getValue(this.group, "bpm"),
@@ -263,6 +265,9 @@ var MixtrackPlatinumFX = {
         }
         this.channel = channel;
         this.channel.trackedBy = this;
+
+        // Update the screen before forcing the switch
+        this.updateScreen();
 
         // Force track to the given channel.
         midi.sendShortMsg(

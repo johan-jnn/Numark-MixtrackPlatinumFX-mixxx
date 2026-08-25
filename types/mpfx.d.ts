@@ -15,6 +15,7 @@ namespace mpfx {
     rate: number;
     rateRange: number;
     elapsed: number;
+    position: number;
     key: number;
     bpm: number;
   }
