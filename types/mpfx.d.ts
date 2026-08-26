@@ -6,6 +6,14 @@ namespace mpfx {
   type ContainerOf<Type, IdKey = "id"> = components.ComponentContainer &
     Record<Type[IdKey], Type>;
 
+  type ScreenParts =
+    | "bpm"
+    | "bpm_arrows"
+    | "time"
+    | "rate"
+    | "rateRange"
+    | "keylock";
+
   interface trackStateInformations {
     metadata: {
       bpm: number;
@@ -17,6 +25,7 @@ namespace mpfx {
     elapsed: number;
     position: number;
     key: number;
+    key_locked: boolean;
     bpm: number;
   }
 
@@ -35,6 +44,12 @@ namespace mpfx {
     sync: components.SyncButton;
 
     switchDeckInput: midi.InputCallback;
+
+    /**
+     * Returns the other deck
+     */
+    get brother(): Deck;
+
     /**
      * Set the new tracked channel
      */
@@ -43,7 +58,11 @@ namespace mpfx {
      * Tracks the next trackable channel
      */
     switch(): ReturnType<Deck["track"]>;
-    updateScreen(): void;
+    /**
+     * Update the deck's screen informations
+     * @param only You can use this object to filter which screen part will be updated. Using filter reduces the number of sent Sysex messages.
+     */
+    updateScreen(only?: { [key in ScreenParts]?: boolean }): void;
   }
 
   /**

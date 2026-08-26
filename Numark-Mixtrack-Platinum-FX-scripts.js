@@ -94,6 +94,17 @@ var MixtrackPlatinumFX = {
          */
         showRemainingInsteadOfElapsed: false,
       },
+      spinner: {
+        /**
+         * The duration (in seconds) it takes for the spinner to make a complete spin
+         * @default 1.8 This is the Mixxx's based rotation speed
+         */
+        oneSpinDuration: 1.8,
+        /**
+         * If `true`, the spin will be indicated by a turned-off led instead of a turned-on led.
+         */
+        filledSpin: true,
+      },
     },
   },
   // -------------------------------------------------
@@ -209,6 +220,7 @@ var MixtrackPlatinumFX = {
           elapsed: position * duration,
           position,
           key: engine.getValue(this.group, "key"),
+          key_locked: !!engine.getValue(this.group, "keylock"),
           rateRange: engine.getValue(this.group, "rateRange"),
           bpm: engine.getValue(this.group, "bpm"),
           rate: engine.getValue(this.group, "rate") * -1,
@@ -293,7 +305,8 @@ var MixtrackPlatinumFX = {
         const nextIndex = (currentIndex + 1) % this._trackable.length;
         return this.track(this._trackable[nextIndex]);
       },
-      updateScreen: () => {
+      /**@type {typeof this.updateScreen} */
+      updateScreen: (only) => {
         const info = this.channel.getLoadedTrackInfo();
         if (!info) {
           this.mpfx.warn(
@@ -301,31 +314,149 @@ var MixtrackPlatinumFX = {
           );
           return;
         }
+        /**@type {(part:mpfx.ScreenParts) => boolean} */
+        const send = (part) => !only || only[part];
 
-        const screenBufPrefix = [0xf0, 0x00, 0x20, 0x7f, this.channel.id];
-        const time = this.mpfx.CONFIG.screen.time.showRemainingInsteadOfElapsed
-          ? info.metadata.duration - info.elapsed
-          : info.elapsed;
+        /**@type {number[][]} */
+        const sysexMessages = [];
+        /**@type {[number, number, number][]} */
+        const shortMessages = [];
 
-        const values = [
-          this.mpfx.intToBytes(parseInt(info.bpm * 10) * 10, 6, true),
-          this.mpfx.intToBytes(info.rate * 1e4, 6),
-          this.mpfx.intToBytes(parseInt(info.metadata.duration * 100) * 10),
-          this.mpfx.intToBytes(time * 1e3),
-        ];
-
-        for (let field = 0; field < values.length; field++) {
-          midi.sendSysexMsg([
-            ...screenBufPrefix,
-            field + 1,
-            ...values[field],
+        const screenNumbersPrefix = [0xf0, 0x00, 0x20, 0x7f, this.channel.id];
+        if (send("bpm")) {
+          sysexMessages.push([
+            ...screenNumbersPrefix,
+            0x01,
+            ...this.mpfx.intToBytes(parseInt(info.bpm * 10) * 10, 6, true),
             0xf7,
           ]);
         }
+        if (send("rate")) {
+          sysexMessages.push([
+            ...screenNumbersPrefix,
+            0x02,
+            ...this.mpfx.intToBytes(info.rate * 1e4, 6),
+            0xf7,
+          ]);
+        }
+        if (send("rateRange")) {
+          shortMessages.push([
+            0x90 | (this.channel.id - 1),
+            0x0e,
+            parseInt(info.rateRange * 1e2),
+          ]);
+        }
+        if (send("time")) {
+          const time = this.mpfx.CONFIG.screen.time
+            .showRemainingInsteadOfElapsed
+            ? info.metadata.duration - info.elapsed
+            : info.elapsed;
+
+          sysexMessages.push(
+            [
+              ...screenNumbersPrefix,
+              0x03,
+              ...this.mpfx.intToBytes(info.metadata.duration * 1e3),
+              0xf7,
+            ],
+            [
+              ...screenNumbersPrefix,
+              0x04,
+              ...this.mpfx.intToBytes(time * 1e3),
+              0xf7,
+            ],
+          );
+
+          // As we update the time, we also update the spinners
+
+          // position bar
+          shortMessages.push([
+            0xb0 | (this.channel.id - 1),
+            0x3f,
+            parseInt(info.position * 52),
+          ]);
+
+          // spinner
+          const { oneSpinDuration, filledSpin } =
+            this.mpfx.CONFIG.screen.spinner;
+
+          const spinPosition =
+            (info.elapsed % oneSpinDuration) / oneSpinDuration;
+          // If spinPosition is bellow 0, we invert the defined fill mode, and use the invert of the spinPosition
+          const spinShift = filledSpin === spinPosition > 0 ? 65 : 1;
+          const clampedSpinPosition =
+            spinPosition < 0 ? 1 - Math.abs(spinPosition) : spinPosition;
+
+          shortMessages.push([
+            0xb0 | (this.channel.id - 1),
+            0x06,
+            spinShift + parseInt(clampedSpinPosition * 52),
+          ]);
+        }
+
+        if (send("keylock")) {
+          shortMessages.push(
+            [0x80 | (this.channel.id - 1), 0x0d, 0x7f * +info.key_locked],
+            [0x90 | (this.channel.id - 1), 0x0d, 0x7f * +info.key_locked],
+          );
+        }
+
+        // If we update the screen's bpm, we also update the screen's bpm arrows
+        if (send("bpm") || send("bpm_arrows")) {
+          const channel = this.brother?.channel;
+          if (!channel) {
+            this.mpfx.warn(
+              `Cannot refresh bpm arrows if decks are not registered in components.`,
+            );
+          } else {
+            const brotherInfo = channel.getLoadedTrackInfo();
+
+            shortMessages.push(
+              // up arrow
+              [
+                0x80 | (this.channel.id - 1),
+                0x09,
+                (brotherInfo?.bpm > info.bpm) * 0x7f,
+              ],
+              // down arrow
+              [
+                0x80 | (this.channel.id - 1),
+                0x0a,
+                (brotherInfo?.bpm < info.bpm) * 0x7f,
+              ],
+            );
+          }
+        }
+
+        this.mpfx.debug(
+          `Updating ${sysexMessages.length + shortMessages.length} part(s) of the deck #${this.id}'s screen.`,
+        );
+        sysexMessages.forEach((msg) => midi.sendSysexMsg(msg, msg.length));
+        shortMessages.forEach((msg) => midi.sendShortMsg(...msg));
       },
     });
 
-    this.switch();
+    Object.defineProperty(this, "brother", {
+      get: () => {
+        return this.mpfx.__components.decks?.[[1, 2][this.id & 0x01]];
+      },
+    });
+
+    channels.forEach((channel) => {
+      engine.makeConnection(channel.group, "playposition", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen({ time: true });
+      });
+      engine.makeConnection(channel.group, "bpm", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen({ bpm: true, rate: true });
+        this.brother?.updateScreen({ bpm_arrows: true });
+      });
+      engine.makeConnection(channel.group, "keylock", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen({ keylock: true });
+      });
+    });
   },
   /**
    * @this mpfx.Binded<mpfx.Effect>
@@ -800,7 +931,6 @@ var MixtrackPlatinumFX = {
     // Automaticly track channel 1 and 2 to be sure the script and controller are synced
     for (let i = 1; i <= 2; i++) {
       this.__components.decks[i].track(this.__components.channels[i]);
-      this.__components.decks[i].updateScreen();
     }
 
     this.debug("Controller is now ready to be use !");
