@@ -279,7 +279,7 @@ var MixtrackPlatinumFX = {
         this.channel.trackedBy = this;
 
         // Update the screen before forcing the switch
-        this.updateScreen();
+        this.updateScreen(undefined, true);
 
         // Force track to the given channel.
         midi.sendShortMsg(
@@ -307,13 +307,21 @@ var MixtrackPlatinumFX = {
       },
       /**@type {typeof this.updateScreen} */
       updateScreen: (only) => {
-        const info = this.channel.getLoadedTrackInfo();
-        if (!info) {
-          this.mpfx.warn(
-            `Aborting deck ${this.id}'s screen update as its channel (#${this.channel.id}) does not have loaded track.`,
-          );
-          return;
-        }
+        let info = this.channel.getLoadedTrackInfo() ?? {
+          bpm: 0,
+          key: 0,
+          elapsed: 0,
+          key_locked: !!engine.getValue(this.channel.group, "keylock"),
+          position: 0,
+          rate: engine.getValue(this.channel.group, "rate"),
+          rateRange: engine.getValue(this.channel.group, "rateRange"),
+          metadata: {
+            bpm: 0,
+            duration: 0,
+            key: 0,
+          },
+        };
+
         /**@type {(part:mpfx.ScreenParts) => boolean} */
         const send = (part) => !only || only[part];
 
@@ -455,6 +463,10 @@ var MixtrackPlatinumFX = {
       engine.makeConnection(channel.group, "keylock", () => {
         if (channel.id !== this.channel.id) return;
         this.updateScreen({ keylock: true });
+      });
+      engine.makeConnection(channel.group, "eject", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen(undefined, "force");
       });
     });
   },
