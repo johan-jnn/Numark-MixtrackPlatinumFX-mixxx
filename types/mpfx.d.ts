@@ -29,7 +29,7 @@ namespace mpfx {
     bpm: number;
   }
 
-  interface Deck extends components.Component {
+  interface Deck extends components.ComponentContainer {
     // Left or right
     id: 1 | 2;
 

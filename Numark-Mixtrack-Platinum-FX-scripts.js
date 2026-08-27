@@ -1142,7 +1142,7 @@ var MixtrackPlatinumFX = {
 for (const inheritance of [
   {
     parent: components.Component,
-    children: ["Channel", "Deck"],
+    children: ["Channel"],
   },
   {
     parent: components.Button,
@@ -1154,7 +1154,7 @@ for (const inheritance of [
   },
   {
     parent: components.ComponentContainer,
-    children: ["EffectPad"],
+    children: ["EffectPad", "Deck"],
   },
 ]) {
   inheritance.children.forEach((key) => {
