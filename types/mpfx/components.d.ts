@@ -1,37 +1,9 @@
 namespace mpfx {
-  type Binded<To, Key = "mpfx"> = To & {
-    [key in Key]: typeof MixtrackPlatinumFX;
-  };
-  type InputsRecord = Record<string, midi.InputCallback>;
-  type ContainerOf<Type, IdKey = "id"> = components.ComponentContainer &
-    Record<Type[IdKey], Type>;
+  class Deck extends components.ComponentContainer {
+    constructor(id: typeof this.id, channels: Channel[]);
 
-  type ScreenParts =
-    | "bpm"
-    | "bpm_arrows"
-    | "time"
-    | "rate"
-    | "rateRange"
-    | "keylock";
-
-  interface trackStateInformations {
-    metadata: {
-      bpm: number;
-      duration: number;
-      key: number;
-    };
-    rate: number;
-    rateRange: number;
-    elapsed: number;
-    position: number;
-    key: number;
-    key_locked: boolean;
-    bpm: number;
-  }
-
-  interface Deck extends components.ComponentContainer {
     // Left or right
-    id: 1 | 2;
+    readonly id: 1 | 2;
 
     /**
      * The channel this deck is currently tracking
@@ -68,8 +40,14 @@ namespace mpfx {
   /**
    * See a channel like a Mixxx's deck
    */
-  interface Channel extends components.Component {
-    id: 1 | 2 | 3 | 4;
+  class Channel extends components.Component {
+    constructor(channel: typeof this.id);
+
+    readonly id: 1 | 2 | 3 | 4;
+    bytes: {
+      id: number;
+    };
+
     /**
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
      */
@@ -81,8 +59,10 @@ namespace mpfx {
     getLoadedTrackInfo(): null | trackStateInformations;
   }
 
-  interface Effect extends components.Button {
-    id: 1 | 2 | 3;
+  class Effect extends components.Button {
+    constructor(unit: EffectUnit, effect: typeof this.id);
+
+    readonly id: 1 | 2 | 3;
     get isSelected(): boolean;
     get isFocused(): boolean;
 
@@ -94,8 +74,10 @@ namespace mpfx {
     led(power: boolean | number): void;
   }
 
-  interface EffectUnit extends components.EffectUnit {
-    id: 1 | 2 | 3 | 4;
+  class EffectUnit extends components.EffectUnit {
+    constructor(unit: typeof this.id);
+
+    readonly id: 1 | 2 | 3 | 4;
     [key: Effect["id"]]: Effect;
     get effects(): Effect[];
 
@@ -114,14 +96,18 @@ namespace mpfx {
     isSendingTo(channel: Channel): boolean;
   }
 
-  interface EffectPad extends components.ComponentContainer {
+  class EffectPad extends components.ComponentContainer {
+    constructor(units: EffectUnit[]);
+
     [key: EffectUnit["id"]]: EffectUnit;
     get units(): EffectUnit[];
   }
 
-  interface EffectPadSender extends components.Button {
+  class EffectPadSender extends components.Button {
+    constructor(sender: typeof this.id, pad: EffectPad, channels: Channel[]);
+
     // left or right
-    id: 1 | 2;
+    readonly id: 1 | 2;
     get isSending(): boolean;
 
     _pad: EffectPad;
@@ -135,7 +121,7 @@ namespace mpfx {
     tap: components.Button;
   }
 
-  interface GlobalComponentContainer extends components.Component {
+  interface GlobalComponentContainer extends components.ComponentContainer {
     channels: ContainerOf<Channel>;
     decks: ContainerOf<Deck>;
     effects: EffectMixer;
