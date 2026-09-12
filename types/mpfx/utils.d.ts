@@ -21,7 +21,7 @@ namespace mpfx {
    * And then you can mimic it as so in your component's js file :
    * ```js
    * // You have to type "MyDeck" to have the fully typed constructor
-   * /** @type {typeof MyDeck} * /
+   * / ** @ type {typeof MyDeck} * /
    * const MyDeck = componentMaker(function(parent, id) {
    *  // call the "parent" function to mimic the "super" function
    *  parent();
