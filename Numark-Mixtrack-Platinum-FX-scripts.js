@@ -194,13 +194,14 @@ var MixtrackPlatinumFX = {
     if (!(force || this["#debug"])) return;
     let date;
     {
-      const Y = this.getFullYear(),
-        M = this.getMonth(),
-        D = this.getDate(),
-        h = this.getHours(),
-        m = this.getMinutes(),
-        s = this.getSeconds(),
-        ms = this.getMilliseconds(),
+      const now = new Date();
+      const Y = now.getFullYear(),
+        M = now.getMonth(),
+        D = now.getDate(),
+        h = now.getHours(),
+        m = now.getMinutes(),
+        s = now.getSeconds(),
+        ms = now.getMilliseconds(),
         withLeading0 = (v, l = 2) =>
           `${"0".repeat(Math.max(0, v.toString().length - l))}${v}`;
 
@@ -1034,6 +1035,8 @@ function createMPFXComponent(constructor, Parent = undefined) {
     constructor = constructor.constructor;
   }
 
+  console.log(Parent);
+
   function Component(...componentArgs) {
     MixtrackPlatinumFX.bindTo(this, mpfxKey);
     let parentInitied = true;
@@ -1054,9 +1057,9 @@ function createMPFXComponent(constructor, Parent = undefined) {
   }
 
   if (Parent) {
-    constructor.prototype = new Parent();
+    constructor.prototype = Object.create(Parent.prototype);
   }
-  Component.prototype = new constructor();
+  Component.prototype = Object.create(constructor.prototype);
 
   return Component;
 }
