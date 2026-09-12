@@ -323,26 +323,16 @@ var MixtrackPlatinumFX = {
     decks[2] = new this.Deck(2, [channels[2], channels[4]]);
 
     /* #region Effect Mixer */
-    /**@type {typeof this.$components.effects} */
-    const effects = new components.ComponentContainer();
-
-    /**@type {typeof effects.pad} */
     const pad = new this.EffectPad([
       new this.EffectUnit(1),
       new this.EffectUnit(2),
     ]);
+    const senders = [
+      new this.EffectPadSender(1, pad, [channels[1], channels[3]]),
+      new this.EffectPadSender(2, pad, [channels[2], channels[4]]),
+    ];
 
-    /**@type {typeof effects.senders} */
-    const senders = new components.ComponentContainer();
-    senders[1] = new this.EffectPadSender(1, pad, [channels[1], channels[3]]);
-    senders[2] = new this.EffectPadSender(2, pad, [channels[2], channels[4]]);
-
-    // todo -> Tap and Beats
-
-    Object.assign(effects, {
-      pad,
-      senders,
-    });
+    const effects = new this.EffectMixer(pad, senders);
     /* #endregion */
 
     Object.assign(this.$components, {
@@ -958,15 +948,15 @@ var MixtrackPlatinumFX = {
 
     parent({
       id: sender,
-      _pad: pad,
-      _channels: channels,
+      pad,
+      channels,
       type: components.Button.prototype.types.push,
       inValueScale: (value) => value && 1,
       inGetValue: () => {
         const { sendToHidden } = this.mpfx.CONFIG.FX;
-        for (const channel of this._channels) {
+        for (const channel of this.channels) {
           if (!(sendToHidden || channel.trackedBy)) continue;
-          for (const unit of this._pad.units) {
+          for (const unit of this.pad.units) {
             if (unit.isSendingTo(channel)) {
               return true;
             }
@@ -978,9 +968,9 @@ var MixtrackPlatinumFX = {
       inSetValue: (value) => {
         const { sendToHidden } = this.mpfx.CONFIG.FX;
 
-        for (const channel of this._channels) {
+        for (const channel of this.channels) {
           if (!(sendToHidden || channel.trackedBy)) continue;
-          for (const unit of this._pad.units) {
+          for (const unit of this.pad.units) {
             if (value) {
               unit.send(channel);
             } else {
@@ -995,8 +985,8 @@ var MixtrackPlatinumFX = {
 
         // Bellow, we refresh the unit-sent boolean if
         // for exemple the user manually clicks on a "send to channel" button
-        for (const channel of this._channels) {
-          for (const unit of this._pad.units) {
+        for (const channel of this.channels) {
+          for (const unit of this.pad.units) {
             const con = engine.makeConnection(
               unit.group,
               `group_${channel.group}_enable`,
@@ -1022,6 +1012,19 @@ var MixtrackPlatinumFX = {
 
     this.connect();
   }, components.Button),
+  /**@type {typeof mpfx.EffectMixer} */
+  EffectMixer: createMPFXComponent(function (parent, pad, senders) {
+    this.mpfx.debug("Initializing effect mixer...");
+
+    parent({
+      pad,
+      senders: new components.ComponentContainer(this.mpfx.keyBy(senders)),
+      beats: new components.Pot(),
+      tap: new components.Button(),
+    });
+
+    this.mpfx.debug("FX Mixer ready !");
+  }, components.ComponentContainer),
   /* #endregion */
 };
 

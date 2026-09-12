@@ -110,13 +110,15 @@ namespace mpfx {
     readonly id: 1 | 2;
     get isSending(): boolean;
 
-    _pad: EffectPad;
-    _channels: Channel[];
+    readonly pad: EffectPad;
+    readonly channels: Channel[];
   }
 
-  interface EffectMixer extends components.ComponentContainer {
-    pad: EffectPad;
-    senders: ContainerOf<EffectPadSender>;
+  class EffectMixer extends components.ComponentContainer {
+    constructor(pad: EffectPad, channels: Channel[]);
+
+    readonly pad: EffectPad;
+    readonly senders: ContainerOf<EffectPadSender>;
     beats: components.Pot;
     tap: components.Button;
   }
