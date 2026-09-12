@@ -8,8 +8,28 @@ namespace mpfx {
   /**
    * Utility function to mimic the "extends" class behavior.
    * It returns a custom class which constructor is the first given parameter and
-   * extends from the second parameters. You can optionnaly pass as the next parameters
-   * the arguments passed to the "super()" function
+   * extends from the second parameters.
+   *
+   * ## Usage
+   * You have to declare the class in a typescript declaration file :
+   * ```ts
+   * // components.d.ts
+   * class MyDeck extends components.Deck {
+   *  constructor(id: string);
+   * }
+   * ```
+   * And then you can mimic it as so in your component's js file :
+   * ```js
+   * const MyDeck = componentMaker(function(parent, id) {
+   *  // call the "parent" function to mimic the "super" function
+   *  parent();
+   *  this.id = id;
+   * }, components.Deck);
+   *
+   * const deck = new MyDeck("test");
+   * console.log(deck instanceof MyDeck); // true
+   * console.log(deck instanceof components.Deck); // true
+   * ```
    */
   declare function componentMaker<
     ComponentClass,
