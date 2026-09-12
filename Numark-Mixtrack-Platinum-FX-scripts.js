@@ -392,7 +392,7 @@ var MixtrackPlatinumFX = {
             short: !this.state.short,
             long: this.state.short === !this.state.long,
           };
-          MixtrackPlatinumFX.events.emit(
+          MixtrackPlatinumFX.emit(
             this.$$EVENT,
             this.state.short,
             this.state.long,
@@ -409,15 +409,15 @@ var MixtrackPlatinumFX = {
      */
     remove(id, send_off = true) {
       if (send_off) {
-        MixtrackPlatinumFX.events.trigger(this.$$EVENT, id, false);
+        MixtrackPlatinumFX.emitOnly(this.$$EVENT, id, false);
       }
-      MixtrackPlatinumFX.events.unlisten(this.$$EVENT, id);
+      MixtrackPlatinumFX.dropListener(this.$$EVENT, id);
     },
     /**
      * @param {BlinkerCallback} callback
      */
     onUpdate(callback) {
-      return MixtrackPlatinumFX.events.listen(this.$$EVENT, callback);
+      return MixtrackPlatinumFX.listenFor(this.$$EVENT, callback);
     },
   },
   /* #endregion */
@@ -425,12 +425,12 @@ var MixtrackPlatinumFX = {
   /* #region Tasks */
   shift() {
     this.$components.shift();
-    this.events.emit("shift");
+    this.emit("shift");
     this.debug("DJ is shifting.");
   },
   unshift() {
     this.$components.unshift();
-    this.events.emit("unshift");
+    this.emit("unshift");
     this.debug("DJ is no longer shifting.");
   },
   /* #endregion */

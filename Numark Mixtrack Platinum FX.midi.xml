@@ -143,7 +143,7 @@
       <!-- FX Pad -->
       <control for="HPF Button">
         <group>[EffectRack1_EffectUnit1_Effect1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][1].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
         <status>0x98</status>
         <midino>0x00</midino>
         <options>
@@ -152,7 +152,7 @@
       </control>
       <control for="HPF Button (release)">
         <group>[EffectRack1_EffectUnit1_Effect1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][1].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
         <status>0x88</status>
         <midino>0x00</midino>
         <options>
@@ -161,7 +161,7 @@
       </control>
       <control for="LPF Button">
         <group>[EffectRack1_EffectUnit1_Effect2]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][2].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
         <status>0x98</status>
         <midino>0x01</midino>
         <options>
@@ -170,7 +170,7 @@
       </control>
       <control for="LPF Button (release)">
         <group>[EffectRack1_EffectUnit1_Effect2]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][2].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
         <status>0x88</status>
         <midino>0x01</midino>
         <options>
@@ -179,7 +179,7 @@
       </control>
       <control for="Flanger Button">
         <group>[EffectRack1_EffectUnit1_Effect3]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][3].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
         <status>0x98</status>
         <midino>0x02</midino>
         <options>
@@ -188,7 +188,7 @@
       </control>
       <control for="Flanger Button (release)">
         <group>[EffectRack1_EffectUnit1_Effect3]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[1][3].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
         <status>0x88</status>
         <midino>0x02</midino>
         <options>
@@ -197,7 +197,7 @@
       </control>
       <control for="Echo Button">
         <group>[EffectRack1_EffectUnit2_Effect1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][1].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][1].input</key>
         <status>0x99</status>
         <midino>0x03</midino>
         <options>
@@ -206,7 +206,7 @@
       </control>
       <control for="Echo Button (release)">
         <group>[EffectRack1_EffectUnit2_Effect1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][1].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][1].input</key>
         <status>0x89</status>
         <midino>0x03</midino>
         <options>
@@ -215,7 +215,7 @@
       </control>
       <control for="Reverb Button">
         <group>[EffectRack1_EffectUnit2_Effect2]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][2].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][2].input</key>
         <status>0x99</status>
         <midino>0x04</midino>
         <options>
@@ -224,7 +224,7 @@
       </control>
       <control for="Reverb Button (release)">
         <group>[EffectRack1_EffectUnit2_Effect2]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][2].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][2].input</key>
         <status>0x89</status>
         <midino>0x04</midino>
         <options>
@@ -233,7 +233,7 @@
       </control>
       <control for="Phaser Button">
         <group>[EffectRack1_EffectUnit2_Effect3]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][3].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][3].input</key>
         <status>0x99</status>
         <midino>0x05</midino>
         <options>
@@ -242,7 +242,7 @@
       </control>
       <control for="Phaser Button (release)">
         <group>[EffectRack1_EffectUnit2_Effect3]</group>
-        <key>MixtrackPlatinumFX.__components.effects.pad[2][3].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.pad[2][3].input</key>
         <status>0x89</status>
         <midino>0x05</midino>
         <options>
@@ -253,7 +253,7 @@
       <!-- FX Senders -->
       <control for="Deck 1 FX Sender">
         <group>[EffectRack1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.senders[1].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.senders[1].input</key>
         <status>0xB8</status>
         <midino>0x03</midino>
         <options>
@@ -262,7 +262,7 @@
       </control>
       <control for="Deck 2 Deck FX Sender">
         <group>[EffectRack1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.senders[2].input</key>
+        <key>MixtrackPlatinumFX.$components.effects.senders[2].input</key>
         <status>0xB9</status>
         <midino>0x03</midino>
         <options>
@@ -273,7 +273,7 @@
       <!-- FX Beats -->
       <control for="FX Beats">
         <group>[EffectRack1]</group>
-        <key>MixtrackPlatinumFX.__components.effects.beats.input</key>
+        <key>MixtrackPlatinumFX.$components.effects.beats.input</key>
         <status>0xB8</status>
         <midino>0x05</midino>
         <options>
@@ -283,7 +283,7 @@
       <!-- Deck selection -->
       <control for="Channel 1 deck switch">
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.__components.decks[1].switch</key>
+        <key>MixtrackPlatinumFX.$components.decks[1].switch</key>
         <status>0x90</status>
         <midino>0x08</midino>
         <options>
@@ -292,7 +292,7 @@
       </control>
       <control for="Channel 2 deck switch">
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.__components.decks[2].switch</key>
+        <key>MixtrackPlatinumFX.$components.decks[2].switch</key>
         <status>0x91</status>
         <midino>0x08</midino>
         <options>
@@ -301,7 +301,7 @@
       </control>
       <control for="Channel 3 deck switch">
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.__components.decks[1].switch</key>
+        <key>MixtrackPlatinumFX.$components.decks[1].switch</key>
         <status>0x92</status>
         <midino>0x08</midino>
         <options>
@@ -310,7 +310,7 @@
       </control>
       <control for="Channel 4 deck switch">
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.__components.decks[2].switch</key>
+        <key>MixtrackPlatinumFX.$components.decks[2].switch</key>
         <status>0x93</status>
         <midino>0x08</midino>
         <options>
