@@ -225,16 +225,16 @@ var MixtrackPlatinumFX = {
 
   /* #region Utils */
   /**
-   * Binds in-place the Controller interface
+   * Binds the controller interface to the given object in the given key
    *
-   * @typedef {object} To
-   * @typedef {string} Key
+   * @template {object} To
+   * @template {string} [Key="mpfx"]
    *
    * @param {To} object
    * @param {Key} key
    * @returns {mpfx.Binded<To, Key>}
    */
-  bindMPFX(object, key = "mpfx") {
+  bindTo(object, key = "mpfx") {
     return Object.assign(object, { [key]: MixtrackPlatinumFX });
   },
   /**
@@ -947,7 +947,6 @@ var MixtrackPlatinumFX = {
    * @type {typeof mpfx.EffectPadSender}
    */
   EffectPadSender: createMPFXComponent(function (sender, pad, channels) {
-    MixtrackPlatinumFX.bindMPFX(this);
     this.mpfx.debug(
       `Initializing effect pad sender #${sender} for channels ${channels.map((c) => c.id)}.`,
     );
@@ -1031,7 +1030,7 @@ var MixtrackPlatinumFX = {
  *
  * @template {string} [MPFXKey="mpfx"]
  * @template {NewableFunction} ParentClass
- * @template {(this: mpfx.Binded<InstanceType<ComponentClass>, MPFXKey>, ...args: ConstructorParameters<ComponentClass>) => void} ChildConstructor
+ * @template {(this: mpfx.Binded<InstanceType<ComponentClass>, MPFXKey>,...args: ConstructorParameters<ComponentClass>) => void} ChildConstructor
  *
  * @param {ChildConstructor | {
  *  mpfxKey: MPFXKey,
@@ -1050,7 +1049,7 @@ function createMPFXComponent(constructor, Parent = undefined, ...parentArgs) {
   }
 
   function Component(...componentArgs) {
-    this[mpfxKey] = MixtrackPlatinumFX;
+    MixtrackPlatinumFX.bindTo(this, mpfxKey);
 
     if (Parent) Parent.call(this, ...parentArgs);
     constructor.call(this, ...componentArgs);
