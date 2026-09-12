@@ -115,7 +115,7 @@ namespace mpfx {
   }
 
   class EffectMixer extends components.ComponentContainer {
-    constructor(pad: EffectPad, channels: Channel[]);
+    constructor(pad: EffectPad, senders: EffectPadSender[]);
 
     readonly pad: EffectPad;
     readonly senders: ContainerOf<EffectPadSender>;
