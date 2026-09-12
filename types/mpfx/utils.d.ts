@@ -20,10 +20,13 @@ namespace mpfx {
    * ```
    * And then you can mimic it as so in your component's js file :
    * ```js
+   * // You have to type "MyDeck" to have the fully typed constructor
+   * /** @type {typeof MyDeck} * /
    * const MyDeck = componentMaker(function(parent, id) {
    *  // call the "parent" function to mimic the "super" function
    *  parent();
    *  this.id = id;
+   *  this.mpfx.debug("It also auto-bind the controller's component");
    * }, components.Deck);
    *
    * const deck = new MyDeck("test");
