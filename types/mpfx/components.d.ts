@@ -120,7 +120,6 @@ namespace mpfx {
     readonly pad: EffectPad;
     readonly senders: ContainerOf<EffectPadSender>;
     beats: components.Pot;
-    tap: components.Button;
   }
 
   interface GlobalComponentContainer extends components.ComponentContainer {

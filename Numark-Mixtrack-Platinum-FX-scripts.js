@@ -1049,7 +1049,6 @@ var MixtrackPlatinumFX = {
           });
         },
       }),
-      tap: new components.Button(),
     });
 
     this.mpfx.debug("FX Mixer ready !");

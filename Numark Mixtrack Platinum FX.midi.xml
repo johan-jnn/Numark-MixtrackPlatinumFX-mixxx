@@ -22,9 +22,7 @@
     </scriptfiles>
 
     <controls>
-      <!-- ============== -->
-      <!-- DIRECT MAPPING -->
-      <!-- ============== -->
+      <!-- #region DIRECT MAPPING -->
       <control for="Main Gain">
         <group>[Master]</group>
         <key>gain</key>
@@ -43,6 +41,7 @@
           <normal />
         </options>
       </control>
+
       <!-- Headphones -->
       <control for="Headphone Gain">
         <group>[Master]</group>
@@ -62,6 +61,8 @@
           <normal />
         </options>
       </control>
+
+      <!-- FX Dry/Wet Knobs -->
       <control for="FX Unit 1 Dry/Wet Knob">
         <group>[EffectRack1_EffectUnit1]</group>
         <key>mix</key>
@@ -98,11 +99,10 @@
           <normal />
         </options>
       </control>
+      <!-- #endregion -->
 
-      <!-- ============== -->
-      <!-- SCRIPT MAPPING -->
-      <!-- ============== -->
-      <!-- Shifting -->
+      <!-- #region SCRIPT MAPPING -->
+      <!-- #region Shifting -->
       <control for="Left Shift">
         <group>[Master]</group>
         <key>MixtrackPlatinumFX.shift</key>
@@ -139,8 +139,9 @@
           <script-binding />
         </options>
       </control>
+      <!-- #endregion -->
 
-      <!-- FX Pad -->
+      <!-- #region FX Pad -->
       <control for="HPF Button">
         <group>[EffectRack1_EffectUnit1_Effect1]</group>
         <key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
@@ -249,6 +250,7 @@
           <script-binding />
         </options>
       </control>
+      <!-- #endregion -->
 
       <!-- FX Senders -->
       <control for="Deck 1 FX Sender">
@@ -280,7 +282,7 @@
           <script-binding />
         </options>
       </control>
-      <!-- Deck selection -->
+      <!-- #region Deck selection -->
       <control for="Channel 1 deck switch">
         <group>[Channel1]</group>
         <key>MixtrackPlatinumFX.$components.decks[1].switch</key>
@@ -317,6 +319,8 @@
           <script-binding />
         </options>
       </control>
+      <!-- #endregion -->
+      <!-- #endregion -->
     </controls>
     <outputs>
       <!-- PFLs -->
