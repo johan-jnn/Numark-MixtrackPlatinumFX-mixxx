@@ -352,7 +352,7 @@ var MixtrackPlatinumFX = {
     });
     this.debug("All components has been registered and initialized.");
 
-    // this.$blinker.enable();
+    // this.__blinker.enable();
 
     // Automaticly track channel 1 and 2 to be sure the script and controller are synced
     for (let i = 1; i <= 2; i++) {
