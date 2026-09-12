@@ -28,6 +28,10 @@ var MixtrackPlatinumFX = {
        * Set this to `true` to also enable the effect on the deck's trackable channels that are not tracked.
        */
       sendToHidden: false,
+      /**
+       * The size of 1 jump when you turn the FX's beat parameter
+       */
+      beatParamShiftRange: 0.05,
     },
     waveforms: {
       sync: true,
@@ -1019,7 +1023,32 @@ var MixtrackPlatinumFX = {
     parent({
       pad,
       senders: new components.ComponentContainer(this.mpfx.keyBy(senders)),
-      beats: new components.Pot(),
+      beats: new components.Encoder({
+        input: (_, _, value) => {
+          const key = ["meta", "parameter1"][+this.isShifted];
+          /**
+           * Increase -> value == 0x01
+           * Decrease -> value == 0x7f
+           */
+          const direction = value - 1 ? -1 : 1;
+
+          const { units } = this.pad;
+          const affected = units.map((u) => u.focusedEffect).filter((e) => !!e);
+
+          if (!affected.length) {
+            units.forEach((u) => affected.push(...u.effects));
+          }
+
+          affected.forEach((effect) => {
+            const current = engine.getParameter(effect.group, key);
+            engine.setParameter(
+              effect.group,
+              key,
+              current + this.mpfx.CONFIG.FX.beatParamShiftRange * direction,
+            );
+          });
+        },
+      }),
       tap: new components.Button(),
     });
 
