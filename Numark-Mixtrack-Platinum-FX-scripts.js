@@ -239,12 +239,11 @@ var MixtrackPlatinumFX = {
   },
   /**
    * @template {string|number} [K="id"]
-   * @template {string|number} KVal
-   * @template {object & {[key in K]: KVal}} O
+   * @template {object} O
    *
    * @param {O[]} entries
    * @param {K} key
-   * @returns {Record<KVal, O>}
+   * @returns {Record<O[K], O>}
    */
   keyBy(entries, key = "id", overwrite = false) {
     return entries.reduce((keyed, obj) => {
@@ -439,10 +438,10 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.Channel}
    */
-  Channel: createMPFXComponent(function (channel) {
+  Channel: createMPFXComponent(function (parent, channel) {
     this.mpfx.debug(`Initializing Channel #${channel}`);
 
-    components.Component.call(this, {
+    parent({
       id: channel,
       group: `[Channel${channel}]`,
       bytes: {
@@ -478,7 +477,7 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.Deck}
    */
-  Deck: createMPFXComponent(function (id, channels) {
+  Deck: createMPFXComponent(function (parent, id, channels) {
     if (!channels?.length) {
       this.mpfx.error(
         `Unable to initalize deck #${id} : no trackable channels given.`,
@@ -490,7 +489,7 @@ var MixtrackPlatinumFX = {
       `Initializing Deck #${id} (tracking channels ${channels.map((c) => c.id)})`,
     );
 
-    components.Component.call(this, {
+    parent({
       id,
       _trackable: channels,
 
@@ -702,11 +701,11 @@ var MixtrackPlatinumFX = {
         this.updateScreen(undefined, "force");
       });
     });
-  }, components.Deck),
+  }, components.ComponentContainer),
   /**
    * @type {typeof mpfx.Effect}
    */
-  Effect: createMPFXComponent(function (unit, effect) {
+  Effect: createMPFXComponent(function (parent, unit, effect) {
     this.mpfx.debug(`Initializing effect #${effect} from unit #${unit.id}`);
 
     const { longPressing } = this.mpfx.CONFIG.FX;
@@ -720,7 +719,7 @@ var MixtrackPlatinumFX = {
       `Long press behavior is ${longPressTimeout ? `enabled (tm: ${longPressTimeout}ms)` : "disabled"}.`,
     );
 
-    components.Button.call(this, {
+    parent({
       id: effect,
       group: `[EffectRack1_EffectUnit${unit.id}_Effect${effect}]`,
       key: "enabled",
@@ -806,9 +805,9 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.EffectUnit}
    */
-  EffectUnit: createMPFXComponent(function (unit) {
+  EffectUnit: createMPFXComponent(function (parent, unit) {
     this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
-    components.EffectUnit.call(this, unit, true);
+    parent(unit, true);
 
     this.id = unit;
     /**
@@ -930,8 +929,8 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.EffectPad}
    */
-  EffectPad: createMPFXComponent(function (units) {
-    components.ComponentContainer.call(this, this.mpfx.keyBy(units, "id"));
+  EffectPad: createMPFXComponent(function (parent, units) {
+    parent(this.mpfx.keyBy(units, "id"));
     Object.defineProperties(this, {
       units: {
         get: () => {
@@ -946,12 +945,17 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.EffectPadSender}
    */
-  EffectPadSender: createMPFXComponent(function (sender, pad, channels) {
+  EffectPadSender: createMPFXComponent(function (
+    parent,
+    sender,
+    pad,
+    channels,
+  ) {
     this.mpfx.debug(
       `Initializing effect pad sender #${sender} for channels ${channels.map((c) => c.id)}.`,
     );
 
-    components.Button.call(this, {
+    parent({
       id: sender,
       _pad: pad,
       _channels: channels,
@@ -1016,32 +1020,14 @@ var MixtrackPlatinumFX = {
     });
 
     this.connect();
-  }, components.ComponentContainer),
+  }, components.Button),
   /* #endregion */
 };
 
 /**
- * Utility function to mimic the "extends" class behavior.
- * It returns a custom class which constructor is the first given parameter and
- * extends from the second parameters. You can optionnaly pass as the next parameters
- * the arguments passed to the "super()" function
- *
- * @template ComponentClass
- *
- * @template {string} [MPFXKey="mpfx"]
- * @template {NewableFunction} ParentClass
- * @template {(this: mpfx.Binded<InstanceType<ComponentClass>, MPFXKey>,...args: ConstructorParameters<ComponentClass>) => void} ChildConstructor
- *
- * @param {ChildConstructor | {
- *  mpfxKey: MPFXKey,
- *  constructor: ChildConstructor
- * }} constructor
- * @param {ParentClass | undefined} [Parent=undefined]
- * @param {ConstructorParameters<ParentClass>} parentArgs
- *
- * @returns {ComponentClass}
+ * @type {typeof mpfx.componentMaker}
  */
-function createMPFXComponent(constructor, Parent = undefined, ...parentArgs) {
+function createMPFXComponent(constructor, Parent = undefined) {
   let mpfxKey = "mpfx";
   if (typeof constructor !== "function") {
     mpfxKey = constructor.mpfxKey;
@@ -1050,13 +1036,25 @@ function createMPFXComponent(constructor, Parent = undefined, ...parentArgs) {
 
   function Component(...componentArgs) {
     MixtrackPlatinumFX.bindTo(this, mpfxKey);
+    let parentInitied = true;
 
-    if (Parent) Parent.call(this, ...parentArgs);
+    if (Parent) {
+      // If there is a parent, the code must use the "super"-like function
+      parentInitied = false;
+      componentArgs.unshift((...parentArgs) => {
+        Parent.call(this, ...parentArgs);
+        parentInitied = true;
+      });
+    }
+
     constructor.call(this, ...componentArgs);
+    if (!parentInitied) {
+      throw new Error("A parent has been binded without having being inited.");
+    }
   }
 
   if (Parent) {
-    constructor.prototype = new Parent(...parentArgs);
+    constructor.prototype = new Parent();
   }
   Component.prototype = new constructor();
 
