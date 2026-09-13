@@ -320,6 +320,66 @@
         </options>
       </control>
       <!-- #endregion -->
+
+      <control for="Browser">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.knob.input</key>
+        <status>0xBF</status>
+        <midino>0x00</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control for="Browser (shifted)">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.knob.input</key>
+        <status>0xBF</status>
+        <midino>0x01</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control for="Browser Selector">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.selector.input</key>
+        <status>0x9F</status>
+        <midino>0x07</midino>
+
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control for="Browser Selector (release)">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.selector.input</key>
+        <status>0x8F</status>
+        <midino>0x07</midino>
+
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control for="Browser Selector (shifted)">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.selector.input</key>
+        <status>0x9F</status>
+        <midino>0x06</midino>
+
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control for="Browser Selector (shifted release)">
+        <group>[Library]</group>
+        <key>MixtrackPlatinumFX.$components.browser.selector.input</key>
+        <status>0x8F</status>
+        <midino>0x06</midino>
+
+        <options>
+          <script-binding />
+        </options>
+      </control>
+
       <!-- #endregion -->
     </controls>
     <outputs>

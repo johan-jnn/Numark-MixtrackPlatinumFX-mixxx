@@ -15,8 +15,6 @@ namespace mpfx {
     cue: components.CueButton;
     sync: components.SyncButton;
 
-    switchDeckInput: midi.InputCallback;
-
     /**
      * Returns the other deck
      */
@@ -122,9 +120,17 @@ namespace mpfx {
     beats: components.Pot;
   }
 
+  class Browser extends components.ComponentContainer {
+    constructor();
+
+    knob: components.Encoder;
+    selector: components.Button;
+  }
+
   interface GlobalComponentContainer extends components.ComponentContainer {
     channels: ContainerOf<Channel>;
     decks: ContainerOf<Deck>;
     effects: EffectMixer;
+    browser: Browser;
   }
 }

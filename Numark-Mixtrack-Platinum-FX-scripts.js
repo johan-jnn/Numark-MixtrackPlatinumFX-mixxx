@@ -33,9 +33,16 @@ var MixtrackPlatinumFX = {
        */
       beatParamShiftRange: 0.05,
     },
-    waveforms: {
-      sync: true,
-      zoomByShiftBrowse: true,
+    browser: {
+      /**
+       * If the combo shift + browse should zoom in/out waveforms.
+       * Note that if Mixxx's waveforms are not synced, the selected deck and left/right shift matter.
+       */
+      zoomWaveformsWhenShiftBrowse: true,
+      /**
+       * When right shifting and press on the browser's knob, toggle track's preview
+       */
+      rightShiftedSelectPreviewsTrack: true,
     },
     jog: {
       scratch: {
@@ -70,7 +77,7 @@ var MixtrackPlatinumFX = {
       },
 
       blinker: {
-        enable: true,
+        enable: false,
         delay: 700, //ms
       },
     },
@@ -343,10 +350,13 @@ var MixtrackPlatinumFX = {
     const effects = new this.EffectMixer(pad, senders);
     /* #endregion */
 
+    const browser = new this.Browser();
+
     Object.assign(this.$components, {
       decks,
       channels,
       effects,
+      browser,
     });
     this.debug("All components has been registered and initialized.");
 
@@ -421,14 +431,16 @@ var MixtrackPlatinumFX = {
   /* #endregion */
 
   /* #region Tasks */
-  shift() {
+  /**@type {midi.InputCallback} */
+  shift(_, _, _, status) {
     this.$components.shift();
-    this.emit("shift");
+    this.emit("shift", !!(status & 0x1));
     this.debug("DJ is shifting.");
   },
-  unshift() {
+  /**@type {midi.InputCallback} */
+  unshift(_, _, _, status) {
     this.$components.unshift();
-    this.emit("unshift");
+    this.emit("unshift", !!(status & 0x1));
     this.debug("DJ is no longer shifting.");
   },
   /* #endregion */
@@ -1063,6 +1075,96 @@ var MixtrackPlatinumFX = {
     });
 
     this.mpfx.debug("FX Mixer ready !");
+  }, components.ComponentContainer),
+
+  /**@type {typeof mpfx.Browser} */
+  Browser: createMPFXComponent(function (parent) {
+    let shifts = [false, false];
+    let browsing_speed = 0;
+    let browser_speed_timer = undefined;
+
+    parent({
+      knob: new components.Encoder({
+        input: (_, _, value) => {
+          const up = value > 0x40;
+
+          if (
+            this.isShifted &&
+            this.mpfx.CONFIG.browser.zoomWaveformsWhenShiftBrowse
+          ) {
+            const channel =
+              // ? right shift is taken before the left one
+              this.mpfx.$components.decks[shifts[1] ? 2 : 1].channel;
+
+            engine.setParameter(
+              channel.group,
+              `waveform_zoom_${up ? "up" : "down"}`,
+              1,
+            );
+          } else {
+            if (browser_speed_timer) {
+              browser_speed_timer = engine.stopTimer(browser_speed_timer);
+            }
+
+            browser_speed_timer = engine.beginTimer(
+              60,
+              () => {
+                browsing_speed = 0;
+              },
+              true,
+            );
+
+            browsing_speed = (browsing_speed + 1) % 4;
+            engine.setParameter(
+              "[Library]",
+              "MoveVertical",
+              browsing_speed * (up ? -1 : 1),
+            );
+          }
+        },
+      }),
+      selector: new components.Button({
+        group: "[Library]",
+        shiftControl: true,
+        shiftOffset: 0x01,
+        input: (...args) => {
+          const pressing = args[2];
+
+          if (
+            pressing &&
+            this.mpfx.CONFIG.browser.rightShiftedSelectPreviewsTrack &&
+            shifts[1]
+          ) {
+            if (engine.getValue("[PreviewDeck1]", "track_loaded")) {
+              script.triggerControl("[PreviewDeck1]", "stop");
+              script.triggerControl("[PreviewDeck1]", "eject");
+            } else {
+              console.log("inserting...");
+
+              script.triggerControl(
+                "[PreviewDeck1]",
+                "LoadSelectedTrackAndPlay",
+              );
+            }
+          } else {
+            components.Button.prototype.input.call(this.selector, ...args);
+          }
+        },
+        shift() {
+          this.inKey = "GoToItem";
+        },
+        unshift() {
+          this.inKey = "MoveFocusForward";
+        },
+      }),
+    });
+
+    this.mpfx.listenFor("shift", (right) => {
+      shifts[+right] = true;
+    });
+    this.mpfx.listenFor("unshift", (right) => {
+      shifts[+right] = false;
+    });
   }, components.ComponentContainer),
   /* #endregion */
 };
