@@ -543,9 +543,6 @@ var MixtrackPlatinumFX = {
         },
       }),
       play: new components.PlayButton({
-        shiftControl: true,
-        sendShifted: true,
-        shiftOffset: 0x04,
         inSetValue: (value) => {
           if (!engine.getValue(this.channel.group, "track_loaded")) return;
 
@@ -628,7 +625,7 @@ var MixtrackPlatinumFX = {
           const use4DeckSkin =
             this.channel.id > 2 || this.brother?.channel?.id > 2;
 
-          engine.setValue("[App]", "num_decks", use4DeckSkin ? 4 : 2);
+          engine.setValue("[Skin]", "show_4decks", use4DeckSkin);
         }
 
         // Force track to the given channel.
