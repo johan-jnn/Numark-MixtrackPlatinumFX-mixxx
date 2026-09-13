@@ -293,7 +293,7 @@ var MixtrackPlatinumFX = {
 
   /* #region Init & shutdown */
   /** @type {string} */
-  id: "<UNIDENFIED>",
+  id: "<UNIDENTIFIED_CONTROLLER>",
   /** @type {boolean} */
   "#debug": false,
   /**@type {mpfx.GlobalComponentContainer} */
