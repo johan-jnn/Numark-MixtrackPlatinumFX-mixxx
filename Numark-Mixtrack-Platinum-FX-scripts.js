@@ -87,6 +87,16 @@ var MixtrackPlatinumFX = {
        * switch to the "4 deck mode" skin.
        */
       auto4Decks: true,
+      /**
+       * The amount of seconds (not precise) it takes to start/stop the track
+       * after you pressed the play button.
+       *
+       * Note that you must have version >2.4 of Mixxx to make this working.
+       */
+      playSmoothing: {
+        start: 0,
+        stop: 0.25,
+      },
     },
     loops: {
       /**
@@ -521,6 +531,37 @@ var MixtrackPlatinumFX = {
         shiftControl: true,
         sendShifted: true,
         shiftOffset: 0x04,
+        inSetValue: (value) => {
+          const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
+
+          // soft start/brake has been added in Mixxx 2.4, so everyone may not have it
+          if (
+            !("softStart" in engine && "brake" in engine && value
+              ? start
+              : stop)
+          ) {
+            return components.Button.prototype.inSetValue.call(
+              this.play,
+              value,
+            );
+          }
+
+          if (value) {
+            engine.softStart(this.channel.id, true, 10 / start);
+          } else {
+            engine.brake(this.channel.id, true, 10 / stop);
+          }
+        },
+        connect: () => {
+          Object.defineProperty(this.play, "midi", {
+            get: () => [this.channel.bytes.id, 0],
+          });
+        },
+        connect: () => {
+          Object.defineProperty(this.play, "group", {
+            get: () => this.channel.group,
+          });
+        },
       }),
 
       /**@type {typeof this.track} */
