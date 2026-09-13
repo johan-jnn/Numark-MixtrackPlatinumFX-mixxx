@@ -77,7 +77,7 @@ var MixtrackPlatinumFX = {
       },
 
       blinker: {
-        enable: true,
+        enable: false,
         /**
          * The delay (in miliseconds) between 2 blink state.
          * Note that shorter blink will be half of this given time.
@@ -554,6 +554,18 @@ var MixtrackPlatinumFX = {
         },
       }),
       cue: new components.CueButton({
+        shiftOffset: 0x04,
+        input: (...args) => {
+          const pressed = args[2];
+          this.isPressed = pressed;
+
+          this.cue.send(pressed ? this.cue.on : this.cue.off);
+          if (!pressed && engine.getValue(this.channel.group, "play")) {
+            this.play.send(this.play.off);
+          }
+
+          components.CueButton.prototype.input.call(this.cue, ...args);
+        },
         connect: () => {
           Object.defineProperty(this.cue, "group", {
             get: () => this.channel.group,
@@ -564,19 +576,16 @@ var MixtrackPlatinumFX = {
         },
       }),
       play: new components.PlayButton({
+        shiftOffset: 0x04,
         inSetValue: (value) => {
           if (!engine.getValue(this.channel.group, "track_loaded")) return;
 
           const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
-
-          // soft start/brake has been added in Mixxx 2.4, so everyone may not have it
           if (
-            !("softStart" in engine &&
-            "brake" in engine &&
-            this.play.inKey === "play" &&
-            value
-              ? start
-              : stop)
+            !("softStart" in engine && "brake" in engine) ||
+            this.play.inKey !== "play" ||
+            this.cue.isPressed ||
+            !(value ? start : stop)
           ) {
             components.Button.prototype.inSetValue.call(this.play, value);
           } else {
@@ -640,6 +649,7 @@ var MixtrackPlatinumFX = {
             ? this.play.on
             : this.play.off,
         );
+        this.cue.send(this.cue.off);
 
         // Update the skin to a 4-deck one if wanted
         if (this.mpfx.CONFIG.decks.syncDecksSkin) {

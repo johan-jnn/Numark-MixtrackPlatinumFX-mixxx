@@ -12,7 +12,7 @@ namespace mpfx {
     _trackable: Channel[];
 
     play: components.PlayButton;
-    cue: components.CueButton;
+    cue: components.CueButton & { isPressed: boolean };
     sync: components.SyncButton;
     load: components.Button;
 
