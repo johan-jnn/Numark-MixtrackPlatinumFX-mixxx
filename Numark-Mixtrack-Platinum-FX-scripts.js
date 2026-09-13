@@ -103,6 +103,10 @@ var MixtrackPlatinumFX = {
          * If this is `true` the time marker will be the remaining time instead of the elapsed time.
          */
         showRemainingInsteadOfElapsed: false,
+        /**
+         * When pressing shift, does the controller inverse the above setting ("showRemainingInsteadOfElapsed") ?
+         */
+        inverseWhenShifting: false,
       },
       spinner: {
         /**
@@ -582,8 +586,15 @@ var MixtrackPlatinumFX = {
           ]);
         }
         if (send("time")) {
-          const time = this.mpfx.CONFIG.screen.time
-            .showRemainingInsteadOfElapsed
+          const { showRemainingInsteadOfElapsed, inverseWhenShifting } =
+            this.mpfx.CONFIG.screen.time;
+
+          const inverseMode = inverseWhenShifting && this.isShifted;
+          const showRemaining = showRemainingInsteadOfElapsed
+            ? !inverseMode
+            : inverseMode;
+
+          const time = showRemaining
             ? info.metadata.duration - info.elapsed
             : info.elapsed;
 
