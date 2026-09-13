@@ -91,11 +91,11 @@ var MixtrackPlatinumFX = {
        * The amount of seconds (not precise) it takes to start/stop the track
        * after you pressed the play button.
        *
-       * Note that you must have version >2.4 of Mixxx to make this working.
+       * Note that you must have at least version 2.4 of Mixxx to make this working.
        */
       playSmoothing: {
         start: 0,
-        stop: 0.25,
+        stop: 0.15,
       },
     },
     loops: {
@@ -532,35 +532,48 @@ var MixtrackPlatinumFX = {
         sendShifted: true,
         shiftOffset: 0x04,
         inSetValue: (value) => {
+          if (!engine.getValue(this.channel.group, "track_loaded")) return;
+
           const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
 
           // soft start/brake has been added in Mixxx 2.4, so everyone may not have it
           if (
-            !("softStart" in engine && "brake" in engine && value
+            !("softStart" in engine &&
+            "brake" in engine &&
+            this.play.inKey !== "play" &&
+            value
               ? start
               : stop)
           ) {
-            return components.Button.prototype.inSetValue.call(
-              this.play,
-              value,
-            );
+            components.Button.prototype.inSetValue.call(this.play, value);
+          } else {
+            if (value) {
+              engine.softStart(this.channel.id, true, 10 / start);
+            } else {
+              engine.brake(this.channel.id, true, 10 / stop);
+            }
           }
 
-          if (value) {
-            engine.softStart(this.channel.id, true, 10 / start);
-          } else {
-            engine.brake(this.channel.id, true, 10 / stop);
-          }
+          this.play.send(value ? this.play.on : this.play.off);
         },
         connect: () => {
           Object.defineProperty(this.play, "midi", {
             get: () => [this.channel.bytes.id, 0],
           });
-        },
-        connect: () => {
           Object.defineProperty(this.play, "group", {
             get: () => this.channel.group,
           });
+          this.play["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
+            let on = engine.getValue(this.channel.group, "track_loaded");
+            if (on && !engine.getValue(this.channel.group, "play")) {
+              on = long;
+            }
+
+            this.play.send(on ? this.play.on : this.play.off);
+          });
+        },
+        disconnect: () => {
+          this.mpfx.__blinker.remove(this.play["#blinker"], true);
         },
       }),
 
@@ -587,6 +600,13 @@ var MixtrackPlatinumFX = {
 
         // Update the screen before forcing the switch
         this.updateScreen(undefined, true);
+
+        // Update the play button state
+        this.play.send(
+          engine.getValue(this.channel.group, "play")
+            ? this.play.on
+            : this.play.off,
+        );
 
         // Force track to the given channel.
         midi.sendShortMsg(channel.bytes.id, 0x08, 0x7f);
