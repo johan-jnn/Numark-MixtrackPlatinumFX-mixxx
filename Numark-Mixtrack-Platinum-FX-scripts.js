@@ -77,8 +77,14 @@ var MixtrackPlatinumFX = {
       },
 
       blinker: {
-        enable: false,
-        delay: 700, //ms
+        enable: true,
+        /**
+         * The delay (in miliseconds) between 2 blink state.
+         * Note that shorter blink will be half of this given time.
+         *
+         * If this value is not defined or invalid, it will sync the leds with the Mixxx's based blink delay
+         */
+        delay: null,
       },
     },
     decks: {
@@ -86,7 +92,7 @@ var MixtrackPlatinumFX = {
        * When using the 3 or the 4th deck on the controller,
        * switch to the "4 deck mode" skin.
        */
-      auto4Decks: true,
+      syncDecksSkin: true,
       /**
        * The amount of seconds (not precise) it takes to start/stop the track
        * after you pressed the play button.
@@ -399,17 +405,26 @@ var MixtrackPlatinumFX = {
     },
     $$EVENT: "led_blink",
     enable() {
-      const short_delay = Math.floor(
-        MixtrackPlatinumFX.CONFIG.leds.blinker.delay / 2,
-      );
+      let { delay } = MixtrackPlatinumFX.CONFIG.leds.blinker;
+      const sync = typeof delay !== "number";
+      if (sync) {
+        delay = 500;
+      }
+      const short_delay = Math.floor(delay / 2);
 
       this.timer = engine.beginTimer(
         short_delay,
         () => {
-          this.state = {
-            short: !this.state.short,
-            long: this.state.short === !this.state.long,
-          };
+          this.state = sync
+            ? {
+                short: !!engine.getValue("[App]", "indicator_250ms"),
+                long: !!engine.getValue("[App]", "indicator_500ms"),
+              }
+            : {
+                short: !this.state.short,
+                long: this.state.short === !this.state.long,
+              };
+
           MixtrackPlatinumFX.emit(
             this.$$EVENT,
             this.state.short,
@@ -601,12 +616,20 @@ var MixtrackPlatinumFX = {
         // Update the screen before forcing the switch
         this.updateScreen(undefined, true);
 
-        // Update the play button state
+        // Update the play button led state
         this.play.send(
           engine.getValue(this.channel.group, "play")
             ? this.play.on
             : this.play.off,
         );
+
+        // Update the skin to a 4-deck one if wanted
+        if (this.mpfx.CONFIG.decks.syncDecksSkin) {
+          const use4DeckSkin =
+            this.channel.id > 2 || this.brother?.channel?.id > 2;
+
+          engine.setValue("[App]", "num_decks", use4DeckSkin ? 4 : 2);
+        }
 
         // Force track to the given channel.
         midi.sendShortMsg(channel.bytes.id, 0x08, 0x7f);
@@ -806,13 +829,17 @@ var MixtrackPlatinumFX = {
   Effect: createMPFXComponent(function (parent, unit, effect) {
     this.mpfx.debug(`Initializing effect #${effect} from unit #${unit.id}`);
 
-    const { longPressing } = this.mpfx.CONFIG.FX;
+    const {
+      FX: { longPressing },
+      leds: { blinker },
+    } = this.mpfx.CONFIG;
     const longPressTimeout =
       longPressing !== false
         ? typeof longPressing === "boolean"
-          ? this.mpfx.CONFIG.leds.blinker.delay * 2
+          ? (typeof blinker.delay === "number" ? blinker.delay : 500) * 2
           : longPressing
         : false;
+
     this.mpfx.debug(
       `Long press behavior is ${longPressTimeout ? `enabled (tm: ${longPressTimeout}ms)` : "disabled"}.`,
     );
@@ -1018,6 +1045,7 @@ var MixtrackPlatinumFX = {
           effect.isLongPressed || effect.isFocused
             ? short
             : effect.isSelected && (this.isSending ? long : true);
+
         effect.led(on);
       });
     });
