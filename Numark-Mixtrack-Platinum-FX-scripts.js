@@ -397,8 +397,10 @@ var MixtrackPlatinumFX = {
   __blinker: {
     /**
      * @typedef {<R>(short:boolean, long:boolean) => R} BlinkerCallback
+     *
+     * @type {number | ScriptConnection | undefined}
      */
-    timer: 0,
+    timer: undefined,
     state: {
       long: false,
       short: false,
@@ -406,36 +408,45 @@ var MixtrackPlatinumFX = {
     $$EVENT: "led_blink",
     enable() {
       let { delay } = MixtrackPlatinumFX.CONFIG.leds.blinker;
-      const sync = typeof delay !== "number";
-      if (sync) {
-        delay = 500;
-      }
-      const short_delay = Math.floor(delay / 2);
 
-      this.timer = engine.beginTimer(
-        short_delay,
-        () => {
-          this.state = sync
-            ? {
-                short: !!engine.getValue("[App]", "indicator_250ms"),
-                long: !!engine.getValue("[App]", "indicator_500ms"),
-              }
-            : {
-                short: !this.state.short,
-                long: this.state.short === !this.state.long,
-              };
+      if (typeof delay === "number") {
+        this.timer = engine.beginTimer(
+          Math.floor(delay / 2),
+          () => {
+            this.state = {
+              short: !this.state.short,
+              long: this.state.short === !this.state.long,
+            };
+
+            MixtrackPlatinumFX.emit(
+              this.$$EVENT,
+              this.state.short,
+              this.state.long,
+            );
+          },
+          false,
+        );
+      } else {
+        this.timer = engine.makeConnection("[App]", "indicator_250ms", () => {
+          this.state = {
+            short: !!engine.getValue("[App]", "indicator_250ms"),
+            long: !!engine.getValue("[App]", "indicator_500ms"),
+          };
 
           MixtrackPlatinumFX.emit(
             this.$$EVENT,
             this.state.short,
             this.state.long,
           );
-        },
-        false,
-      );
+        });
+      }
     },
     disable() {
-      if (this.timer) engine.stopTimer(this.timer);
+      if (typeof this.timer === "number") {
+        engine.stopTimer(this.timer);
+      } else if (this.timer) {
+        this.timer.disconnect();
+      }
     },
     /**
      * @param {number} id
@@ -542,6 +553,16 @@ var MixtrackPlatinumFX = {
           });
         },
       }),
+      cue: new components.CueButton({
+        connect: () => {
+          Object.defineProperty(this.cue, "group", {
+            get: () => this.channel.group,
+          });
+          Object.defineProperty(this.cue, "midi", {
+            get: () => [this.channel.bytes.id, 0x01],
+          });
+        },
+      }),
       play: new components.PlayButton({
         inSetValue: (value) => {
           if (!engine.getValue(this.channel.group, "track_loaded")) return;
@@ -552,7 +573,7 @@ var MixtrackPlatinumFX = {
           if (
             !("softStart" in engine &&
             "brake" in engine &&
-            this.play.inKey !== "play" &&
+            this.play.inKey === "play" &&
             value
               ? start
               : stop)
@@ -570,7 +591,7 @@ var MixtrackPlatinumFX = {
         },
         connect: () => {
           Object.defineProperty(this.play, "midi", {
-            get: () => [this.channel.bytes.id, 0],
+            get: () => [this.channel.bytes.id, 0x00],
           });
           Object.defineProperty(this.play, "group", {
             get: () => this.channel.group,
