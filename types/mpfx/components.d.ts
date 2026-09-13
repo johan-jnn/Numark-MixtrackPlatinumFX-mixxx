@@ -14,6 +14,7 @@ namespace mpfx {
     play: components.PlayButton;
     cue: components.CueButton;
     sync: components.SyncButton;
+    load: components.Button;
 
     /**
      * Returns the other deck

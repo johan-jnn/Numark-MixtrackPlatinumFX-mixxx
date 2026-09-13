@@ -504,6 +504,25 @@ var MixtrackPlatinumFX = {
       id,
       _trackable: channels,
 
+      load: new components.Button({
+        shift() {
+          this.inKey = "eject";
+        },
+        unshift() {
+          this.inKey = "LoadSelectedTrack";
+        },
+        connect: () => {
+          Object.defineProperty(this.load, "group", {
+            get: () => this.channel.group,
+          });
+        },
+      }),
+      play: new components.PlayButton({
+        shiftControl: true,
+        sendShifted: true,
+        shiftOffset: 0x04,
+      }),
+
       /**@type {typeof this.track} */
       track: (channel) => {
         if (typeof channel === "number") {
