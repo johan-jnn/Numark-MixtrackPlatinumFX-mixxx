@@ -538,7 +538,7 @@ var MixtrackPlatinumFX = {
 
     parent({
       id,
-      _trackable: channels,
+      trackables: channels,
 
       load: new components.Button({
         shift() {
@@ -553,28 +553,7 @@ var MixtrackPlatinumFX = {
           });
         },
       }),
-      cue: new components.CueButton({
-        shiftOffset: 0x04,
-        input: (...args) => {
-          const pressed = args[2];
-          this.isPressed = pressed;
 
-          this.cue.send(pressed ? this.cue.on : this.cue.off);
-          if (!pressed && engine.getValue(this.channel.group, "play")) {
-            this.play.send(this.play.off);
-          }
-
-          components.CueButton.prototype.input.call(this.cue, ...args);
-        },
-        connect: () => {
-          Object.defineProperty(this.cue, "group", {
-            get: () => this.channel.group,
-          });
-          Object.defineProperty(this.cue, "midi", {
-            get: () => [this.channel.bytes.id, 0x01],
-          });
-        },
-      }),
       play: new components.PlayButton({
         shiftOffset: 0x04,
         inSetValue: (value) => {
@@ -618,6 +597,33 @@ var MixtrackPlatinumFX = {
           this.mpfx.__blinker.remove(this.play["#blinker"], true);
         },
       }),
+      cue: new components.CueButton({
+        shiftOffset: 0x04,
+        input: (...args) => {
+          const pressed = args[2];
+          this.isPressed = pressed;
+
+          this.cue.send(pressed ? this.cue.on : this.cue.off);
+          if (!pressed && engine.getValue(this.channel.group, "play")) {
+            this.play.send(this.play.off);
+          }
+
+          components.CueButton.prototype.input.call(this.cue, ...args);
+        },
+        connect: () => {
+          Object.defineProperty(this.cue, "group", {
+            get: () => this.channel.group,
+          });
+          Object.defineProperty(this.cue, "midi", {
+            get: () => [this.channel.bytes.id, 0x01],
+          });
+        },
+      }),
+      sync: new components.SyncButton({
+        sendShifted: true,
+        shiftControl: true,
+        shiftOffset: 0x01,
+      }),
 
       /**@type {typeof this.track} */
       track: (channel) => {
@@ -641,7 +647,7 @@ var MixtrackPlatinumFX = {
         this.channel.trackedBy = this;
 
         // Update the screen before forcing the switch
-        this.updateScreen(undefined, true);
+        this.updateScreen();
 
         // Update the play button led state
         this.play.send(
@@ -669,15 +675,15 @@ var MixtrackPlatinumFX = {
       switch: () => {
         this.mpfx.debug(`Switching channel on deck #${this.id}...`);
 
-        const currentIndex = this._trackable.findIndex(
+        const currentIndex = this.trackables.findIndex(
           (c) => c.id === this.channel?.id,
         );
         if (currentIndex < 0) {
-          return this.track(this._trackable[0]);
+          return this.track(this.trackables[0]);
         }
 
-        const nextIndex = (currentIndex + 1) % this._trackable.length;
-        return this.track(this._trackable[nextIndex]);
+        const nextIndex = (currentIndex + 1) % this.trackables.length;
+        return this.track(this.trackables[nextIndex]);
       },
       /**@type {typeof this.updateScreen} */
       updateScreen: (only) => {
@@ -829,6 +835,22 @@ var MixtrackPlatinumFX = {
       get: () => {
         return this.mpfx.$components.decks?.[[1, 2][this.id & 0x01]];
       },
+    });
+
+    // Define midi and group key for deck's buttons
+    Object.entries({
+      play: 0x00,
+      cue: 0x01,
+      sync: 0x02,
+    }).forEach(([button, midiShift]) => {
+      Object.defineProperties(this[button], {
+        group: {
+          get: () => this.channel.group,
+        },
+        midi: {
+          get: () => [this.channel.bytes.id, midiShift],
+        },
+      });
     });
 
     channels.forEach((channel) => {

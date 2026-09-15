@@ -9,7 +9,7 @@ namespace mpfx {
      * The channel this deck is currently tracking
      */
     channel: Channel;
-    _trackable: Channel[];
+    private trackables: Channel[];
 
     play: components.PlayButton;
     cue: components.CueButton & { isPressed: boolean };

@@ -617,6 +617,83 @@
       </control>
       <!-- #endregion -->
 
+      <!-- #region Sync buttons -->
+      <control>
+        <group>[Channel1]</group>
+        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <status>0x90</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <status>0x91</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel3]</group>
+        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <status>0x92</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel4]</group>
+        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <status>0x93</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+
+      <!-- Release -->
+      <control>
+        <group>[Channel1]</group>
+        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <status>0x80</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel2]</group>
+        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <status>0x81</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel3]</group>
+        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <status>0x82</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <control>
+        <group>[Channel4]</group>
+        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <status>0x83</status>
+        <midino>0x02</midino>
+        <options>
+          <script-binding />
+        </options>
+      </control>
+      <!-- #endregion -->
+
       <!-- #endregion -->
     </controls>
     <outputs>
