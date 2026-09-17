@@ -495,29 +495,47 @@ var MixtrackPlatinumFX = {
         id: 0x90 + channel - 1,
       },
       trackedBy: undefined,
-      /**@type {typeof this.getLoadedTrackInfo} */
-      getLoadedTrackInfo: () => {
-        const hasLoaded = engine.getValue(this.group, "track_loaded");
-        if (!hasLoaded) return null;
+      /**@type {typeof this.track} */
+      track: () => {
+        const player =
+          engine.getValue(this.group, "track_loaded") &&
+          engine.getPlayer(this.group);
+        if (!player) return null;
 
         const duration = engine.getValue(this.group, "duration");
-        const position = engine.getValue(this.group, "playposition");
+        return Object.defineProperties(player, {
+          bpm: engine.getValue(this.group, "file_bpm"),
+          duration,
+          keyNum: engine.getValue(this.group, "file_key"),
 
-        return {
-          elapsed: position * duration,
-          position,
-          key: engine.getValue(this.group, "key"),
-          key_locked: !!engine.getValue(this.group, "keylock"),
-          rateRange: engine.getValue(this.group, "rateRange"),
-          bpm: engine.getValue(this.group, "bpm"),
-          rate: engine.getValue(this.group, "rate") * -1,
+          state: {
+            /**@returns {mpfx.TrackState} */
+            get: () => {
+              const [rate, rateRange] = [
+                engine.getValue(this.group, "rate") * -1,
+                engine.getValue(this.group, "rateRange"),
+              ];
 
-          metadata: {
-            duration,
-            bpm: engine.getValue(this.group, "file_bpm"),
-            key: engine.getValue(this.group, "file_key"),
+              const position = engine.getValue(this.group, "playposition");
+
+              return {
+                rate: {
+                  value: rate,
+                  range: rateRange,
+                  rate: rate / rateRange,
+                  bpm: engine.getValue(this.group, "bpm"),
+                  keyLocked: !!engine.getValue(this.group, "keylock"),
+                },
+                time: {
+                  elapsed: position,
+                  remaining: duration - position,
+                  rate: position / duration,
+                },
+                key: engine.getValue(this.group, "key"),
+              };
+            },
           },
-        };
+        });
       },
     });
   }, components.Component),
@@ -687,20 +705,8 @@ var MixtrackPlatinumFX = {
       },
       /**@type {typeof this.updateScreen} */
       updateScreen: (only) => {
-        let info = this.channel.getLoadedTrackInfo() ?? {
-          bpm: 0,
-          key: 0,
-          elapsed: 0,
-          key_locked: !!engine.getValue(this.channel.group, "keylock"),
-          position: 0,
-          rate: engine.getValue(this.channel.group, "rate"),
-          rateRange: engine.getValue(this.channel.group, "rateRange"),
-          metadata: {
-            bpm: 0,
-            duration: 0,
-            key: 0,
-          },
-        };
+        const track = this.channel.track();
+        const { state } = track ?? { state: undefined };
 
         /**@type {(part:mpfx.ScreenParts) => boolean} */
         const send = (part) => !only || only[part];
@@ -715,7 +721,11 @@ var MixtrackPlatinumFX = {
           sysexMessages.push([
             ...screenNumbersPrefix,
             0x01,
-            ...this.mpfx.intToBytes(parseInt(info.bpm * 10) * 10, 6, true),
+            ...this.mpfx.intToBytes(
+              parseInt((state?.rate.bpm ?? 0) * 10) * 10,
+              6,
+              true,
+            ),
             0xf7,
           ]);
         }
@@ -723,7 +733,7 @@ var MixtrackPlatinumFX = {
           sysexMessages.push([
             ...screenNumbersPrefix,
             0x02,
-            ...this.mpfx.intToBytes(info.rate * 1e4, 6),
+            ...this.mpfx.intToBytes((state?.rate.value ?? 0) * 1e4, 6),
             0xf7,
           ]);
         }
@@ -731,7 +741,7 @@ var MixtrackPlatinumFX = {
           shortMessages.push([
             0x90 | (this.channel.id - 1),
             0x0e,
-            parseInt(info.rateRange * 1e2),
+            parseInt((state?.rate.range ?? 0) * 1e2),
           ]);
         }
         if (send("time")) {
@@ -743,15 +753,14 @@ var MixtrackPlatinumFX = {
             ? !inverseMode
             : inverseMode;
 
-          const time = showRemaining
-            ? info.metadata.duration - info.elapsed
-            : info.elapsed;
+          const time =
+            (showRemaining ? state?.time.remaining : state?.time.elapsed) ?? 0;
 
           sysexMessages.push(
             [
               ...screenNumbersPrefix,
               0x03,
-              ...this.mpfx.intToBytes(info.metadata.duration * 1e3),
+              ...this.mpfx.intToBytes((track?.duration ?? 0) * 1e3),
               0xf7,
             ],
             [
@@ -768,7 +777,7 @@ var MixtrackPlatinumFX = {
           shortMessages.push([
             0xb0 | (this.channel.id - 1),
             0x3f,
-            parseInt(info.position * 52),
+            parseInt(state?.time.rate * 52),
           ]);
 
           // spinner
@@ -776,7 +785,7 @@ var MixtrackPlatinumFX = {
             this.mpfx.CONFIG.screen.spinner;
 
           const spinPosition =
-            (info.elapsed % oneSpinDuration) / oneSpinDuration;
+            ((state?.time.elapsed ?? 0) % oneSpinDuration) / oneSpinDuration;
           // If spinPosition is bellow 0, we invert the defined fill mode, and use the invert of the spinPosition
           const spinShift = filledSpin === spinPosition > 0 ? 65 : 1;
           const clampedSpinPosition =
@@ -791,33 +800,47 @@ var MixtrackPlatinumFX = {
 
         if (send("keylock")) {
           shortMessages.push(
-            [0x80 | (this.channel.id - 1), 0x0d, 0x7f * +info.key_locked],
-            [0x90 | (this.channel.id - 1), 0x0d, 0x7f * +info.key_locked],
+            [
+              0x80 | (this.channel.id - 1),
+              0x0d,
+              0x7f * +(state?.rate.keyLocked ?? 0),
+            ],
+            [
+              0x90 | (this.channel.id - 1),
+              0x0d,
+              0x7f * +(state?.rate.keyLocked ?? 0),
+            ],
           );
         }
 
         // If we update the screen's bpm, we also update the screen's bpm arrows
         if (send("bpm") || send("bpm_arrows")) {
-          const channel = this.brother?.channel;
-          if (!channel) {
+          const brotherChannel = this.brother?.channel;
+          if (!brotherChannel) {
             this.mpfx.warn(
               `Cannot refresh bpm arrows if decks are not registered in components.`,
             );
           } else {
-            const brotherInfo = channel.getLoadedTrackInfo();
+            const brotherTrack = brotherChannel.track();
+            if (!brotherTrack) {
+              console.warn(
+                `Cannot update deck's arrows: deck ${this.id} has no brother.`,
+              );
+            }
+            const { state: brotherState } = brotherTrack;
 
             shortMessages.push(
               // up arrow
               [
                 0x80 | (this.channel.id - 1),
                 0x09,
-                (brotherInfo?.bpm > info.bpm) * 0x7f,
+                (brotherState.rate.bpm > (state?.rate.bpm ?? 0)) * 0x7f,
               ],
               // down arrow
               [
                 0x80 | (this.channel.id - 1),
                 0x0a,
-                (brotherInfo?.bpm < info.bpm) * 0x7f,
+                (brotherState.rate.bpm < (state?.rate.bpm ?? 0)) * 0x7f,
               ],
             );
           }

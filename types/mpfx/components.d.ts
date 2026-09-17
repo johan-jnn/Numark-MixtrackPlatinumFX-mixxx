@@ -1,4 +1,26 @@
 namespace mpfx {
+  /**
+   * See a channel like a Mixxx's deck
+   */
+  class Channel extends components.Component {
+    constructor(channel: typeof this.id);
+
+    readonly id: 1 | 2 | 3 | 4;
+    bytes: {
+      id: number;
+    };
+
+    /**
+     * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
+     */
+    trackedBy?: Deck;
+    /**
+     * Get the loaded track informations of this channel.
+     * If the channel does not have track, it returns `null`
+     */
+    track(): null | Track;
+  }
+
   class Deck extends components.ComponentContainer {
     constructor(id: typeof this.id, channels: Channel[]);
 
@@ -34,28 +56,6 @@ namespace mpfx {
      * @param only You can use this object to filter which screen part will be updated. Using filter reduces the number of sent Sysex messages.
      */
     updateScreen(only?: { [key in ScreenParts]?: boolean }): void;
-  }
-
-  /**
-   * See a channel like a Mixxx's deck
-   */
-  class Channel extends components.Component {
-    constructor(channel: typeof this.id);
-
-    readonly id: 1 | 2 | 3 | 4;
-    bytes: {
-      id: number;
-    };
-
-    /**
-     * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
-     */
-    trackedBy?: Deck;
-    /**
-     * Get the loaded track informations of this channel.
-     * If the channel does not have track, it returns `null`
-     */
-    getLoadedTrackInfo(): null | trackStateInformations;
   }
 
   class Effect extends components.Button {

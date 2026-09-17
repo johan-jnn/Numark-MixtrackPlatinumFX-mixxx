@@ -76,18 +76,68 @@ namespace mpfx {
     | "rateRange"
     | "keylock";
 
-  interface trackStateInformations {
-    metadata: {
+  interface TrackState {
+    /**
+     * Rate informations of the track
+     */
+    rate: {
+      /**
+       * The current rate of the track
+       */
+      value: number;
+      /**
+       * The current defined rate's range
+       */
+      range: number;
+      /**
+       * The current rate of the track normalized in [0; 1]
+       */
+      rate: number;
+      /**
+       * The current bpm of the track
+       */
       bpm: number;
-      duration: number;
-      key: number;
+      /**
+       * If changeing the rate also affect the track's key
+       */
+      keyLocked: boolean;
     };
-    rate: number;
-    rateRange: number;
-    elapsed: number;
-    position: number;
+    time: {
+      /**
+       * The cursor (in seconds) of the elapsed time
+       */
+      elapsed: number;
+      /**
+       * The cursor (in seconds) of the remaining time
+       */
+      remaining: number;
+      /**
+       * The cursor ([0; 1]) of the elapsed time
+       */
+      rate: number;
+    };
+    /**
+     * The number representation of the current key of the track
+     */
     key: number;
-    key_locked: boolean;
+  }
+  interface Track extends Player {
+    /**
+     * The current state of the track (versatile)
+     */
+    get state(): TrackState;
+
+    /**
+     * The track's original bpm
+     */
     bpm: number;
+    /**
+     * The track's total duration
+     */
+    duration: number;
+    /**
+     * The number representation of the original key of the track
+     */
+    keyNum: number;
   }
 }
