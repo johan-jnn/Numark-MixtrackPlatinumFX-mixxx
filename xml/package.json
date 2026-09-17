@@ -1,0 +1,11 @@
+{
+  "author": {
+    "name": "Johan JANIN",
+    "url": "https://johan-janin.com"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "json-xml-parse": "^1.3.0"
+  }
+}
