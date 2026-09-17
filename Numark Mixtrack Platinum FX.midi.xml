@@ -388,7 +388,7 @@
       <!-- #region Load buttons -->
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.load.input</key>
         <status>0x9F</status>
         <midino>0x02</midino>
         <options>
@@ -397,7 +397,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.load.input</key>
         <status>0x9F</status>
         <midino>0x03</midino>
         <options>
@@ -406,7 +406,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.load.input</key>
         <status>0x9F</status>
         <midino>0x04</midino>
         <options>
@@ -415,7 +415,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.load.input</key>
         <status>0x9F</status>
         <midino>0x05</midino>
         <options>
@@ -425,7 +425,7 @@
       <!-- Releases -->
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.load.input</key>
         <status>0x8F</status>
         <midino>0x02</midino>
         <options>
@@ -434,7 +434,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.load.input</key>
         <status>0x8F</status>
         <midino>0x03</midino>
         <options>
@@ -443,7 +443,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.load.input</key>
         <status>0x8F</status>
         <midino>0x04</midino>
         <options>
@@ -452,7 +452,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].load.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.load.input</key>
         <status>0x8F</status>
         <midino>0x05</midino>
         <options>
@@ -464,7 +464,7 @@
       <!-- #region Play buttons -->
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.play.input</key>
         <status>0x90</status>
         <midino>0x00</midino>
         <options>
@@ -473,7 +473,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.play.input</key>
         <status>0x91</status>
         <midino>0x00</midino>
         <options>
@@ -482,7 +482,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.play.input</key>
         <status>0x92</status>
         <midino>0x00</midino>
         <options>
@@ -491,7 +491,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.play.input</key>
         <status>0x93</status>
         <midino>0x00</midino>
         <options>
@@ -503,7 +503,7 @@
 
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.play.input</key>
         <status>0x80</status>
         <midino>0x00</midino>
         <options>
@@ -512,7 +512,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.play.input</key>
         <status>0x81</status>
         <midino>0x00</midino>
         <options>
@@ -521,7 +521,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.play.input</key>
         <status>0x82</status>
         <midino>0x00</midino>
         <options>
@@ -530,7 +530,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].play.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.play.input</key>
         <status>0x83</status>
         <midino>0x00</midino>
         <options>
@@ -620,7 +620,7 @@
       <!-- #region Sync buttons -->
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
         <status>0x90</status>
         <midino>0x02</midino>
         <options>
@@ -629,7 +629,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
         <status>0x91</status>
         <midino>0x02</midino>
         <options>
@@ -638,7 +638,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
         <status>0x92</status>
         <midino>0x02</midino>
         <options>
@@ -647,7 +647,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
         <status>0x93</status>
         <midino>0x02</midino>
         <options>
@@ -658,7 +658,7 @@
       <!-- Release -->
       <control>
         <group>[Channel1]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
         <status>0x80</status>
         <midino>0x02</midino>
         <options>
@@ -667,7 +667,7 @@
       </control>
       <control>
         <group>[Channel2]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
         <status>0x81</status>
         <midino>0x02</midino>
         <options>
@@ -676,7 +676,7 @@
       </control>
       <control>
         <group>[Channel3]</group>
-        <key>MixtrackPlatinumFX.$components.decks[1].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
         <status>0x82</status>
         <midino>0x02</midino>
         <options>
@@ -685,7 +685,7 @@
       </control>
       <control>
         <group>[Channel4]</group>
-        <key>MixtrackPlatinumFX.$components.decks[2].sync.input</key>
+        <key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
         <status>0x83</status>
         <midino>0x02</midino>
         <options>

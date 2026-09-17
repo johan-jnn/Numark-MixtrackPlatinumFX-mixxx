@@ -495,6 +495,87 @@ var MixtrackPlatinumFX = {
         id: 0x90 + channel - 1,
       },
       trackedBy: undefined,
+      connect: () => {
+        for (const key in this.inputs) {
+          this.inputs[key].midi = this.bytes.id;
+          this.inputs[key].group = this.group;
+          this.inputs[key].connect?.();
+        }
+      },
+      inputs: {
+        play: new components.PlayButton({
+          shiftOffset: 0x04,
+          inSetValue: (value) => {
+            if (!this.track()) return;
+            const button = this.inputs.play;
+
+            const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
+            const smoothBy = value ? start : stop;
+
+            if (
+              !(
+                smoothBy &&
+                button.inKey === "play" &&
+                "softStart" in engine &&
+                "brake" in engine
+              ) ||
+              this.inputs.cue.isPressed
+            ) {
+              components.Button.prototype.inSetValue.call(button, value);
+            } else {
+              if (value) {
+                engine.softStart(this.id, true, 10 / start);
+              } else {
+                engine.brake(this.id, true, 10 / stop);
+              }
+            }
+
+            button.send(value ? button.on : button.off);
+          },
+          connect: () => {
+            button["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
+              let on = engine.getValue(this.group, "track_loaded");
+              if (on && !engine.getValue(this.group, "play")) {
+                on = long;
+              }
+
+              button.send(on ? button.on : button.off);
+            });
+          },
+          disconnect: () => {
+            this.mpfx.__blinker.remove(this.play["#blinker"], true);
+          },
+        }),
+        cue: new components.CueButton({
+          shiftOffset: 0x04,
+          input: (...args) => {
+            const { cue, play } = this.inputs;
+            Object.assign(cue, {
+              isPressed: args[2],
+            });
+
+            cue.send(cue.isPressed ? cue.on : cue.off);
+            if (!pressed && engine.getValue(this.group, "play")) {
+              play.send(play.off);
+            }
+
+            components.CueButton.prototype.input.call(cue, ...args);
+          },
+        }),
+        sync: new components.SyncButton({
+          sendShifted: true,
+          shiftControl: true,
+          shiftOffset: 0x01,
+        }),
+        load: new components.Button({
+          shift() {
+            this.inKey = "eject";
+          },
+          unshift() {
+            this.inKey = "LoadSelectedTrack";
+          },
+        }),
+      },
       /**@type {typeof this.track} */
       track: () => {
         const player =
@@ -558,91 +639,6 @@ var MixtrackPlatinumFX = {
       id,
       trackables: channels,
 
-      load: new components.Button({
-        shift() {
-          this.inKey = "eject";
-        },
-        unshift() {
-          this.inKey = "LoadSelectedTrack";
-        },
-        connect: () => {
-          Object.defineProperty(this.load, "group", {
-            get: () => this.channel.group,
-          });
-        },
-      }),
-
-      play: new components.PlayButton({
-        shiftOffset: 0x04,
-        inSetValue: (value) => {
-          if (!engine.getValue(this.channel.group, "track_loaded")) return;
-
-          const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
-          if (
-            !("softStart" in engine && "brake" in engine) ||
-            this.play.inKey !== "play" ||
-            this.cue.isPressed ||
-            !(value ? start : stop)
-          ) {
-            components.Button.prototype.inSetValue.call(this.play, value);
-          } else {
-            if (value) {
-              engine.softStart(this.channel.id, true, 10 / start);
-            } else {
-              engine.brake(this.channel.id, true, 10 / stop);
-            }
-          }
-
-          this.play.send(value ? this.play.on : this.play.off);
-        },
-        connect: () => {
-          Object.defineProperty(this.play, "midi", {
-            get: () => [this.channel.bytes.id, 0x00],
-          });
-          Object.defineProperty(this.play, "group", {
-            get: () => this.channel.group,
-          });
-          this.play["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
-            let on = engine.getValue(this.channel.group, "track_loaded");
-            if (on && !engine.getValue(this.channel.group, "play")) {
-              on = long;
-            }
-
-            this.play.send(on ? this.play.on : this.play.off);
-          });
-        },
-        disconnect: () => {
-          this.mpfx.__blinker.remove(this.play["#blinker"], true);
-        },
-      }),
-      cue: new components.CueButton({
-        shiftOffset: 0x04,
-        input: (...args) => {
-          const pressed = args[2];
-          this.isPressed = pressed;
-
-          this.cue.send(pressed ? this.cue.on : this.cue.off);
-          if (!pressed && engine.getValue(this.channel.group, "play")) {
-            this.play.send(this.play.off);
-          }
-
-          components.CueButton.prototype.input.call(this.cue, ...args);
-        },
-        connect: () => {
-          Object.defineProperty(this.cue, "group", {
-            get: () => this.channel.group,
-          });
-          Object.defineProperty(this.cue, "midi", {
-            get: () => [this.channel.bytes.id, 0x01],
-          });
-        },
-      }),
-      sync: new components.SyncButton({
-        sendShifted: true,
-        shiftControl: true,
-        shiftOffset: 0x01,
-      }),
-
       /**@type {typeof this.track} */
       track: (channel) => {
         if (typeof channel === "number") {
@@ -661,8 +657,10 @@ var MixtrackPlatinumFX = {
           );
           this.channel.trackedBy = undefined;
         }
-        this.channel = channel;
-        this.channel.trackedBy = this;
+        channel.trackedBy = this;
+        Object.assign(this, {
+          channel,
+        });
 
         // Update the screen before forcing the switch
         this.updateScreen();

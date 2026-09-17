@@ -9,6 +9,12 @@ namespace mpfx {
     bytes: {
       id: number;
     };
+    inputs: {
+      play: components.PlayButton;
+      cue: components.CueButton & { isPressed: boolean };
+      sync: components.SyncButton;
+      load: components.Button;
+    };
 
     /**
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
@@ -19,6 +25,9 @@ namespace mpfx {
      * If the channel does not have track, it returns `null`
      */
     track(): null | Track;
+
+    play(): void;
+    pause(): void;
   }
 
   class Deck extends components.ComponentContainer {
@@ -26,17 +35,12 @@ namespace mpfx {
 
     // Left or right
     readonly id: 1 | 2;
+    private trackables: Channel[];
 
     /**
      * The channel this deck is currently tracking
      */
     channel: Channel;
-    private trackables: Channel[];
-
-    play: components.PlayButton;
-    cue: components.CueButton & { isPressed: boolean };
-    sync: components.SyncButton;
-    load: components.Button;
 
     /**
      * Returns the other deck
