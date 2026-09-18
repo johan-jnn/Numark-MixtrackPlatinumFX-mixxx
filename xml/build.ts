@@ -1,8 +1,8 @@
+import { writeFileSync } from "fs";
 import { jsXml } from "json-xml-parse";
 import { join } from "path";
+import { BEAUTY_EXPORT, DEV, EXPORT_FILE } from "./utils/constants";
 import { load, type XMLModule } from "./utils/module";
-
-const DEV = process.env.NODE_ENV?.includes("dev") ?? false;
 
 const input = {
   MixxxControllerPreset: {
@@ -19,17 +19,16 @@ DEV && console.log("INPUT:\n", JSON.stringify(input, undefined, 2));
 
 const xml = jsXml.toXmlString(input, {
   declaration: {
-    encoding: "UTF-8",
     version: "1.0",
+    encoding: "UTF-8",
   },
-  beautify: process.env.NODE_ENV === "dev",
+  beautify: BEAUTY_EXPORT,
 });
 
 DEV && console.log("OUTPUT:\n", xml);
 
-const output = join(
-  import.meta.dirname,
-  "../Numark Mixtrack Platinum FX.midi.temp.xml",
-);
+const output =
+  process.env.OUTPUT ??
+  join(import.meta.dirname, "../Numark Mixtrack Platinum FX.midi.xml");
 
-// writeFileSync(output, xml, { encoding: "utf-8" });
+EXPORT_FILE && writeFileSync(output, xml, { encoding: "utf-8" });

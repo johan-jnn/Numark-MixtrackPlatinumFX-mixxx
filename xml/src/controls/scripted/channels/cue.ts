@@ -1,0 +1,15 @@
+import { scriptControl } from "../../utils";
+import { forEachChannel } from "./_utils";
+
+export default forEachChannel((channel, index) =>
+  [0x80, 0x90].map((base, pressing) =>
+    scriptControl(
+      0x01,
+      base + index,
+      `$components.channels[${channel}].inputs.cue.input`,
+      {
+        description: `Cue on channel ${channel}${[" (Release)", ""][pressing]}`,
+      },
+    ),
+  ),
+);

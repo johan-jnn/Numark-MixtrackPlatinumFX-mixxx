@@ -14,4 +14,5 @@ export default {
     ].map((attrs) => ({ "@": attrs, "#": undefined })),
   },
   controls: await load(import.meta.resolve("./controls/controls.ts")),
+  outputs: await load(import.meta.resolve("./outputs/outputs.ts")),
 } satisfies XMLModule;

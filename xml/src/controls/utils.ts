@@ -1,4 +1,4 @@
-import { SCRIPT_ENTRYPOINT } from "../../utils/constants";
+import { DEV, SCRIPT_ENTRYPOINT } from "../../utils/constants";
 import type { XMLModule } from "../../utils/module";
 
 export type InputControlOption =
@@ -35,7 +35,7 @@ export function inputControl(
     ...path,
   };
 
-  if (extra?.description) {
+  if (extra?.description && DEV) {
     control["@"] = { for: extra?.description };
   }
   if (extra?.options?.length) {
