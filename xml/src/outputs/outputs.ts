@@ -3,6 +3,12 @@ import { load } from "../../utils/module";
 
 const outputs = globSync(`${import.meta.dirname}/list/**/*.ts`);
 
-export default {
-  output: await Promise.all(outputs.map(async (file) => await load(file))),
-};
+const mappings = await Promise.all(
+  outputs.map(async (file) => await load(file)),
+).then((a) => a.flat());
+
+export default mappings.length
+  ? {
+      output: mappings,
+    }
+  : "\u200b";

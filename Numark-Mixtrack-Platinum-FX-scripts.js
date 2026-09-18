@@ -526,6 +526,7 @@ var MixtrackPlatinumFX = {
               group: this.group,
             });
           });
+
           Object.values(this.inputs).forEach((c) => c.connect?.());
         },
         disconnect: () => {
@@ -584,12 +585,15 @@ var MixtrackPlatinumFX = {
                 button.send(on ? button.on : button.off);
               });
 
-              engine.makeConnection(this.group, "play", (value) => {
-                button.send(value && !cue.isPressed ? button.on : button.off);
-              });
+              button.connections.push(
+                engine.makeConnection(this.group, "play", (value) => {
+                  button.send(value && !cue.isPressed ? button.on : button.off);
+                }),
+              );
             },
             disconnect: () => {
               this.mpfx.__blinker.remove(this.inputs.play["#blinker"], true);
+              components.PlayButton.prototype.disconnect.call(this.inputs.play);
             },
           }),
           cue: new components.CueButton({
@@ -606,6 +610,7 @@ var MixtrackPlatinumFX = {
 
               cue.send(cue.isPressed ? cue.on : cue.off);
             },
+            // Disable Mixxx's default cue's led behavior
             connect: () => {},
           }),
           sync: new components.SyncButton({
@@ -619,6 +624,29 @@ var MixtrackPlatinumFX = {
             },
             unshift() {
               this.inKey = "LoadSelectedTrack";
+            },
+          }),
+          pfl: new components.Button({
+            type: components.Button.prototype.types.toggle,
+            connect: () => {
+              const { pfl: button } = this.inputs;
+              button.group = this.group;
+              button.midi = [this.bytes.id, 0x1b];
+              button.connections.push(
+                engine.makeConnection(this.group, "pfl", (on) => {
+                  button.send(on ? button.on : button.off);
+                }),
+              );
+
+              button.trigger();
+            },
+            shift() {
+              this.inKey = this.outKey = "slip_enabled";
+              this.trigger();
+            },
+            unshift() {
+              this.inKey = this.outKey = "pfl";
+              this.trigger();
             },
           }),
         },

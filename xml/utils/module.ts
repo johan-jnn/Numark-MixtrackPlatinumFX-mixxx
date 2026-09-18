@@ -5,6 +5,6 @@ export interface XMLModule extends InputData {
   "@"?: Record<string, string | boolean>;
 }
 
-export async function load(module: string): Promise<XMLModule> {
+export async function load(module: string): Promise<XMLModule | XMLModule[]> {
   return import(module).then((m) => m.default);
 }

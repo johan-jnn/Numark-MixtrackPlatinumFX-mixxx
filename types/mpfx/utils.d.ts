@@ -48,14 +48,15 @@ namespace mpfx {
    */
   declare function componentMaker<
     ComponentClass,
-    MPFXKey extends string = "mpfx",
+    MPFXKey = "mpfx",
     StaticDefinitions = {
       [key in Exclude<keyof ComponentClass, "prototype">]: ComponentClass[key];
     },
     ParentClass extends NewableFunction | undefined = undefined,
     ChildThis = mpfx.Binded<InstanceType<ComponentClass>, MPFXKey>,
     ChildParameters = ConstructorParameters<ComponentClass>,
-    SuperFunction = (...args: ConstructorParameters<ParentClass>) => void,
+    SuperFunction = ((...args: ConstructorParameters<ParentClass>) => void) &
+      InstanceType<ParentClass>,
     ChildConstructor extends ParentClass extends undefined
       ? (this: ChildThis, ...args: ChildParameters) => void
       : (

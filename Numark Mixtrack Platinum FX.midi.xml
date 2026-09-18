@@ -332,6 +332,78 @@ Personnal Website : https://johan-janin.com</description>
 					<script-binding/>
 				</options>
 			</control>
+			<control for="PFL button for channel 1 (Release)">
+				<midino>0x1b</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pfl.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 1">
+				<midino>0x1b</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pfl.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 2 (Release)">
+				<midino>0x1b</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pfl.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 2">
+				<midino>0x1b</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pfl.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 3 (Release)">
+				<midino>0x1b</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pfl.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 3">
+				<midino>0x1b</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pfl.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 4 (Release)">
+				<midino>0x1b</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pfl.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="PFL button for channel 4">
+				<midino>0x1b</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pfl.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
 			<control for="Play/Pause on channel 1 (Release)">
 				<midino>0x0</midino>
 				<status>0x80</status>
@@ -615,35 +687,6 @@ Personnal Website : https://johan-janin.com</description>
 				<group>[Master]</group>
 			</control>
 		</controls>
-		<outputs>
-			<output for="Headset active for channel 1">
-				<midino>0x1b</midino>
-				<status>0x90</status>
-				<key>pfl</key>
-				<group>[Channel1]</group>
-				<minimum>0.5</minimum>
-			</output>
-			<output for="Headset active for channel 2">
-				<midino>0x1b</midino>
-				<status>0x91</status>
-				<key>pfl</key>
-				<group>[Channel2]</group>
-				<minimum>0.5</minimum>
-			</output>
-			<output for="Headset active for channel 3">
-				<midino>0x1b</midino>
-				<status>0x92</status>
-				<key>pfl</key>
-				<group>[Channel3]</group>
-				<minimum>0.5</minimum>
-			</output>
-			<output for="Headset active for channel 4">
-				<midino>0x1b</midino>
-				<status>0x93</status>
-				<key>pfl</key>
-				<group>[Channel4]</group>
-				<minimum>0.5</minimum>
-			</output>
-		</outputs>
+		<outputs>​</outputs>
 	</controller>
 </MixxxControllerPreset>
