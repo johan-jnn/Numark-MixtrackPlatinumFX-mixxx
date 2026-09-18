@@ -6,7 +6,7 @@ export default forEachChannel((channel, index) =>
     scriptControl(
       0x02,
       base + index,
-      `$components.channels[${channel}].inputs.cue.input`,
+      `$components.channels[${channel}].inputs.sync.input`,
       {
         description: `Sync on channel ${channel}${[" (Release)", ""][pressing]}`,
       },

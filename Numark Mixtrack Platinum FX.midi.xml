@@ -443,7 +443,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 1 (Release)">
 				<midino>0x2</midino>
 				<status>0x80</status>
-				<key>MixtrackPlatinumFX.$components.channels[1].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
 				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
@@ -452,7 +452,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 1">
 				<midino>0x2</midino>
 				<status>0x90</status>
-				<key>MixtrackPlatinumFX.$components.channels[1].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
 				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
@@ -461,7 +461,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 2 (Release)">
 				<midino>0x2</midino>
 				<status>0x81</status>
-				<key>MixtrackPlatinumFX.$components.channels[2].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
 				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
@@ -470,7 +470,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 2">
 				<midino>0x2</midino>
 				<status>0x91</status>
-				<key>MixtrackPlatinumFX.$components.channels[2].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
 				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
@@ -479,7 +479,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 3 (Release)">
 				<midino>0x2</midino>
 				<status>0x82</status>
-				<key>MixtrackPlatinumFX.$components.channels[3].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
 				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
@@ -488,7 +488,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 3">
 				<midino>0x2</midino>
 				<status>0x92</status>
-				<key>MixtrackPlatinumFX.$components.channels[3].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
 				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
@@ -497,7 +497,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 4 (Release)">
 				<midino>0x2</midino>
 				<status>0x83</status>
-				<key>MixtrackPlatinumFX.$components.channels[4].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
 				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
@@ -506,7 +506,7 @@ Personnal Website : https://johan-janin.com</description>
 			<control for="Sync on channel 4">
 				<midino>0x2</midino>
 				<status>0x93</status>
-				<key>MixtrackPlatinumFX.$components.channels[4].inputs.cue.input</key>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
 				<group>[Channel4]</group>
 				<options>
 					<script-binding/>

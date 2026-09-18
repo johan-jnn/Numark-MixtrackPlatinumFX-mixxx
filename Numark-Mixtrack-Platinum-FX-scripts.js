@@ -520,7 +520,7 @@ var MixtrackPlatinumFX = {
         },
         trackedBy: undefined,
         connect: () => {
-          ["play", "cue", "sync"].forEach((key, shift) => {
+          ["play", "cue", "sync", "load"].forEach((key, shift) => {
             Object.assign(this.inputs[key], {
               midi: [this.bytes.id, shift],
               group: this.group,
@@ -531,9 +531,16 @@ var MixtrackPlatinumFX = {
         disconnect: () => {
           Object.values(this.inputs).forEach((c) => c.disconnect?.());
         },
+        shift: () => {
+          Object.values(this.inputs).forEach((c) => c.shift?.());
+        },
+        unshift: () => {
+          Object.values(this.inputs).forEach((c) => c.unshift?.());
+        },
         inputs: {
           play: new components.PlayButton({
             shiftOffset: 0x04,
+            shiftControl: true,
             inSetValue: (value) => {
               if (!this.track()) return;
               const { play: button, cue } = this.inputs;
