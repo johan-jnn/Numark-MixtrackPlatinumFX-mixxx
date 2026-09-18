@@ -7,10 +7,10 @@ export default order.flatMap((name, index) => {
   const pad = Math.floor(index / 3) + 1;
   const effect = (index % 3) + 1;
 
-  return [0x89, 0x99].map((status, press) =>
+  return [0x88, 0x98].map((base_status, press) =>
     scriptControl(
       index,
-      status,
+      base_status + (pad - 1),
       `$components.effects.pad[${pad}][${effect}].input`,
       {
         group: `EffectRack1_EffectUnit${pad}_Effect${effect}`,

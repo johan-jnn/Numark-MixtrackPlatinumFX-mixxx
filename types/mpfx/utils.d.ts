@@ -17,6 +17,10 @@ namespace mpfx {
    * class MyDeck extends components.Deck {
    *  constructor(id: string);
    * }
+   * class MyChannel extends components.Component {
+   *  constructor(id: string);
+   *  static MyStaticProps: number;
+   * }
    * ```
    * And then you can mimic it as so in your component's js file :
    * ```js
@@ -25,18 +29,29 @@ namespace mpfx {
    * const MyDeck = componentMaker(function(parent, id) {
    *  // call the "parent" function to mimic the "super" function
    *  parent();
-   *  this.id = id;
+   *  // Never use `this.... = ` as it brokes type checks.
+   *  Object.assign(this, {id})
    *  this.mpfx.debug("It also auto-bind the controller's component");
    * }, components.Deck);
    *
    * const deck = new MyDeck("test");
    * console.log(deck instanceof MyDeck); // true
    * console.log(deck instanceof components.Deck); // true
+   *
+   * const MyChannel = componentMaker({
+   *  MyStaticProps: 12
+   * }, function(parent, id) {
+   *  parent();
+   *  Object.assign(this, {id})
+   * })
    * ```
    */
   declare function componentMaker<
     ComponentClass,
     MPFXKey extends string = "mpfx",
+    StaticDefinitions = {
+      [key in Exclude<keyof ComponentClass, "prototype">]: ComponentClass[key];
+    },
     ParentClass extends NewableFunction | undefined = undefined,
     ChildThis = mpfx.Binded<InstanceType<ComponentClass>, MPFXKey>,
     ChildParameters = ConstructorParameters<ComponentClass>,
@@ -48,14 +63,20 @@ namespace mpfx {
           parent: SuperFunction,
           ...args: ChildParameters
         ) => void,
-  >(
-    constructor:
+    ConstructorArgument extends
       | ChildConstructor
       | {
           mpfxKey: MPFXKey;
           constructor: ChildConstructor;
         },
-    Parent?: ParentClass,
+  >(
+    ...args: StaticDefinitions extends Record<any, never>
+      ? [constructor: ConstructorArgument, Parent?: ParentClass]
+      : [
+          static: StaticDefinitions,
+          constructor: ConstructorArgument,
+          Parent?: ParentClass,
+        ]
   ): ComponentClass;
 
   /**
@@ -121,7 +142,8 @@ namespace mpfx {
      */
     key: number;
   }
-  interface Track extends Player {
+
+  interface BaseTrack {
     /**
      * The current state of the track (versatile)
      */
@@ -140,4 +162,14 @@ namespace mpfx {
      */
     keyNum: number;
   }
+
+  type Track = BaseTrack &
+    (
+      | {
+          readonly _hasPlayer: false;
+        }
+      | ({
+          readonly _hasPlayer: true;
+        } & Player)
+    );
 }

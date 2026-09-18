@@ -63,7 +63,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX HPF button (Release)">
 				<midino>0x0</midino>
-				<status>0x89</status>
+				<status>0x88</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect1]</group>
 				<options>
@@ -72,7 +72,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX HPF button (Press)">
 				<midino>0x0</midino>
-				<status>0x99</status>
+				<status>0x98</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect1]</group>
 				<options>
@@ -81,7 +81,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX LPF button (Release)">
 				<midino>0x1</midino>
-				<status>0x89</status>
+				<status>0x88</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect2]</group>
 				<options>
@@ -90,7 +90,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX LPF button (Press)">
 				<midino>0x1</midino>
-				<status>0x99</status>
+				<status>0x98</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect2]</group>
 				<options>
@@ -99,7 +99,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX Flanger button (Release)">
 				<midino>0x2</midino>
-				<status>0x89</status>
+				<status>0x88</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect3]</group>
 				<options>
@@ -108,7 +108,7 @@ Personnal Website : https://johan-janin.com</description>
 			</control>
 			<control for="FX Flanger button (Press)">
 				<midino>0x2</midino>
-				<status>0x99</status>
+				<status>0x98</status>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect3]</group>
 				<options>

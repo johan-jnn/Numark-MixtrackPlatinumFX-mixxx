@@ -3,9 +3,11 @@ namespace mpfx {
    * See a channel like a Mixxx's deck
    */
   class Channel extends components.Component {
-    constructor(channel: typeof this.id);
+    static IdleTrack: Track;
 
+    constructor(channel: typeof this.id);
     readonly id: 1 | 2 | 3 | 4;
+
     bytes: {
       id: number;
     };

@@ -485,111 +485,144 @@ var MixtrackPlatinumFX = {
   /**
    * @type {typeof mpfx.Channel}
    */
-  Channel: createMPFXComponent(function (parent, channel) {
-    this.mpfx.debug(`Initializing Channel #${channel}`);
-
-    parent({
-      id: channel,
-      group: `[Channel${channel}]`,
-      bytes: {
-        id: 0x90 + channel - 1,
+  Channel: createMPFXComponent(
+    {
+      IdleTrack: {
+        _hasPlayer: false,
+        bpm: 0,
+        duration: 0,
+        keyNum: 0,
+        state: {
+          key: 0,
+          rate: {
+            bpm: 0,
+            keyLocked: false,
+            range: 0,
+            rate: 0,
+            value: 0,
+          },
+          time: {
+            elapsed: 0,
+            rate: 0,
+            remaining: 0,
+          },
+        },
       },
-      trackedBy: undefined,
-      connect: () => {
-        for (const key in this.inputs) {
-          this.inputs[key].midi = this.bytes.id;
-          this.inputs[key].group = this.group;
-          this.inputs[key].connect?.();
-        }
-      },
-      inputs: {
-        play: new components.PlayButton({
-          shiftOffset: 0x04,
-          inSetValue: (value) => {
-            if (!this.track()) return;
-            const button = this.inputs.play;
+    },
+    function (parent, channel) {
+      this.mpfx.debug(`Initializing Channel #${channel}`);
 
-            const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
-            const smoothBy = value ? start : stop;
+      parent({
+        id: channel,
+        group: `[Channel${channel}]`,
+        bytes: {
+          id: 0x90 + channel - 1,
+        },
+        trackedBy: undefined,
+        connect: () => {
+          for (const key in this.inputs) {
+            this.inputs[key].midi = this.bytes.id;
+            this.inputs[key].group = this.group;
+            this.inputs[key].connect?.();
+          }
+        },
+        inputs: {
+          play: new components.PlayButton({
+            shiftOffset: 0x04,
+            inSetValue: (value) => {
+              if (!this.track()) return;
+              const button = this.inputs.play;
 
-            if (
-              !(
-                smoothBy &&
-                button.inKey === "play" &&
-                "softStart" in engine &&
-                "brake" in engine
-              ) ||
-              this.inputs.cue.isPressed
-            ) {
-              components.Button.prototype.inSetValue.call(button, value);
-            } else {
-              if (value) {
-                engine.softStart(this.id, true, 10 / start);
+              const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
+              const smoothBy = value ? start : stop;
+
+              if (
+                !(
+                  smoothBy &&
+                  button.inKey === "play" &&
+                  "softStart" in engine &&
+                  "brake" in engine
+                ) ||
+                this.inputs.cue.isPressed
+              ) {
+                components.Button.prototype.inSetValue.call(button, value);
               } else {
-                engine.brake(this.id, true, 10 / stop);
-              }
-            }
-
-            button.send(value ? button.on : button.off);
-          },
-          connect: () => {
-            button["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
-              let on = engine.getValue(this.group, "track_loaded");
-              if (on && !engine.getValue(this.group, "play")) {
-                on = long;
+                if (value) {
+                  engine.softStart(this.id, true, 10 / start);
+                } else {
+                  engine.brake(this.id, true, 10 / stop);
+                }
               }
 
-              button.send(on ? button.on : button.off);
-            });
-          },
-          disconnect: () => {
-            this.mpfx.__blinker.remove(this.play["#blinker"], true);
-          },
-        }),
-        cue: new components.CueButton({
-          shiftOffset: 0x04,
-          input: (...args) => {
-            const { cue, play } = this.inputs;
-            Object.assign(cue, {
-              isPressed: args[2],
-            });
+              button.send(value ? button.on : button.off);
+            },
+            connect: () => {
+              const { play: button } = this.inputs;
+              button["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
+                let on = engine.getValue(this.group, "track_loaded");
+                if (on && !engine.getValue(this.group, "play")) {
+                  on = long;
+                }
 
-            cue.send(cue.isPressed ? cue.on : cue.off);
-            if (!pressed && engine.getValue(this.group, "play")) {
-              play.send(play.off);
-            }
+                button.send(on ? button.on : button.off);
+              });
+            },
+            disconnect: () => {
+              this.mpfx.__blinker.remove(this.inputs.play["#blinker"], true);
+            },
+          }),
+          cue: new components.CueButton({
+            shiftOffset: 0x04,
+            input: (...args) => {
+              const { cue, play } = this.inputs;
+              Object.assign(cue, {
+                isPressed: args[2],
+              });
 
-            components.CueButton.prototype.input.call(cue, ...args);
-          },
-        }),
-        sync: new components.SyncButton({
-          sendShifted: true,
-          shiftControl: true,
-          shiftOffset: 0x01,
-        }),
-        load: new components.Button({
-          shift() {
-            this.inKey = "eject";
-          },
-          unshift() {
-            this.inKey = "LoadSelectedTrack";
-          },
-        }),
-      },
-      /**@type {typeof this.track} */
-      track: () => {
-        const player =
-          engine.getValue(this.group, "track_loaded") &&
-          engine.getPlayer(this.group);
-        if (!player) return null;
+              cue.send(cue.isPressed ? cue.on : cue.off);
+              if (!pressed && engine.getValue(this.group, "play")) {
+                play.send(play.off);
+              }
 
-        const duration = engine.getValue(this.group, "duration");
-        return Object.defineProperties(player, {
-          bpm: engine.getValue(this.group, "file_bpm"),
-          duration,
-          keyNum: engine.getValue(this.group, "file_key"),
+              components.CueButton.prototype.input.call(cue, ...args);
+            },
+          }),
+          sync: new components.SyncButton({
+            sendShifted: true,
+            shiftControl: true,
+            shiftOffset: 0x01,
+          }),
+          load: new components.Button({
+            shift() {
+              this.inKey = "eject";
+            },
+            unshift() {
+              this.inKey = "LoadSelectedTrack";
+            },
+          }),
+        },
+        /**@type {typeof this.track} */
+        track: () => {
+          if (!engine.getValue(this.group, "track_loaded")) return null;
 
-          state: {
+          /**@type {mpfx.Track} */
+          let track = {
+            _hasPlayer: false,
+          };
+          const player = engine.getPlayer?.(this.group);
+          if (player) {
+            Object.assign(track, player);
+            track._hasPlayer = true;
+          }
+
+          const duration = engine.getValue(this.group, "duration");
+          Object.assign(track, {
+            bpm: engine.getValue(this.group, "file_bpm"),
+            duration,
+            keyNum: engine.getValue(this.group, "file_key"),
+          });
+
+          Object.defineProperty(track, "state", {
             /**@returns {mpfx.TrackState} */
             get: () => {
               const [rate, rateRange] = [
@@ -598,6 +631,8 @@ var MixtrackPlatinumFX = {
               ];
 
               const position = engine.getValue(this.group, "playposition");
+              const elapsed = duration * position;
+              const remaining = duration * (1 - position);
 
               return {
                 rate: {
@@ -608,18 +643,21 @@ var MixtrackPlatinumFX = {
                   keyLocked: !!engine.getValue(this.group, "keylock"),
                 },
                 time: {
-                  elapsed: position,
-                  remaining: duration - position,
-                  rate: position / duration,
+                  elapsed,
+                  remaining,
+                  rate: position,
                 },
                 key: engine.getValue(this.group, "key"),
               };
             },
-          },
-        });
-      },
-    });
-  }, components.Component),
+          });
+
+          return track;
+        },
+      });
+    },
+    components.Component,
+  ),
   /**
    * @type {typeof mpfx.Deck}
    */
@@ -666,12 +704,11 @@ var MixtrackPlatinumFX = {
         this.updateScreen();
 
         // Update the play button led state
-        this.play.send(
-          engine.getValue(this.channel.group, "play")
-            ? this.play.on
-            : this.play.off,
+        const { play, cue } = this.channel.inputs;
+        play.send(
+          engine.getValue(this.channel.group, "play") ? play.on : play.off,
         );
-        this.cue.send(this.cue.off);
+        cue.send(cue.off);
 
         // Update the skin to a 4-deck one if wanted
         if (this.mpfx.CONFIG.decks.syncDecksSkin) {
@@ -703,8 +740,8 @@ var MixtrackPlatinumFX = {
       },
       /**@type {typeof this.updateScreen} */
       updateScreen: (only) => {
-        const track = this.channel.track();
-        const { state } = track ?? { state: undefined };
+        const { state, duration } =
+          this.channel.track() ?? this.mpfx.Channel.IdleTrack;
 
         /**@type {(part:mpfx.ScreenParts) => boolean} */
         const send = (part) => !only || only[part];
@@ -720,7 +757,7 @@ var MixtrackPlatinumFX = {
             ...screenNumbersPrefix,
             0x01,
             ...this.mpfx.intToBytes(
-              parseInt((state?.rate.bpm ?? 0) * 10) * 10,
+              parseInt(state.rate.bpm * 10) * 10,
               6,
               true,
             ),
@@ -731,7 +768,7 @@ var MixtrackPlatinumFX = {
           sysexMessages.push([
             ...screenNumbersPrefix,
             0x02,
-            ...this.mpfx.intToBytes((state?.rate.value ?? 0) * 1e4, 6),
+            ...this.mpfx.intToBytes(state.rate.value * 1e4, 6),
             0xf7,
           ]);
         }
@@ -739,7 +776,7 @@ var MixtrackPlatinumFX = {
           shortMessages.push([
             0x90 | (this.channel.id - 1),
             0x0e,
-            parseInt((state?.rate.range ?? 0) * 1e2),
+            parseInt(state.rate.range * 1e2),
           ]);
         }
         if (send("time")) {
@@ -751,14 +788,15 @@ var MixtrackPlatinumFX = {
             ? !inverseMode
             : inverseMode;
 
-          const time =
-            (showRemaining ? state?.time.remaining : state?.time.elapsed) ?? 0;
+          const time = showRemaining
+            ? state.time.remaining
+            : state.time.elapsed;
 
           sysexMessages.push(
             [
               ...screenNumbersPrefix,
               0x03,
-              ...this.mpfx.intToBytes((track?.duration ?? 0) * 1e3),
+              ...this.mpfx.intToBytes(duration * 1e3),
               0xf7,
             ],
             [
@@ -775,7 +813,7 @@ var MixtrackPlatinumFX = {
           shortMessages.push([
             0xb0 | (this.channel.id - 1),
             0x3f,
-            parseInt(state?.time.rate * 52),
+            parseInt(state.time.rate * 52),
           ]);
 
           // spinner
@@ -783,7 +821,7 @@ var MixtrackPlatinumFX = {
             this.mpfx.CONFIG.screen.spinner;
 
           const spinPosition =
-            ((state?.time.elapsed ?? 0) % oneSpinDuration) / oneSpinDuration;
+            (state.time.elapsed % oneSpinDuration) / oneSpinDuration;
           // If spinPosition is bellow 0, we invert the defined fill mode, and use the invert of the spinPosition
           const spinShift = filledSpin === spinPosition > 0 ? 65 : 1;
           const clampedSpinPosition =
@@ -797,17 +835,10 @@ var MixtrackPlatinumFX = {
         }
 
         if (send("keylock")) {
+          // ? why the fuck do we have 2 messages for 1 thing ??
           shortMessages.push(
-            [
-              0x80 | (this.channel.id - 1),
-              0x0d,
-              0x7f * +(state?.rate.keyLocked ?? 0),
-            ],
-            [
-              0x90 | (this.channel.id - 1),
-              0x0d,
-              0x7f * +(state?.rate.keyLocked ?? 0),
-            ],
+            [0x80 | (this.channel.id - 1), 0x0d, 0x7f * +state.rate.keyLocked],
+            [0x90 | (this.channel.id - 1), 0x0d, 0x7f * +state.rate.keyLocked],
           );
         }
 
@@ -824,23 +855,24 @@ var MixtrackPlatinumFX = {
               console.warn(
                 `Cannot update deck's arrows: deck ${this.id} has no brother.`,
               );
-            }
-            const { state: brotherState } = brotherTrack;
+            } else {
+              const { state: brotherState } = brotherTrack;
 
-            shortMessages.push(
-              // up arrow
-              [
-                0x80 | (this.channel.id - 1),
-                0x09,
-                (brotherState.rate.bpm > (state?.rate.bpm ?? 0)) * 0x7f,
-              ],
-              // down arrow
-              [
-                0x80 | (this.channel.id - 1),
-                0x0a,
-                (brotherState.rate.bpm < (state?.rate.bpm ?? 0)) * 0x7f,
-              ],
-            );
+              shortMessages.push(
+                // up arrow
+                [
+                  0x80 | (this.channel.id - 1),
+                  0x09,
+                  +(brotherState.rate.bpm > state.rate.bpm) * 0x7f,
+                ],
+                // down arrow
+                [
+                  0x80 | (this.channel.id - 1),
+                  0x0a,
+                  +(brotherState.rate.bpm < state.rate.bpm) * 0x7f,
+                ],
+              );
+            }
           }
         }
 
@@ -856,22 +888,6 @@ var MixtrackPlatinumFX = {
       get: () => {
         return this.mpfx.$components.decks?.[[1, 2][this.id & 0x01]];
       },
-    });
-
-    // Define midi and group key for deck's buttons
-    Object.entries({
-      play: 0x00,
-      cue: 0x01,
-      sync: 0x02,
-    }).forEach(([button, midiShift]) => {
-      Object.defineProperties(this[button], {
-        group: {
-          get: () => this.channel.group,
-        },
-        midi: {
-          get: () => [this.channel.bytes.id, midiShift],
-        },
-      });
     });
 
     channels.forEach((channel) => {
@@ -1318,7 +1334,7 @@ var MixtrackPlatinumFX = {
               script.triggerControl("[PreviewDeck1]", "stop");
               script.triggerControl("[PreviewDeck1]", "eject");
             } else {
-              console.log("inserting...");
+              this.mpfx.debug("Inserting selected in preview deck...");
 
               script.triggerControl(
                 "[PreviewDeck1]",
@@ -1351,14 +1367,16 @@ var MixtrackPlatinumFX = {
 /**
  * @type {typeof mpfx.componentMaker}
  */
-function createMPFXComponent(constructor, Parent = undefined) {
+function createMPFXComponent(statics, constructor, Parent = undefined) {
+  if (typeof statics === "function") {
+    return createMPFXComponent({}, statics, constructor);
+  }
+
   let mpfxKey = "mpfx";
   if (typeof constructor !== "function") {
     mpfxKey = constructor.mpfxKey;
     constructor = constructor.constructor;
   }
-
-  console.log(Parent);
 
   function Component(...componentArgs) {
     MixtrackPlatinumFX.bindTo(this, mpfxKey);
@@ -1384,5 +1402,5 @@ function createMPFXComponent(constructor, Parent = undefined) {
   }
   Component.prototype = Object.create(constructor.prototype);
 
-  return Component;
+  return Object.assign(Component, statics);
 }
