@@ -96,9 +96,9 @@ namespace mpfx {
     focusNext(this: this): void;
     focusPrevious(this: this): void;
 
-    send(channel: Channel): void;
-    unsend(channel: Channel): void;
-    isSendingTo(channel: Channel): boolean;
+    send(this: this, channel: Channel): void;
+    unsend(this: this, channel: Channel): void;
+    isSendingTo(this: this, channel: Channel): boolean;
   }
 
   class EffectPad extends components.ComponentContainer {

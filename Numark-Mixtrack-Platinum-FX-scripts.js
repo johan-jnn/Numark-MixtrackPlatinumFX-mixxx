@@ -520,44 +520,54 @@ var MixtrackPlatinumFX = {
         },
         trackedBy: undefined,
         connect: () => {
-          for (const key in this.inputs) {
-            this.inputs[key].midi = this.bytes.id;
-            this.inputs[key].group = this.group;
-            this.inputs[key].connect?.();
-          }
+          ["play", "cue", "sync"].forEach((key, shift) => {
+            Object.assign(this.inputs[key], {
+              midi: [this.bytes.id, shift],
+              group: this.group,
+            });
+          });
+          Object.values(this.inputs).forEach((c) => c.connect?.());
+        },
+        disconnect: () => {
+          Object.values(this.inputs).forEach((c) => c.disconnect?.());
         },
         inputs: {
           play: new components.PlayButton({
             shiftOffset: 0x04,
             inSetValue: (value) => {
               if (!this.track()) return;
-              const button = this.inputs.play;
+              const { play: button, cue } = this.inputs;
 
-              const { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
-              const smoothBy = value ? start : stop;
+              let { start, stop } = this.mpfx.CONFIG.decks.playSmoothing;
+              if (cue.isPressed) {
+                // If cue is pressed, then we assume the user wants to keep the track playing and exit cue mode
+                cue.isPressed = 0; // We abstract-release the cue
+                start = stop = 0; // The start should be instant
+                value = 1; // We say Mixxx to start the playing
+                // We need to first pause the channel
+                // to exit the cue mode without getting back to the cue point
+                components.PlayButton.prototype.inSetValue.call(button, 0);
+              }
 
               if (
-                !(
-                  smoothBy &&
-                  button.inKey === "play" &&
-                  "softStart" in engine &&
-                  "brake" in engine
-                ) ||
-                this.inputs.cue.isPressed
+                (start || stop) &&
+                button.inKey === "play" &&
+                "softStart" in engine &&
+                "brake" in engine
               ) {
-                components.Button.prototype.inSetValue.call(button, value);
-              } else {
                 if (value) {
                   engine.softStart(this.id, true, 10 / start);
                 } else {
                   engine.brake(this.id, true, 10 / stop);
                 }
+              } else {
+                components.PlayButton.prototype.inSetValue.call(button, value);
               }
 
               button.send(value ? button.on : button.off);
             },
             connect: () => {
-              const { play: button } = this.inputs;
+              const { play: button, cue } = this.inputs;
               button["#blinker"] = this.mpfx.__blinker.onUpdate((_, long) => {
                 let on = engine.getValue(this.group, "track_loaded");
                 if (on && !engine.getValue(this.group, "play")) {
@@ -565,6 +575,10 @@ var MixtrackPlatinumFX = {
                 }
 
                 button.send(on ? button.on : button.off);
+              });
+
+              engine.makeConnection(this.group, "play", (value) => {
+                button.send(value && !cue.isPressed ? button.on : button.off);
               });
             },
             disconnect: () => {
@@ -574,18 +588,18 @@ var MixtrackPlatinumFX = {
           cue: new components.CueButton({
             shiftOffset: 0x04,
             input: (...args) => {
-              const { cue, play } = this.inputs;
-              Object.assign(cue, {
-                isPressed: args[2],
-              });
+              const { cue } = this.inputs;
+              if (cue.isPressed != args[2]) {
+                Object.assign(cue, {
+                  isPressed: args[2],
+                });
 
-              cue.send(cue.isPressed ? cue.on : cue.off);
-              if (!pressed && engine.getValue(this.group, "play")) {
-                play.send(play.off);
+                components.CueButton.prototype.input.call(cue, ...args);
               }
 
-              components.CueButton.prototype.input.call(cue, ...args);
+              cue.send(cue.isPressed ? cue.on : cue.off);
             },
+            connect: () => {},
           }),
           sync: new components.SyncButton({
             sendShifted: true,
@@ -852,7 +866,7 @@ var MixtrackPlatinumFX = {
           } else {
             const brotherTrack = brotherChannel.track();
             if (!brotherTrack) {
-              console.warn(
+              this.mpfx.warn(
                 `Cannot update deck's arrows: deck ${this.id} has no brother.`,
               );
             } else {
@@ -1021,7 +1035,7 @@ var MixtrackPlatinumFX = {
     this.mpfx.debug(`Initializing Effect Unit #${unit}...`);
     parent(unit, true);
 
-    this.id = unit;
+    Object.assign(this, { id: unit });
     /**
      * ? This value is increased/decreased to know if this effect unit is sending to any channels
      * ? This avoid looping through channels
@@ -1063,68 +1077,70 @@ var MixtrackPlatinumFX = {
     engine.setValue(this.group, "group_[Headphone]_enable", 0);
     engine.setValue(this.group, "group_[Master]_enable", 0);
 
-    /**@type {typeof this['clearSelection']} */
-    this.clearSelection = function () {
-      effects.forEach((e) => e.unselect());
-    };
-    /**@type {typeof this['selectAll']} */
-    this.selectAll = function () {
-      effects.forEach((e) => e.select());
-    };
-    /**@type {typeof this.send} */
-    this.send = function (channel) {
-      if (this.isSendingTo(channel)) {
-        this.mpfx.warn(
-          `EffectUnit #${this.id} is already sending to channel ${channel.id}.`,
+    Object.assign(this, {
+      /**@type {typeof this['clearSelection']} */
+      clearSelection: () => {
+        effects.forEach((e) => e.unselect());
+      },
+      /**@type {typeof this['selectAll']} */
+      selectAll: () => {
+        effects.forEach((e) => e.select());
+      },
+      /**@type {typeof this.send} */
+      send: (channel) => {
+        if (this.isSendingTo(channel)) {
+          this.mpfx.warn(
+            `EffectUnit #${this.id} is already sending to channel ${channel.id}.`,
+          );
+          return;
+        }
+
+        engine.setValue(this.group, `group_${channel.group}_enable`, 1);
+        sendingCache.add(channel.id);
+        this.mpfx.log(
+          `EffectUnit #${this.id} is sending to channel ${channel.id}`,
         );
-        return;
-      }
+      },
+      /**@type {typeof this.unsend} */
+      unsend: (channel) => {
+        if (!this.isSendingTo(channel)) {
+          this.warn(
+            `EffectUnit #${this.id} is not sending to channel ${channel.id}.`,
+          );
+          return;
+        }
 
-      engine.setValue(this.group, `group_${channel.group}_enable`, 1);
-      sendingCache.add(channel.id);
-      this.mpfx.log(
-        `EffectUnit #${this.id} is sending to channel ${channel.id}`,
-      );
-    };
-    /**@type {typeof this.unsend} */
-    this.unsend = function (channel) {
-      if (!this.isSendingTo(channel)) {
-        console.warn(
-          `EffectUnit #${this.id} is not sending to channel ${channel.id}.`,
+        engine.setValue(this.group, `group_${channel.group}_enable`, 0);
+        sendingCache.delete(channel.id);
+        this.mpfx.log(
+          `EffectUnit #${this.id} is not longer sending to channel ${channel.id}`,
         );
-        return;
-      }
+      },
+      /**@type {typeof this.isSendingTo} */
+      isSendingTo: (channel) => {
+        return sendingCache.has(channel.id);
+      },
 
-      engine.setValue(this.group, `group_${channel.group}_enable`, 0);
-      sendingCache.delete(channel.id);
-      this.mpfx.log(
-        `EffectUnit #${this.id} is not longer sending to channel ${channel.id}`,
-      );
-    };
-    /**@type {typeof this.isSendingTo} */
-    this.isSendingTo = function (channel) {
-      return sendingCache.has(channel.id);
-    };
-
-    this.clearFocus = function () {
-      this.focusedEffect?.unfocus();
-    };
-    this.focusNext = function () {
-      const focused = this.focusedEffect;
-      if (focused) {
-        effects.at(focused.id % 3);
-      } else {
-        effects[0].focus();
-      }
-    };
-    this.focusPrevious = function () {
-      const focused = this.focusedEffect;
-      if (focused) {
-        effects.at(focused.id - 2);
-      } else {
-        effects.at(-1).focus();
-      }
-    };
+      clearFocus: () => {
+        this.focusedEffect?.unfocus();
+      },
+      focusNext: () => {
+        const focused = this.focusedEffect;
+        if (focused) {
+          effects.at(focused.id % 3);
+        } else {
+          effects[0].focus();
+        }
+      },
+      focusPrevious: () => {
+        const focused = this.focusedEffect;
+        if (focused) {
+          effects.at(focused.id - 2);
+        } else {
+          effects.at(-1).focus();
+        }
+      },
+    });
 
     this.mpfx.__blinker.onUpdate((short, long) => {
       effects.forEach((effect) => {
