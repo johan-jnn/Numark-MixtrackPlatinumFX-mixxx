@@ -688,6 +688,7 @@
 				<key>headMix</key>
 				<group>[Master]</group>
 			</control>
+			<!-- ! WORK IN PROGRESS ! -->
 			<control for="Channel #1 bpm rate">
 				<midino>0x9</midino>
 				<status>0xb0</status>
