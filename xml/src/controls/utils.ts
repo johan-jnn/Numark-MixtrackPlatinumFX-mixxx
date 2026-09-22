@@ -30,8 +30,8 @@ export function inputControl(
   if (!path.group.endsWith("]")) path.group += `]`;
 
   const control: XMLModule = {
-    midino: `0x${midi.id.toString(16)}`,
-    status: `0x${midi.status.toString(16)}`,
+    midino: DEV ? `0x${midi.id.toString(16)}` : midi.id,
+    status: DEV ? `0x${midi.status.toString(16)}` : midi.id,
     ...path,
   };
 

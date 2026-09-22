@@ -1,6 +1,6 @@
-import { writeFileSync } from "fs";
+import { existsSync, mkdirSync, writeFileSync } from "fs";
 import { jsXml } from "json-xml-parse";
-import { join } from "path";
+import { dirname, join } from "path";
 import { BEAUTY_EXPORT, DEV, EXPORT_FILE } from "./utils/constants";
 import { load, type XMLModule } from "./utils/module";
 
@@ -31,4 +31,10 @@ const output =
   process.env.OUTPUT ??
   join(import.meta.dirname, "../Numark Mixtrack Platinum FX.midi.xml");
 
-EXPORT_FILE && writeFileSync(output, xml, { encoding: "utf-8" });
+if (EXPORT_FILE) {
+  const directory = dirname(output);
+  if (!existsSync(directory)) {
+    mkdirSync(directory, { recursive: true });
+  }
+  writeFileSync(output, xml, { encoding: "utf-8" });
+}

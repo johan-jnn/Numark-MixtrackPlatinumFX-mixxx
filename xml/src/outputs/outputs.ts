@@ -1,4 +1,5 @@
 import { globSync } from "fs";
+import { EMPTY_STRING } from "../../utils/constants";
 import { load } from "../../utils/module";
 
 const outputs = globSync(`${import.meta.dirname}/list/**/*.ts`);
@@ -11,4 +12,4 @@ export default mappings.length
   ? {
       output: mappings,
     }
-  : "\u200b";
+  : EMPTY_STRING;

@@ -2,18 +2,20 @@
 <MixxxControllerPreset schemaVersion="1" mixxxVersion="2.3.0+">
 	<info>
 		<name>Numark Mixtrack Platinum FX</name>
-		<author>Johan JANIN, based on the work of QGazQ, Octopussy, h67ma, bad1dea5, photoenix, Matthew, Nicholson, Ending &amp; Kaj Bostrom</author>
+		<author>Johan JANIN, based on the work of QGazQ, Octopussy, h67ma, bad1dea5, photoenix,
+			Matthew, Nicholson, Ending &amp; Kaj Bostrom</author>
 		<description>Mapping for the Numark Mixtrack Platinum FX.
 
-Repository : https://github.com/johan-jnn/Numark-MixtrackPlatinumFX-mixxx
-Personnal Website : https://johan-janin.com</description>
+			Repository : https://github.com/johan-jnn/Numark-MixtrackPlatinumFX-mixxx
+			Personnal Website : https://johan-janin.com</description>
 		<forums>https://mixxx.discourse.group/t/numark-mixtrack-platinum-fx-mapping/19985</forums>
 	</info>
 	<controller>
 		<scriptfiles>
-			<file filename="lodash.mixxx.js"/>
-			<file filename="midi-components-0.0.js"/>
-			<file filename="Numark-Mixtrack-Platinum-FX-scripts.js" functionprefix="MixtrackPlatinumFX"/>
+			<file filename="lodash.mixxx.js" />
+			<file filename="midi-components-0.0.js" />
+			<file filename="Numark-Mixtrack-Platinum-FX-scripts.js"
+				functionprefix="MixtrackPlatinumFX" />
 		</scriptfiles>
 		<controls>
 			<control for="Left Shift (Release)">
@@ -22,7 +24,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.unshift</key>
 				<group>[Master]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Right Shift (Release)">
@@ -31,7 +33,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.unshift</key>
 				<group>[Master]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Left Shift (Press)">
@@ -40,7 +42,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.shift</key>
 				<group>[Master]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Right Shift (Press)">
@@ -49,7 +51,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.shift</key>
 				<group>[Master]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Effect beats">
@@ -58,7 +60,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.beats.input</key>
 				<group>[EffectRack1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX HPF button (Release)">
@@ -67,7 +69,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX HPF button (Press)">
@@ -76,7 +78,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][1].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX LPF button (Release)">
@@ -85,7 +87,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX LPF button (Press)">
@@ -94,7 +96,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][2].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Flanger button (Release)">
@@ -103,7 +105,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Flanger button (Press)">
@@ -112,7 +114,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[1][3].input</key>
 				<group>[EffectRack1_EffectUnit1_Effect3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Echo button (Release)">
@@ -121,7 +123,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][1].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Echo button (Press)">
@@ -130,7 +132,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][1].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Reverb button (Release)">
@@ -139,7 +141,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][2].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Reverb button (Press)">
@@ -148,7 +150,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][2].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Phaser button (Release)">
@@ -157,7 +159,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][3].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Phaser button (Press)">
@@ -166,7 +168,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.pad[2][3].input</key>
 				<group>[EffectRack1_EffectUnit2_Effect3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Deck 1 FX sender">
@@ -175,7 +177,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.senders[1].input</key>
 				<group>[EffectRack1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Deck 2 FX sender">
@@ -184,17 +186,17 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.effects.senders[2].input</key>
 				<group>[EffectRack1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
-			<control/>
+			<control />
 			<control for="Cue on channel 1 (Release)">
 				<midino>0x1</midino>
 				<status>0x80</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.cue.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 1">
@@ -203,7 +205,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.cue.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 2 (Release)">
@@ -212,7 +214,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.cue.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 2">
@@ -221,7 +223,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.cue.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 3 (Release)">
@@ -230,7 +232,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.cue.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 3">
@@ -239,7 +241,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.cue.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 4 (Release)">
@@ -248,7 +250,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.cue.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Cue on channel 4">
@@ -257,7 +259,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.cue.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 1 (Release)">
@@ -266,7 +268,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.load.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 1">
@@ -275,7 +277,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.load.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 2 (Release)">
@@ -284,7 +286,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.load.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 2">
@@ -293,7 +295,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.load.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 3 (Release)">
@@ -302,7 +304,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.load.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 3">
@@ -311,7 +313,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.load.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 4 (Release)">
@@ -320,7 +322,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.load.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Load to channel 4">
@@ -329,7 +331,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.load.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 1 (Release)">
@@ -338,7 +340,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pfl.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 1">
@@ -347,7 +349,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pfl.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 2 (Release)">
@@ -356,7 +358,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pfl.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 2">
@@ -365,7 +367,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pfl.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 3 (Release)">
@@ -374,7 +376,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pfl.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 3">
@@ -383,7 +385,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pfl.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 4 (Release)">
@@ -392,7 +394,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pfl.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="PFL button for channel 4">
@@ -401,7 +403,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pfl.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 1 (Release)">
@@ -410,7 +412,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.play.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 1">
@@ -419,7 +421,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.play.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 2 (Release)">
@@ -428,7 +430,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.play.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 2">
@@ -437,7 +439,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.play.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 3 (Release)">
@@ -446,7 +448,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.play.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 3">
@@ -455,7 +457,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.play.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 4 (Release)">
@@ -464,7 +466,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.play.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Play/Pause on channel 4">
@@ -473,7 +475,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.play.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Switch to channel 1">
@@ -482,7 +484,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.decks[1].switch</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Switch to channel 2">
@@ -491,7 +493,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.decks[2].switch</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Switch to channel 3">
@@ -500,7 +502,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.decks[1].switch</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Switch to channel 4">
@@ -509,7 +511,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.decks[2].switch</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 1 (Release)">
@@ -518,7 +520,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 1">
@@ -527,7 +529,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.sync.input</key>
 				<group>[Channel1]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 2 (Release)">
@@ -536,7 +538,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 2">
@@ -545,7 +547,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.sync.input</key>
 				<group>[Channel2]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 3 (Release)">
@@ -554,7 +556,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 3">
@@ -563,7 +565,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.sync.input</key>
 				<group>[Channel3]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 4 (Release)">
@@ -572,7 +574,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Sync on channel 4">
@@ -581,7 +583,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
 				<group>[Channel4]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browser selector (Release)">
@@ -590,7 +592,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.selector.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browser selector (Shifted) (Release)">
@@ -599,7 +601,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.selector.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browser selector">
@@ -608,7 +610,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.selector.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browser selector (Shifted)">
@@ -617,7 +619,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.selector.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browse wheel">
@@ -626,7 +628,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.knob.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="Browse wheel (Shifted)">
@@ -635,7 +637,7 @@ Personnal Website : https://johan-janin.com</description>
 				<key>MixtrackPlatinumFX.$components.browser.knob.input</key>
 				<group>[Library]</group>
 				<options>
-					<script-binding/>
+					<script-binding />
 				</options>
 			</control>
 			<control for="FX Unit 1 Mix Knob">
@@ -685,6 +687,222 @@ Personnal Website : https://johan-janin.com</description>
 				<status>0xbf</status>
 				<key>headMix</key>
 				<group>[Master]</group>
+			</control>
+			<control for="Channel #1 bpm rate">
+				<midino>0x9</midino>
+				<status>0xb0</status>
+				<key>rate</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #2 bpm rate">
+				<midino>0x9</midino>
+				<status>0xb1</status>
+				<key>rate</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #3 bpm rate">
+				<midino>0x9</midino>
+				<status>0xb2</status>
+				<key>rate</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #4 bpm rate">
+				<midino>0x9</midino>
+				<status>0xb3</status>
+				<key>rate</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #1 gain">
+				<midino>0x1c</midino>
+				<status>0xb0</status>
+				<key>pregain</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #2 gain">
+				<midino>0x1c</midino>
+				<status>0xb1</status>
+				<key>pregain</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #3 gain">
+				<midino>0x1c</midino>
+				<status>0xb2</status>
+				<key>pregain</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel #4 gain">
+				<midino>0x1c</midino>
+				<status>0xb3</status>
+				<key>pregain</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 1 dynamic filter">
+				<midino>0x1a</midino>
+				<status>0xb0</status>
+				<key>super1</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 2 dynamic filter">
+				<midino>0x1a</midino>
+				<status>0xb1</status>
+				<key>super1</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 3 dynamic filter">
+				<midino>0x1a</midino>
+				<status>0xb2</status>
+				<key>super1</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 4 dynamic filter">
+				<midino>0x1a</midino>
+				<status>0xb3</status>
+				<key>super1</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 1 high filter">
+				<midino>0x17</midino>
+				<status>0xb0</status>
+				<key>parameter3</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 2 high filter">
+				<midino>0x17</midino>
+				<status>0xb1</status>
+				<key>parameter3</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 3 high filter">
+				<midino>0x17</midino>
+				<status>0xb2</status>
+				<key>parameter3</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 4 high filter">
+				<midino>0x17</midino>
+				<status>0xb3</status>
+				<key>parameter3</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 1 low filter">
+				<midino>0x19</midino>
+				<status>0xb0</status>
+				<key>parameter1</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 2 low filter">
+				<midino>0x19</midino>
+				<status>0xb1</status>
+				<key>parameter1</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 3 low filter">
+				<midino>0x19</midino>
+				<status>0xb2</status>
+				<key>parameter1</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 4 low filter">
+				<midino>0x19</midino>
+				<status>0xb3</status>
+				<key>parameter1</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 1 mid filter">
+				<midino>0x18</midino>
+				<status>0xb0</status>
+				<key>parameter2</key>
+				<group>[Channel1]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 2 mid filter">
+				<midino>0x18</midino>
+				<status>0xb1</status>
+				<key>parameter2</key>
+				<group>[Channel2]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 3 mid filter">
+				<midino>0x18</midino>
+				<status>0xb2</status>
+				<key>parameter2</key>
+				<group>[Channel3]</group>
+				<options>
+					<soft-takeover />
+				</options>
+			</control>
+			<control for="Channel 4 mid filter">
+				<midino>0x18</midino>
+				<status>0xb3</status>
+				<key>parameter2</key>
+				<group>[Channel4]</group>
+				<options>
+					<soft-takeover />
+				</options>
 			</control>
 		</controls>
 		<outputs>​</outputs>

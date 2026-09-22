@@ -406,8 +406,11 @@ var MixtrackPlatinumFX = {
       short: false,
     },
     $$EVENT: "led_blink",
+    mpfx() {
+      return MixtrackPlatinumFX;
+    },
     enable() {
-      let { delay } = MixtrackPlatinumFX.CONFIG.leds.blinker;
+      let { delay } = this.mpfx().CONFIG.leds.blinker;
 
       if (typeof delay === "number") {
         this.timer = engine.beginTimer(
@@ -418,11 +421,7 @@ var MixtrackPlatinumFX = {
               long: this.state.short === !this.state.long,
             };
 
-            MixtrackPlatinumFX.emit(
-              this.$$EVENT,
-              this.state.short,
-              this.state.long,
-            );
+            this.mpfx().emit(this.$$EVENT, this.state.short, this.state.long);
           },
           false,
         );
@@ -433,11 +432,7 @@ var MixtrackPlatinumFX = {
             long: !!engine.getValue("[App]", "indicator_500ms"),
           };
 
-          MixtrackPlatinumFX.emit(
-            this.$$EVENT,
-            this.state.short,
-            this.state.long,
-          );
+          this.mpfx().emit(this.$$EVENT, this.state.short, this.state.long);
         });
       }
     },
@@ -453,15 +448,15 @@ var MixtrackPlatinumFX = {
      */
     remove(id, send_off = true) {
       if (send_off) {
-        MixtrackPlatinumFX.emitOnly(this.$$EVENT, id, false);
+        this.mpfx().emitOnly(this.$$EVENT, id, false);
       }
-      MixtrackPlatinumFX.dropListener(this.$$EVENT, id);
+      this.mpfx().dropListener(this.$$EVENT, id);
     },
     /**
      * @param {BlinkerCallback} callback
      */
     onUpdate(callback) {
-      return MixtrackPlatinumFX.listenFor(this.$$EVENT, callback);
+      return this.mpfx().listenFor(this.$$EVENT, callback);
     },
   },
   /* #endregion */
