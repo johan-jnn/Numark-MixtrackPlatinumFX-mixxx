@@ -13,7 +13,8 @@ export type InputControlOption =
   | "spread64"
   | "soft-takeover"
   | "fourteen-bit-lsb"
-  | "fourteen-bit-msb";
+  | "fourteen-bit-msb"
+  | "invert";
 
 export function inputControl(
   midi: {
@@ -39,9 +40,13 @@ export function inputControl(
     control["@"] = { for: extra?.description };
   }
   if (extra?.options?.length) {
-    control["options"] = extra.options.map((option) => ({
-      [option as string]: [],
-    }));
+    control["options"] = extra.options.reduce(
+      (options, option) => ({
+        ...options,
+        [option]: [],
+      }),
+      {},
+    );
   }
   return control;
 }

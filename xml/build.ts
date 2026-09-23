@@ -25,7 +25,7 @@ const xml = jsXml.toXmlString(input, {
   beautify: BEAUTY_EXPORT,
 });
 
-DEV && console.log("OUTPUT:\n", xml);
+DEV && !EXPORT_FILE && console.log("OUTPUT:\n", xml);
 
 const output =
   process.env.OUTPUT ??

@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "Start Mixxx with Controller Debugging",
+      "type": "node-terminal",
+      "command": "flatpak run org.mixxx.Mixxx --controller-debug",
+      "request": "launch",
+      "preLaunchTask": "Build xml mapping for developpement"
+    }
+  ]
+}
