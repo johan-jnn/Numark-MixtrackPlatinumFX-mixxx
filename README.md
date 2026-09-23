@@ -13,6 +13,7 @@ Download the required files and place them directly inside your [Mixxx controlle
 - [The scripting](./Numark-Mixtrack-Platinum-FX-scripts.js)
 
 Soon I'll auto-publish a .zip archive to make this process even easier for you !
+The goal of this auto-publish is that you have files that take as less space on disk as possible.
 
 ## Configuration
 
@@ -27,6 +28,68 @@ Please be aware that this project does not follow [Mixxx's mapping contributing 
 
 Typing files are in the [types directory](./types), and are originally downloaded from the [Mixxx's source code](https://github.com/search?q=repo%3Amixxxdj%2Fmixxx+path%3Ares%2F**%2F*.d.ts&type=code).
 An additionnal [mpfx](./types/mpfx/) folder contains the types (components, utilities, ...) for this controller mapping.
+
+#### Pseudo-OOP
+
+Because [QtEngine](https://doc.qt.io/archives/qt-5.15/qjsengine.html) (the engine that runs the controller's js script) does not support OOP syntax (as it uses a very legacy javascript syntax), I've made an utility function to mimic the modern class creation process.
+
+You firstly have to declare the class in a typescript declaration file :
+
+```ts
+// components.d.ts
+class MyDeck extends components.Deck {
+  constructor(id: string);
+}
+class MyChannel extends components.Component {
+  constructor(id: string);
+  static MyStaticProps: number;
+  static sayHello(): void;
+}
+```
+
+Then you can use the `makeMPFXComponent` like so :
+
+```js
+/**
+ * You have to type "MyDeck" to have the fully typed constructor
+ * @type {typeof MyDeck}
+ */
+const MyDeck = makeMPFXComponent(function (parent, id) {
+  // call the "parent" function to mimic the "super" function
+  parent();
+  // Never use `this.... = ` as it brokes type checks.
+  Object.assign(this, { id });
+
+  // The controller's script object is automaticly binded in the "mpfx" key
+  this.mpfx.debug("It also auto-bind the controller's component");
+}, components.Deck);
+
+const deck = new MyDeck("test");
+console.log(deck instanceof MyDeck); // true
+console.log(deck instanceof components.Deck); // true
+
+/**
+ * You can also define static attributes/methods
+ * @type {typeof MyChannel}
+ */
+const MyChannel = makeMPFXComponent(
+  {
+    MyStaticProps: 12,
+    sayHello() {
+      console.log("hello");
+    },
+  },
+  function (parent, id) {
+    parent();
+    Object.assign(this, { id });
+  },
+);
+```
+
+### XML Mapping
+
+Because I don't want to manage a xml file with more than 1000 lines, as well of I want the code base to be as clean as possible, I've made a little xml-mapping builder.
+The documentation is in the [xml directory](./xml/).
 
 ### Documentation
 
