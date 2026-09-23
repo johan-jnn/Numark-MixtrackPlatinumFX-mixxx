@@ -40,7 +40,8 @@ You firstly have to declare the class in a typescript declaration file :
 class MyDeck extends components.Deck {
   constructor(id: string);
 }
-class MyChannel extends components.Component {
+// Works as well if you does not extend you class
+class MyChannel {
   constructor(id: string);
   static MyStaticProps: number;
   static sayHello(): void;
