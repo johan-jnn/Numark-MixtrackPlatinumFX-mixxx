@@ -3,7 +3,7 @@ namespace mpfx {
    * See a channel like a Mixxx's deck
    */
   class Channel extends components.Component {
-    static IdleTrack: Track;
+    static IdleStaticTrack: Track & { _isIdle: true };
 
     constructor(channel: typeof this.id);
     readonly id: 1 | 2 | 3 | 4;
@@ -25,9 +25,20 @@ namespace mpfx {
     trackedBy?: Deck;
     /**
      * Get the loaded track informations of this channel.
-     * If the channel does not have track, it returns `null`
+     * If the channel does not have track, it returns `null`, but if
+     * allow_idle is `true`, it always returns a track (it can be idle)
      */
-    track(): null | Track;
+    track<AllowIdle extends boolean>(
+      allow_idle: AllowIdle = false,
+    ): AllowIdle extends true
+      ? {
+          /**
+           * If this is `true`, then this represent an idle track
+           * (= a non existant track)
+           */
+          readonly _isIdle: boolean;
+        } & Track
+      : null | Track;
 
     play(): void;
     pause(): void;

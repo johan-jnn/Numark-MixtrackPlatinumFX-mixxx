@@ -482,8 +482,9 @@ var MixtrackPlatinumFX = {
    */
   Channel: createMPFXComponent(
     {
-      IdleTrack: {
+      IdleStaticTrack: {
         _hasPlayer: false,
+        _isIdle: true,
         bpm: 0,
         duration: 0,
         keyNum: 0,
@@ -646,8 +647,28 @@ var MixtrackPlatinumFX = {
           }),
         },
         /**@type {typeof this.track} */
-        track: () => {
-          if (!engine.getValue(this.group, "track_loaded")) return null;
+        track: (allow_idle = false) => {
+          if (!engine.getValue(this.group, "track_loaded")) {
+            if (!allow_idle) return;
+            const idleTrack = this.mpfx.Channel.IdleStaticTrack;
+            Object.defineProperty(idleTrack.state, "rate", {
+              get: () => {
+                const [rate, rateRange] = [
+                  engine.getValue(this.group, "rate") * -1,
+                  engine.getValue(this.group, "rateRange"),
+                ];
+                return {
+                  value: rate,
+                  range: rateRange,
+                  rate: rate / rateRange,
+                  bpm: engine.getValue(this.group, "bpm"),
+                  keyLocked: !!engine.getValue(this.group, "keylock"),
+                };
+              },
+            });
+
+            return idleTrack;
+          }
 
           /**@type {mpfx.Track} */
           let track = {
@@ -765,6 +786,12 @@ var MixtrackPlatinumFX = {
         // Force track to the given channel.
         midi.sendShortMsg(channel.bytes.id, 0x08, 0x7f);
 
+        // We may need to update the brother's bpm arrows
+        // In case the brother's deck channel idling state differs from current
+        if (this.brother?.channel) {
+          this.brother.updateScreen({ bpm_arrows: true });
+        }
+
         this.mpfx.debug(
           `Deck #${this.id} is now tracking channel ${channel.id}`,
         );
@@ -784,8 +811,7 @@ var MixtrackPlatinumFX = {
       },
       /**@type {typeof this.updateScreen} */
       updateScreen: (only) => {
-        const { state, duration } =
-          this.channel.track() ?? this.mpfx.Channel.IdleTrack;
+        const { state, duration, _isIdle } = this.channel.track(true);
 
         /**@type {(part:mpfx.ScreenParts) => boolean} */
         const send = (part) => !only || only[part];
@@ -894,29 +920,26 @@ var MixtrackPlatinumFX = {
               `Cannot refresh bpm arrows if decks are not registered in components.`,
             );
           } else {
-            const brotherTrack = brotherChannel.track();
-            if (!brotherTrack) {
-              this.mpfx.warn(
-                `Cannot update deck's arrows: deck ${this.id} has no brother.`,
-              );
-            } else {
-              const { state: brotherState } = brotherTrack;
-
-              shortMessages.push(
-                // up arrow
-                [
-                  0x80 | (this.channel.id - 1),
-                  0x09,
-                  +(brotherState.rate.bpm > state.rate.bpm) * 0x7f,
-                ],
-                // down arrow
-                [
-                  0x80 | (this.channel.id - 1),
-                  0x0a,
-                  +(brotherState.rate.bpm < state.rate.bpm) * 0x7f,
-                ],
-              );
+            const brotherTrack = brotherChannel.track(true);
+            let [up, down] = [false, false];
+            if (!(_isIdle || brotherTrack._isIdle)) {
+              const {
+                state: {
+                  rate: { bpm: brotherBpm },
+                },
+              } = brotherTrack;
+              [up, down] = [
+                brotherBpm > state.rate.bpm,
+                brotherBpm < state.rate.bpm,
+              ];
             }
+
+            shortMessages.push(
+              // up arrow
+              [0x80 | (this.channel.id - 1), 0x09, +up * 0x7f],
+              // down arrow
+              [0x80 | (this.channel.id - 1), 0x0a, +down * 0x7f],
+            );
           }
         }
 
@@ -930,7 +953,7 @@ var MixtrackPlatinumFX = {
 
     Object.defineProperty(this, "brother", {
       get: () => {
-        return this.mpfx.$components.decks?.[[1, 2][this.id & 0x01]];
+        return this.mpfx.$components.decks?.[[1, 2][this.id % 2]];
       },
     });
 
@@ -939,9 +962,13 @@ var MixtrackPlatinumFX = {
         if (channel.id !== this.channel.id) return;
         this.updateScreen({ time: true });
       });
+      engine.makeConnection(channel.group, "rate", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen({ rate: true });
+      });
       engine.makeConnection(channel.group, "bpm", () => {
         if (channel.id !== this.channel.id) return;
-        this.updateScreen({ bpm: true, rate: true });
+        this.updateScreen({ bpm: true });
         this.brother?.updateScreen({ bpm_arrows: true });
       });
       engine.makeConnection(channel.group, "keylock", () => {
@@ -949,6 +976,10 @@ var MixtrackPlatinumFX = {
         this.updateScreen({ keylock: true });
       });
       engine.makeConnection(channel.group, "eject", () => {
+        if (channel.id !== this.channel.id) return;
+        this.updateScreen(undefined, "force");
+      });
+      engine.makeConnection(channel.group, "track_loaded", () => {
         if (channel.id !== this.channel.id) return;
         this.updateScreen(undefined, "force");
       });
