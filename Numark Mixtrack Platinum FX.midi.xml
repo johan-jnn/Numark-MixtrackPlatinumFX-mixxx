@@ -476,6 +476,78 @@ Personnal Website : https://johan-janin.com</description>
 					<script-binding/>
 				</options>
 			</control>
+			<control for="Channel #1 wheel mode switcher (Release)">
+				<midino>0x7</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].wheel.inputs.switchMode.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 wheel mode switcher (Press)">
+				<midino>0x7</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].wheel.inputs.switchMode.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 wheel mode switcher (Release)">
+				<midino>0x7</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].wheel.inputs.switchMode.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 wheel mode switcher (Press)">
+				<midino>0x7</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].wheel.inputs.switchMode.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 wheel mode switcher (Release)">
+				<midino>0x7</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].wheel.inputs.switchMode.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 wheel mode switcher (Press)">
+				<midino>0x7</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].wheel.inputs.switchMode.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 wheel mode switcher (Release)">
+				<midino>0x7</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].wheel.inputs.switchMode.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 wheel mode switcher (Press)">
+				<midino>0x7</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].wheel.inputs.switchMode.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
 			<control for="Switch to channel 1">
 				<midino>0x8</midino>
 				<status>0x90</status>
@@ -579,6 +651,78 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.sync.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 wheel turn">
+				<midino>0x6</midino>
+				<status>0xb0</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].wheel.inputWheel</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 wheel touch">
+				<midino>0x6</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].wheel.inputTouch</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 wheel turn">
+				<midino>0x6</midino>
+				<status>0xb1</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].wheel.inputWheel</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 wheel touch">
+				<midino>0x6</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].wheel.inputTouch</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 wheel turn">
+				<midino>0x6</midino>
+				<status>0xb2</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].wheel.inputWheel</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 wheel touch">
+				<midino>0x6</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].wheel.inputTouch</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 wheel turn">
+				<midino>0x6</midino>
+				<status>0xb3</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].wheel.inputWheel</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 wheel touch">
+				<midino>0x6</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].wheel.inputTouch</key>
 				<group>[Channel4]</group>
 				<options>
 					<script-binding/>

@@ -90,6 +90,8 @@ namespace mpfx {
   type ContainerOf<Type, IdKey = "id"> = components.ComponentContainer &
     Record<Type[IdKey], Type>;
 
+  type WheelTurnMode = "scratch" | "playposition";
+
   type ScreenParts =
     | "bpm"
     | "bpm_arrows"

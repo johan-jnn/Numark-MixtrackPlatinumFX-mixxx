@@ -45,10 +45,28 @@ var MixtrackPlatinumFX = {
       rightShiftedSelectPreviewsTrack: true,
     },
     jog: {
+      /**
+       * How the scratch should behave.
+       * Note that the documentation of those values has been taken from Gemini good explanations
+       */
       scratch: {
-        sensitivity: 1024,
-        alpha: 1,
-        beta: 1 / 32,
+        /**
+         * The number of digital signal pulses (ticks) sent by the controller during one complete 360-degree rotation of the jog wheel.
+         */
+        resolution: 1024,
+        /**
+         * Position Smoothing Gain (Formerly 'alpha').
+         * Determines how aggressively the software tracks the physical position of your hand.
+         *
+         * Higher values decrease latency but introduce raw digital noise ("zipper sound").
+         * Lower values eliminate jitter but make the wheel feel heavy/sluggish.
+         */
+        smoothing: 1 / 8,
+        /**
+         * Velocity Tracking Gain (Formerly 'beta').
+         * Dictates how quickly the software adapts to sudden changes in movement speed.
+         */
+        velocity: 1 / 8 / 32,
       },
       seek: {
         sensitivity: 1e3,
@@ -477,6 +495,61 @@ var MixtrackPlatinumFX = {
   /* #endregion */
 
   /* #region Components */
+  /**@type {typeof mpfx.Wheel} */
+  Wheel: createMPFXComponent(function (parent, channel) {
+    this.mpfx.debug(`Initializing wheel of channel ${channel.id}.`);
+
+    parent({
+      channel,
+      alpha: this.mpfx.CONFIG.jog.scratch.smoothing,
+      beta: this.mpfx.CONFIG.jog.scratch.velocity,
+      wheelResolution: this.mpfx.CONFIG.jog.scratch.resolution,
+      deck: channel.id,
+      vinylMode: false,
+      inputs: {
+        switchMode: new components.Button({
+          key: "reverseroll",
+          midi: [channel.bytes.id, 0x07],
+
+          input: (...args) => {
+            const {
+              inputs: { switchMode },
+              vinylMode: currentMode,
+            } = this;
+            if (!switchMode.isPress(...args) || switchMode.isShifted) return;
+
+            const vinylMode = !currentMode;
+            Object.assign(this, { vinylMode });
+
+            switchMode.send(vinylMode ? switchMode.on : switchMode.off);
+          },
+          shift() {
+            Object.assign(this, { isShifted: true });
+          },
+          unshift() {
+            Object.assign(this, { isShifted: false });
+          },
+          connect() {
+            this.send(this.inGetValue() ? this.on : this.off);
+          },
+        }),
+      },
+      shift: () => {
+        Object.values(this.inputs).forEach((c) => c.shift?.());
+        Object.assign(this, { isShifted: true });
+      },
+      unshift: () => {
+        Object.values(this.inputs).forEach((c) => c.unshift?.());
+        Object.assign(this, { isShifted: false });
+      },
+      connect: () => {
+        Object.values(this.inputs).forEach((c) => c.connect?.());
+      },
+      disconnect: () => {
+        Object.values(this.inputs).forEach((c) => c.disconnect?.());
+      },
+    });
+  }, components.JogWheelBasic),
   /**
    * @type {typeof mpfx.Channel}
    */
@@ -524,20 +597,25 @@ var MixtrackPlatinumFX = {
           });
 
           Object.values(this.inputs).forEach((c) => c.connect?.());
+          this.wheel?.connect?.();
         },
         disconnect: () => {
           Object.values(this.inputs).forEach((c) => c.disconnect?.());
+          this.wheel?.disconnect?.();
         },
         shift: () => {
           Object.values(this.inputs).forEach((c) => c.shift?.());
+          this.wheel?.shift?.();
         },
         unshift: () => {
           Object.values(this.inputs).forEach((c) => c.unshift?.());
+          this.wheel?.unshift?.();
         },
         inputs: {
           play: new components.PlayButton({
             shiftOffset: 0x04,
             shiftControl: true,
+            sendShifted: true,
             inSetValue: (value) => {
               if (!this.track()) return;
               const { play: button, cue } = this.inputs;
@@ -594,6 +672,8 @@ var MixtrackPlatinumFX = {
           }),
           cue: new components.CueButton({
             shiftOffset: 0x04,
+            shiftControl: true,
+            sendShifted: true,
             input: (...args) => {
               const { cue } = this.inputs;
               if (cue.isPressed != args[2]) {
@@ -604,7 +684,9 @@ var MixtrackPlatinumFX = {
                 components.CueButton.prototype.input.call(cue, ...args);
               }
 
-              cue.send(cue.isPressed ? cue.on : cue.off);
+              if (this.track()) {
+                cue.send(cue.isPressed ? cue.on : cue.off);
+              }
             },
             // Disable Mixxx's default cue's led behavior
             connect: () => {},
@@ -720,6 +802,10 @@ var MixtrackPlatinumFX = {
           return track;
         },
       });
+
+      Object.assign(this, {
+        wheel: new this.mpfx.Wheel(this),
+      });
     },
     components.Component,
   ),
@@ -769,11 +855,12 @@ var MixtrackPlatinumFX = {
         this.updateScreen();
 
         // Update the play button led state
-        const { play, cue } = this.channel.inputs;
+        const { play, cue, sync } = this.channel.inputs;
         play.send(
           engine.getValue(this.channel.group, "play") ? play.on : play.off,
         );
         cue.send(cue.off);
+        sync.trigger();
 
         // Update the skin to a 4-deck one if wanted
         if (this.mpfx.CONFIG.decks.syncDecksSkin) {

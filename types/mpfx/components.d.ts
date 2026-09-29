@@ -1,4 +1,13 @@
 namespace mpfx {
+  class Wheel extends components.JogWheelBasic {
+    constructor(channel: Channel);
+    readonly channel: Channel;
+
+    inputs: {
+      switchMode: components.Button;
+    };
+  }
+
   /**
    * See a channel like a Mixxx's deck
    */
@@ -18,6 +27,7 @@ namespace mpfx {
       load: components.Button;
       pfl: components.Button;
     };
+    wheel: Wheel;
 
     /**
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)
@@ -39,9 +49,6 @@ namespace mpfx {
           readonly _isIdle: boolean;
         } & Track
       : null | Track;
-
-    play(): void;
-    pause(): void;
   }
 
   class Deck extends components.ComponentContainer {
