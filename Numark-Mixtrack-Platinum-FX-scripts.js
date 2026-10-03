@@ -631,16 +631,30 @@ var MixtrackPlatinumFX = {
                 components.PlayButton.prototype.inSetValue.call(button, 0);
               }
 
+              if (!value && engine.isBrakeActive?.()) {
+                // Mixxx acts like playing while the deck is braking.
+                // So if we're braking, we say to play back instead of
+                // retrying to stop the deck
+                value = 1;
+              }
+
               if (
                 (start || stop) &&
                 button.inKey === "play" &&
                 "softStart" in engine &&
                 "brake" in engine
               ) {
+                if (!("isBrakeActive" in engine)) {
+                  this.mpfx.warn(
+                    "You're using the smooth play/stop feature, but Mixxx's engine doesn't provide way to check the state of smoothing.",
+                    "If you smooth braking, you'll not be able to start back playing the track while the engine is braking.",
+                  );
+                }
+
                 if (value) {
-                  engine.softStart(this.id, true, 10 / start);
+                  engine.softStart(this.id, true, 3 / start);
                 } else {
-                  engine.brake(this.id, true, 10 / stop);
+                  engine.brake(this.id, true, 3 / stop);
                 }
               } else {
                 components.PlayButton.prototype.inSetValue.call(button, value);
