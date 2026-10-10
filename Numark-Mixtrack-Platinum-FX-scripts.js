@@ -69,7 +69,19 @@ var MixtrackPlatinumFX = {
         velocity: 1 / 8 / 32,
       },
       seek: {
-        sensitivity: 1e3,
+        /**
+         * Seeking let the user move the play cursor's position really fast.
+         * If enabled, you just have to shift-turn the wheel.
+         */
+        enabled: true,
+        /**
+         * When shift-turning the wheel, how fast to move the play position cursor
+         * This will be used as a multiplier of the controller's given speed.
+         *
+         * For exemple, if you set this to `1`, the seek speed will be the same as the controller's given speed.
+         * If you give `2`, it will double the speed, and with `0.5` it will half it.
+         */
+        sensitivity: 1.5,
       },
     },
     pitch: {
@@ -533,15 +545,38 @@ var MixtrackPlatinumFX = {
             switchMode.send(vinylMode ? switchMode.on : switchMode.off);
           },
           shift() {
-            Object.assign(this, { isShifted: true });
+            this.isShifted = true;
           },
           unshift() {
-            Object.assign(this, { isShifted: false });
+            this.isShifted = false;
           },
           connect() {
             this.send(this.inGetValue() ? this.on : this.off);
           },
         }),
+      },
+      inputWheel: (...args) => {
+        const {
+          jog: { seek },
+        } = this.mpfx.CONFIG;
+        if (seek.enabled && this.isShifted) {
+          this.mpfx.debug("Seeking !!");
+          let seekBy = args[2];
+          if (seekBy >= 64) {
+            // Correct if we going backward
+            seekBy -= 128;
+          }
+
+          const position = engine.getValue(this.group, "playposition");
+
+          return engine.setValue(
+            this.group,
+            "playposition",
+            position + (seekBy * seek.sensitivity) / 1e3,
+          );
+        }
+
+        components.JogWheelBasic.prototype.inputWheel.call(this, ...args);
       },
       shift: () => {
         Object.values(this.inputs).forEach((c) => c.shift?.());
