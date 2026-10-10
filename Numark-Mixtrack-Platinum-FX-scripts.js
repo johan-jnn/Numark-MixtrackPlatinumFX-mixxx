@@ -129,6 +129,15 @@ var MixtrackPlatinumFX = {
        * @see https://manual.mixxx.org/2.4/en/chapters/appendix/mixxx_controls.html#control-[ChannelN]-beatloop_X_toggle
        */
       sizes: [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
+
+      /**
+       * If enabled, the controller will use the "in" and "out" functionnality
+       * if the looping is not enabled (without having to press shift).
+       * When this is enabled and you're not looping, pressing shift on "in" and "out"
+       * halfs or doubles the loop size.
+       * This takes effect only if the track is playing.
+       */
+      useInOutWhenNotLooping: false,
     },
     beatJumps: {
       /**
@@ -748,7 +757,7 @@ var MixtrackPlatinumFX = {
           }),
 
           loopToggle: new components.Button({
-            outKey: "loop_enable",
+            outKey: "loop_enabled",
             midi: [0x94 + channel - 1, 0x40],
             shiftControl: true,
             sendShifted: true,
@@ -791,19 +800,36 @@ var MixtrackPlatinumFX = {
             shiftControl: true,
             sendShifted: true,
             shiftOffset: 0x02,
+            inKey: "loop_halve",
             shift() {
-              Object.assign(this, {
-                inKey: "loop_in",
-                outKey: "loop_in",
-              });
-              this.trigger();
+              this.isShifted = true;
             },
             unshift() {
-              Object.assign(this, {
-                inKey: "loop_halve",
-                outKey: "loop_halve",
-              });
-              this.trigger();
+              this.isShifted = false;
+            },
+            input: (...args) => {
+              const { loopHalf: button } = this.inputs;
+              const isPressing = button.isPress(...args);
+
+              const {
+                loops: { useInOutWhenNotLooping },
+              } = this.mpfx.CONFIG;
+
+              if (
+                useInOutWhenNotLooping &&
+                engine.getValue(this.group, "play") &&
+                engine.getValue(this.group, "loop_enabled") == button.isShifted
+              ) {
+                engine.setValue(this.group, "loop_in", isPressing);
+              } else if (isPressing) {
+                components.Button.prototype.input.call(button, ...args);
+              }
+
+              const light =
+                isPressing ||
+                engine.getValue(this.group, "loop_start_position") >
+                  engine.getValue(this.group, "loop_end_position");
+              button.send(light ? button.on : button.off);
             },
             connect() {
               this.send(this.off);
@@ -814,19 +840,33 @@ var MixtrackPlatinumFX = {
             shiftControl: true,
             sendShifted: true,
             shiftOffset: 0x02,
+            inKey: "loop_double",
             shift() {
-              Object.assign(this, {
-                inKey: "loop_out",
-                outKey: "loop_out",
-              });
-              this.trigger();
+              this.isShifted = true;
             },
             unshift() {
-              Object.assign(this, {
-                inKey: "loop_double",
-                outKey: "loop_double",
-              });
-              this.trigger();
+              this.isShifted = false;
+            },
+            input: (...args) => {
+              const { loopDouble: button, loopHalf } = this.inputs;
+              const isPressing = button.isPress(...args);
+
+              const {
+                loops: { useInOutWhenNotLooping },
+              } = this.mpfx.CONFIG;
+
+              if (
+                useInOutWhenNotLooping &&
+                engine.getValue(this.group, "play") &&
+                engine.getValue(this.group, "loop_enabled") == button.isShifted
+              ) {
+                engine.setValue(this.group, "loop_out", isPressing);
+                loopHalf.send(loopHalf.off);
+              } else if (isPressing) {
+                components.Button.prototype.input.call(button, ...args);
+              }
+
+              button.send(isPressing ? button.on : button.off);
             },
             connect() {
               this.send(this.off);
