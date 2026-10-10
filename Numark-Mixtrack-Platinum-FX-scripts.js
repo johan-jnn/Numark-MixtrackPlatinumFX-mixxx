@@ -595,6 +595,11 @@ var MixtrackPlatinumFX = {
               group: this.group,
             });
           });
+          ["loopToggle", "loopHalf", "loopDouble"].forEach((key, shift) => {
+            Object.assign(this.inputs[key], {
+              group: this.group,
+            });
+          });
 
           Object.values(this.inputs).forEach((c) => c.connect?.());
           this.wheel?.connect?.();
@@ -739,6 +744,92 @@ var MixtrackPlatinumFX = {
             unshift() {
               this.inKey = this.outKey = "pfl";
               this.trigger();
+            },
+          }),
+
+          loopToggle: new components.Button({
+            outKey: "loop_enable",
+            midi: [0x94 + channel - 1, 0x40],
+            shiftControl: true,
+            sendShifted: true,
+            shiftOffset: 0x01,
+
+            shift() {
+              this.isShifted = true;
+            },
+            unshift() {
+              this.isShifted = false;
+            },
+            input: (channel, control, value, status) => {
+              const { loopToggle: me } = this.inputs;
+              if (!me.isPress(channel, control, value, status)) {
+                return;
+              }
+
+              const isEnabled = !!engine.getValue(this.group, "loop_enabled");
+              me.send(isEnabled ? me.off : me.on);
+
+              const trigger = [
+                ["beatloop_activate", "beatlooproll_activate"],
+                ["reloop_toggle", "reloop_andstop"],
+              ][+me.isShifted][+isEnabled];
+              script.triggerControl(this.group, trigger);
+            },
+            connect: () => {
+              const { loopToggle: button } = this.inputs;
+              button.connections.push(
+                engine.makeConnection(this.group, "loop_enabled", (on) => {
+                  button.send(on ? button.on : button.off);
+                }),
+              );
+
+              button.trigger();
+            },
+          }),
+          loopHalf: new components.Button({
+            midi: [0x94 + channel - 1, 0x34],
+            shiftControl: true,
+            sendShifted: true,
+            shiftOffset: 0x02,
+            shift() {
+              Object.assign(this, {
+                inKey: "loop_in",
+                outKey: "loop_in",
+              });
+              this.trigger();
+            },
+            unshift() {
+              Object.assign(this, {
+                inKey: "loop_halve",
+                outKey: "loop_halve",
+              });
+              this.trigger();
+            },
+            connect() {
+              this.send(this.off);
+            },
+          }),
+          loopDouble: new components.Button({
+            midi: [0x94 + channel - 1, 0x35],
+            shiftControl: true,
+            sendShifted: true,
+            shiftOffset: 0x02,
+            shift() {
+              Object.assign(this, {
+                inKey: "loop_out",
+                outKey: "loop_out",
+              });
+              this.trigger();
+            },
+            unshift() {
+              Object.assign(this, {
+                inKey: "loop_double",
+                outKey: "loop_double",
+              });
+              this.trigger();
+            },
+            connect() {
+              this.send(this.off);
             },
           }),
         },

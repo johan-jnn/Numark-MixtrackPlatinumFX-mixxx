@@ -26,6 +26,10 @@ namespace mpfx {
       sync: components.SyncButton;
       load: components.Button;
       pfl: components.Button;
+
+      loopToggle: components.Button;
+      loopHalf: components.Button;
+      loopDouble: components.Button;
     };
     wheel: Wheel;
 

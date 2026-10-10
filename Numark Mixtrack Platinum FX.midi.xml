@@ -332,6 +332,438 @@ Personnal Website : https://johan-janin.com</description>
 					<script-binding/>
 				</options>
 			</control>
+			<control for="Channel #1 loop toggle (Release)">
+				<midino>0x40</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopToggle.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop toggle (Release) (Shifting)">
+				<midino>0x41</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopToggle.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop half (Release)">
+				<midino>0x34</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopHalf.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop half (Release) (Shifting)">
+				<midino>0x36</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopHalf.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop double (Release)">
+				<midino>0x35</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopDouble.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop double (Release) (Shifting)">
+				<midino>0x37</midino>
+				<status>0x84</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopDouble.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop toggle">
+				<midino>0x40</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopToggle.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop toggle (Shifting)">
+				<midino>0x41</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopToggle.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop half">
+				<midino>0x34</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopHalf.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop half (Shifting)">
+				<midino>0x36</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopHalf.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop double">
+				<midino>0x35</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopDouble.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 loop double (Shifting)">
+				<midino>0x37</midino>
+				<status>0x94</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.loopDouble.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop toggle (Release)">
+				<midino>0x40</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopToggle.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop toggle (Release) (Shifting)">
+				<midino>0x41</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopToggle.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop half (Release)">
+				<midino>0x34</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopHalf.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop half (Release) (Shifting)">
+				<midino>0x36</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopHalf.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop double (Release)">
+				<midino>0x35</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopDouble.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop double (Release) (Shifting)">
+				<midino>0x37</midino>
+				<status>0x85</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopDouble.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop toggle">
+				<midino>0x40</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopToggle.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop toggle (Shifting)">
+				<midino>0x41</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopToggle.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop half">
+				<midino>0x34</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopHalf.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop half (Shifting)">
+				<midino>0x36</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopHalf.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop double">
+				<midino>0x35</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopDouble.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 loop double (Shifting)">
+				<midino>0x37</midino>
+				<status>0x95</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.loopDouble.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop toggle (Release)">
+				<midino>0x40</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopToggle.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop toggle (Release) (Shifting)">
+				<midino>0x41</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopToggle.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop half (Release)">
+				<midino>0x34</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopHalf.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop half (Release) (Shifting)">
+				<midino>0x36</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopHalf.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop double (Release)">
+				<midino>0x35</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopDouble.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop double (Release) (Shifting)">
+				<midino>0x37</midino>
+				<status>0x86</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopDouble.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop toggle">
+				<midino>0x40</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopToggle.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop toggle (Shifting)">
+				<midino>0x41</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopToggle.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop half">
+				<midino>0x34</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopHalf.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop half (Shifting)">
+				<midino>0x36</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopHalf.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop double">
+				<midino>0x35</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopDouble.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 loop double (Shifting)">
+				<midino>0x37</midino>
+				<status>0x96</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.loopDouble.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop toggle (Release)">
+				<midino>0x40</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopToggle.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop toggle (Release) (Shifting)">
+				<midino>0x41</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopToggle.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop half (Release)">
+				<midino>0x34</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopHalf.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop half (Release) (Shifting)">
+				<midino>0x36</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopHalf.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop double (Release)">
+				<midino>0x35</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopDouble.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop double (Release) (Shifting)">
+				<midino>0x37</midino>
+				<status>0x87</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopDouble.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop toggle">
+				<midino>0x40</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopToggle.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop toggle (Shifting)">
+				<midino>0x41</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopToggle.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop half">
+				<midino>0x34</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopHalf.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop half (Shifting)">
+				<midino>0x36</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopHalf.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop double">
+				<midino>0x35</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopDouble.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 loop double (Shifting)">
+				<midino>0x37</midino>
+				<status>0x97</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.loopDouble.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
 			<control for="PFL button for channel 1 (Release)">
 				<midino>0x1b</midino>
 				<status>0x80</status>
