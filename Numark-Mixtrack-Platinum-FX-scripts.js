@@ -832,6 +832,66 @@ var MixtrackPlatinumFX = {
               this.send(this.off);
             },
           }),
+
+          pitchBendUp: new components.Button({
+            inKey: "rate_temp_up",
+            shift() {
+              this.isShifted = true;
+            },
+            unshift() {
+              this.isShifted = false;
+            },
+            input: (...args) => {
+              const { pitchBendUp: button } = this.inputs;
+              if (!button.isPress(...args)) {
+                return;
+              }
+
+              if (button.isShifted) {
+                engine.setValue(
+                  this.group,
+                  "keylock",
+                  !engine.getValue(this.group, "keylock"),
+                );
+                return this.trackedBy?.updateScreen({ keylock: true });
+              }
+
+              components.Button.prototype.input.call(button, ...args);
+            },
+          }),
+          pitchBendDown: new components.Button({
+            currentRangeIndex: 0,
+            inKey: "rate_temp_down",
+            shift() {
+              this.isShifted = true;
+            },
+            unshift() {
+              this.isShifted = false;
+            },
+            input: (...args) => {
+              const { pitchBendDown: button } = this.inputs;
+              if (!button.isPress(...args)) {
+                return;
+              }
+
+              if (button.isShifted) {
+                const {
+                  pitch: { ranges },
+                } = this.mpfx.CONFIG;
+                button.currentRangeIndex =
+                  (button.currentRangeIndex + 1) % ranges.length;
+                engine.setValue(
+                  this.group,
+                  "rateRange",
+                  ranges[button.currentRangeIndex],
+                );
+
+                return this.trackedBy?.updateScreen({ rateRange: true });
+              }
+
+              components.Button.prototype.input.call(button, ...args);
+            },
+          }),
         },
         /**@type {typeof this.track} */
         track: (allow_idle = false) => {

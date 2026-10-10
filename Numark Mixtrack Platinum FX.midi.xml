@@ -836,6 +836,294 @@ Personnal Website : https://johan-janin.com</description>
 					<script-binding/>
 				</options>
 			</control>
+			<control for="Channel #1 pitch bend up (Release)">
+				<midino>0xb</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend up (Shifted) (Release)">
+				<midino>0x2b</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend up">
+				<midino>0xb</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend up (Shifted)">
+				<midino>0x2b</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend down (Release)">
+				<midino>0xc</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend down (Shifted) (Release)">
+				<midino>0x2c</midino>
+				<status>0x80</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend down">
+				<midino>0xc</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pitch bend down (Shifted)">
+				<midino>0x2c</midino>
+				<status>0x90</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend up (Release)">
+				<midino>0xb</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend up (Shifted) (Release)">
+				<midino>0x2b</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend up">
+				<midino>0xb</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend up (Shifted)">
+				<midino>0x2b</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend down (Release)">
+				<midino>0xc</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend down (Shifted) (Release)">
+				<midino>0x2c</midino>
+				<status>0x81</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend down">
+				<midino>0xc</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pitch bend down (Shifted)">
+				<midino>0x2c</midino>
+				<status>0x91</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend up (Release)">
+				<midino>0xb</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend up (Shifted) (Release)">
+				<midino>0x2b</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend up">
+				<midino>0xb</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend up (Shifted)">
+				<midino>0x2b</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend down (Release)">
+				<midino>0xc</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend down (Shifted) (Release)">
+				<midino>0x2c</midino>
+				<status>0x82</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend down">
+				<midino>0xc</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pitch bend down (Shifted)">
+				<midino>0x2c</midino>
+				<status>0x92</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend up (Release)">
+				<midino>0xb</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend up (Shifted) (Release)">
+				<midino>0x2b</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend up">
+				<midino>0xb</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend up (Shifted)">
+				<midino>0x2b</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend down (Release)">
+				<midino>0xc</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend down (Shifted) (Release)">
+				<midino>0x2c</midino>
+				<status>0x83</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend down">
+				<midino>0xc</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pitch bend down (Shifted)">
+				<midino>0x2c</midino>
+				<status>0x93</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
+				<group>[Master]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
 			<control for="Play/Pause on channel 1 (Release)">
 				<midino>0x0</midino>
 				<status>0x80</status>

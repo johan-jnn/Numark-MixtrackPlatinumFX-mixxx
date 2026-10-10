@@ -30,6 +30,9 @@ namespace mpfx {
       loopToggle: components.Button;
       loopHalf: components.Button;
       loopDouble: components.Button;
+
+      pitchBendUp: components.Button;
+      pitchBendDown: components.Button & { currentRangeIndex: number };
     };
     wheel: Wheel;
 
