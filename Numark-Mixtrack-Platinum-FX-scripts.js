@@ -427,6 +427,19 @@ var MixtrackPlatinumFX = {
   shutdown() {
     this.__blinker.disable();
     this.$components.shutdown();
+    this.$components.forEachComponentContainer(
+      (container) => container.shutdown(),
+      true,
+    );
+
+    // Reset tracking to channel 1 and 2 and use a "placeholder" screen
+    for (let i = 1; i <= 2; i++) {
+      this.$components.decks[i].track(this.$components.channels[i]);
+      this.$components.decks[i].updateScreen(
+        undefined,
+        this.Channel.IdleStaticTrack,
+      );
+    }
 
     midi.sendSysexMsg([0xf0, 0x00, 0x20, 0x7f, 0x02, 0xf7]);
     this.debug("Controller has been shutdown.");
@@ -637,6 +650,7 @@ var MixtrackPlatinumFX = {
         group: `[Channel${channel}]`,
         bytes: {
           id: 0x90 + channel - 1,
+          vuMeterId: 0xb0 + channel - 1,
         },
         trackedBy: undefined,
         connect: () => {
@@ -668,8 +682,10 @@ var MixtrackPlatinumFX = {
           this.wheel?.unshift?.();
         },
         shutdown: () => {
+          this.disconnect();
           Object.values(this.inputs).forEach((c) => c.shutdown?.());
           this.wheel?.shutdown?.();
+          midi.sendShortMsg(this.bytes.vuMeterId, 0x1f, 0);
         },
         inputs: {
           play: new components.PlayButton({
@@ -1078,6 +1094,31 @@ var MixtrackPlatinumFX = {
       Object.assign(this, {
         wheel: new this.mpfx.Wheel(this),
       });
+
+      this.connections.push(
+        engine.makeConnection(this.group, "vu_meter", (value) => {
+          midi.sendShortMsg(this.bytes.vuMeterId, 0x1f, value * 90);
+        }),
+        engine.makeConnection(this.group, "playposition", () => {
+          this.trackedBy?.updateScreen({ time: true });
+        }),
+        engine.makeConnection(this.group, "rate", () => {
+          this.trackedBy?.updateScreen({ rate: true });
+        }),
+        engine.makeConnection(this.group, "bpm", () => {
+          this.trackedBy?.updateScreen({ bpm: true });
+          this.trackedBy?.brother.updateScreen({ bpm_arrows: true });
+        }),
+        engine.makeConnection(this.group, "keylock", () => {
+          this.trackedBy?.updateScreen({ keylock: true });
+        }),
+        engine.makeConnection(this.group, "eject", () => {
+          this.trackedBy?.updateScreen();
+        }),
+        engine.makeConnection(this.group, "track_loaded", () => {
+          this.trackedBy?.updateScreen();
+        }),
+      );
     },
     components.Component,
   ),
@@ -1099,7 +1140,6 @@ var MixtrackPlatinumFX = {
     parent({
       id,
       trackables: channels,
-
       /**@type {typeof this.track} */
       track: (channel) => {
         if (typeof channel === "number") {
@@ -1308,43 +1348,12 @@ var MixtrackPlatinumFX = {
         sysexMessages.forEach((msg) => midi.sendSysexMsg(msg, msg.length));
         shortMessages.forEach((msg) => midi.sendShortMsg(...msg));
       },
-      shutdown: () => {
-        this.updateScreen(undefined, this.mpfx.Channel.IdleStaticTrack);
-      },
     });
 
     Object.defineProperty(this, "brother", {
       get: () => {
         return this.mpfx.$components.decks?.[[1, 2][this.id % 2]];
       },
-    });
-
-    channels.forEach((channel) => {
-      engine.makeConnection(channel.group, "playposition", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen({ time: true });
-      });
-      engine.makeConnection(channel.group, "rate", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen({ rate: true });
-      });
-      engine.makeConnection(channel.group, "bpm", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen({ bpm: true });
-        this.brother?.updateScreen({ bpm_arrows: true });
-      });
-      engine.makeConnection(channel.group, "keylock", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen({ keylock: true });
-      });
-      engine.makeConnection(channel.group, "eject", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen(undefined, "force");
-      });
-      engine.makeConnection(channel.group, "track_loaded", () => {
-        if (channel.id !== this.channel.id) return;
-        this.updateScreen(undefined, "force");
-      });
     });
   }, components.ComponentContainer),
   /**

@@ -34,6 +34,7 @@ namespace mpfx {
 
     bytes: {
       id: number;
+      vuMeterId: number;
     };
     inputs: {
       play: components.PlayButton;
