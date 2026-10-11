@@ -1781,6 +1781,12 @@ function createMPFXComponent(statics, constructor, Parent = undefined) {
     mpfxKey = constructor.mpfxKey;
     constructor = constructor.constructor;
   }
+  if (Parent && Parent.prototype === undefined) {
+    Parent = Parent();
+    if (Parent.prototype === undefined) {
+      throw new Error("Given parent cannot be instancied.");
+    }
+  }
 
   function Component(...componentArgs) {
     MixtrackPlatinumFX.bindTo(this, mpfxKey);

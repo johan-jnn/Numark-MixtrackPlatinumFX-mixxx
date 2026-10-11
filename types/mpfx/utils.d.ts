@@ -72,11 +72,14 @@ namespace mpfx {
         },
   >(
     ...args: StaticDefinitions extends Record<any, never>
-      ? [constructor: ConstructorArgument, Parent?: ParentClass]
+      ? [
+          constructor: ConstructorArgument,
+          Parent?: ParentClass | (() => ParentClass),
+        ]
       : [
           static: StaticDefinitions,
           constructor: ConstructorArgument,
-          Parent?: ParentClass,
+          Parent?: ParentClass | (() => ParentClass),
         ]
   ): ComponentClass;
 

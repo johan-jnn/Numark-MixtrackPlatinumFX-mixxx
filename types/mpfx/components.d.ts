@@ -1,6 +1,21 @@
 namespace mpfx {
+  class Pads extends components.ComponentContainer {
+    constructor(channel: typeof this.channel);
+    readonly channel: Channel;
+  }
+  class PadFolder extends components.ComponentContainer {
+    constructor(name: typeof this.name);
+    readonly name: string;
+    pads: ContainerOf<Pad>;
+  }
+  class Pad extends components.Button {
+    constructor(id: typeof this.id, folder: typeof this.folder);
+    readonly id: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+    readonly folder: PadFolder;
+  }
+
   class Wheel extends components.JogWheelBasic {
-    constructor(channel: Channel);
+    constructor(channel: typeof this.channel);
     readonly channel: Channel;
 
     inputs: {
