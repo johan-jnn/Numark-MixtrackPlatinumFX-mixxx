@@ -426,6 +426,7 @@ var MixtrackPlatinumFX = {
   },
   shutdown() {
     this.__blinker.disable();
+    this.$components.shutdown();
 
     midi.sendSysexMsg([0xf0, 0x00, 0x20, 0x7f, 0x02, 0xf7]);
     this.debug("Controller has been shutdown.");
@@ -553,6 +554,9 @@ var MixtrackPlatinumFX = {
           connect() {
             this.send(this.inGetValue() ? this.on : this.off);
           },
+          shutdown() {
+            this.send(0);
+          },
         }),
       },
       inputWheel: (...args) => {
@@ -591,6 +595,9 @@ var MixtrackPlatinumFX = {
       },
       disconnect: () => {
         Object.values(this.inputs).forEach((c) => c.disconnect?.());
+      },
+      shutdown: () => {
+        Object.values(this.inputs).forEach((c) => c.shutdown?.());
       },
     });
   }, components.JogWheelBasic),
@@ -659,6 +666,10 @@ var MixtrackPlatinumFX = {
         unshift: () => {
           Object.values(this.inputs).forEach((c) => c.unshift?.());
           this.wheel?.unshift?.();
+        },
+        shutdown: () => {
+          Object.values(this.inputs).forEach((c) => c.shutdown?.());
+          this.wheel?.shutdown?.();
         },
         inputs: {
           play: new components.PlayButton({
@@ -732,6 +743,9 @@ var MixtrackPlatinumFX = {
               this.mpfx.__blinker.remove(this.inputs.play["#blinker"], true);
               components.PlayButton.prototype.disconnect.call(this.inputs.play);
             },
+            shutdown() {
+              this.send(0);
+            },
           }),
           cue: new components.CueButton({
             shiftOffset: 0x04,
@@ -753,11 +767,17 @@ var MixtrackPlatinumFX = {
             },
             // Disable Mixxx's default cue's led behavior
             connect: () => {},
+            shutdown() {
+              this.send(0);
+            },
           }),
           sync: new components.SyncButton({
             sendShifted: true,
             shiftControl: true,
             shiftOffset: 0x01,
+            shutdown() {
+              this.send(0);
+            },
           }),
           load: new components.Button({
             shift() {
@@ -788,6 +808,9 @@ var MixtrackPlatinumFX = {
             unshift() {
               this.inKey = this.outKey = "pfl";
               this.trigger();
+            },
+            shutdown() {
+              this.send(0);
             },
           }),
 
@@ -829,6 +852,9 @@ var MixtrackPlatinumFX = {
 
               button.trigger();
             },
+            shutdown() {
+              this.send(0);
+            },
           }),
           loopHalf: new components.Button({
             midi: [0x94 + channel - 1, 0x34],
@@ -869,6 +895,9 @@ var MixtrackPlatinumFX = {
             connect() {
               this.send(this.off);
             },
+            shutdown() {
+              this.send(0);
+            },
           }),
           loopDouble: new components.Button({
             midi: [0x94 + channel - 1, 0x35],
@@ -905,6 +934,9 @@ var MixtrackPlatinumFX = {
             },
             connect() {
               this.send(this.off);
+            },
+            shutdown() {
+              this.send(0);
             },
           }),
 
@@ -1137,8 +1169,8 @@ var MixtrackPlatinumFX = {
         return this.track(this.trackables[nextIndex]);
       },
       /**@type {typeof this.updateScreen} */
-      updateScreen: (only) => {
-        const { state, duration, _isIdle } = this.channel.track(true);
+      updateScreen: (only, track) => {
+        const { state, duration, _isIdle } = track ?? this.channel.track(true);
 
         /**@type {(part:mpfx.ScreenParts) => boolean} */
         const send = (part) => !only || only[part];
@@ -1276,6 +1308,9 @@ var MixtrackPlatinumFX = {
         sysexMessages.forEach((msg) => midi.sendSysexMsg(msg, msg.length));
         shortMessages.forEach((msg) => midi.sendShortMsg(...msg));
       },
+      shutdown: () => {
+        this.updateScreen(undefined, this.mpfx.Channel.IdleStaticTrack);
+      },
     });
 
     Object.defineProperty(this, "brother", {
@@ -1375,7 +1410,7 @@ var MixtrackPlatinumFX = {
         this.isFocused && engine.setValue(unit.group, "focused_effect", 0);
       },
       shutdown: () => {
-        this.led(0);
+        this.send(0);
       },
 
       /**@type {typeof this.led} */

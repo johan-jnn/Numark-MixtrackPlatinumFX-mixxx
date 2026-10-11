@@ -101,8 +101,12 @@ namespace mpfx {
     /**
      * Update the deck's screen informations
      * @param only You can use this object to filter which screen part will be updated. Using filter reduces the number of sent Sysex messages.
+     * @param track By default, it uses the current tracked channel's track information. If you want, you pass a custom track to the deck's screen.
      */
-    updateScreen(only?: { [key in ScreenParts]?: boolean }): void;
+    updateScreen(
+      only?: { [key in ScreenParts]?: boolean },
+      track?: Track,
+    ): void;
   }
 
   class Effect extends components.Button {
