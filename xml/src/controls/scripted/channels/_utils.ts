@@ -11,7 +11,7 @@ export function forEachChannel(
 ): XMLModule[] {
   const modules: XMLModule[] = [];
   for (let index = 0; index < 4; index++) {
-    const binded = [bind(index + 1, index)].flat();
+    const binded: XMLModule[] = [bind(index + 1, index)].flat(Infinity);
     if (!keepGivenGroup) {
       binded.forEach((_, i) => (binded[i].group = `[Channel${index + 1}]`));
     }

@@ -632,7 +632,7 @@ var MixtrackPlatinumFX = {
           group: channel.group,
           midi:
             typeof selectButtonStatus === "number"
-              ? [0x93 + channel.id - 1, selectButtonStatus]
+              ? [0x94 + channel.id - 1, selectButtonStatus]
               : undefined,
           input: (...args) => {
             if (!args[2]) return;

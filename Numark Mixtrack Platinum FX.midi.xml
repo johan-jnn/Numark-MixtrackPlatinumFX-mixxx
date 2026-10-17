@@ -840,7 +840,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x80</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -849,7 +849,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x80</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -858,7 +858,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x90</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -867,7 +867,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x90</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -876,7 +876,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x80</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -885,7 +885,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x80</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -894,7 +894,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x90</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -903,7 +903,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x90</status>
 				<key>MixtrackPlatinumFX.$components.channels[1].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel1]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -912,7 +912,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x81</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -921,7 +921,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x81</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -930,7 +930,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x91</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -939,7 +939,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x91</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -948,7 +948,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x81</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -957,7 +957,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x81</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -966,7 +966,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x91</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -975,7 +975,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x91</status>
 				<key>MixtrackPlatinumFX.$components.channels[2].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel2]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -984,7 +984,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x82</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -993,7 +993,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x82</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1002,7 +1002,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x92</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1011,7 +1011,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x92</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1020,7 +1020,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x82</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1029,7 +1029,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x82</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1038,7 +1038,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x92</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1047,7 +1047,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x92</status>
 				<key>MixtrackPlatinumFX.$components.channels[3].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel3]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1056,7 +1056,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x83</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1065,7 +1065,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x83</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1074,7 +1074,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xb</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1083,7 +1083,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2b</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendUp.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1092,7 +1092,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x83</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1101,7 +1101,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x83</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1110,7 +1110,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0xc</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1119,7 +1119,7 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x2c</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].inputs.pitchBendDown.input</key>
-				<group>[Master]</group>
+				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
 				</options>
@@ -1515,6 +1515,1590 @@ Personnal Website : https://johan-janin.com</description>
 				<midino>0x6</midino>
 				<status>0x93</status>
 				<key>MixtrackPlatinumFX.$components.channels[4].wheel.inputTouch</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #1 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[1].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #1">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[1].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #1 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[1].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #1 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[1].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #2 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[2].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #2">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[2].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #2 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[2].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #2 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[2].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #3 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[3].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #3">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[3].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #3 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[3].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #3 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[3].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #4 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[4].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #4">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[4].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #4 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[4].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #4 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[4].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #5 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[5].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #5">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[5].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #5 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[5].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #5 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[5].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #6 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[6].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #6">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[6].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #6 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[6].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #6 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[6].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #7 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[7].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #7">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[7].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #7 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[7].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #7 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[7].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #8 (Release)">
+				<midino>0x84</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[8].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #8">
+				<midino>0x94</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[8].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #8 (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[8].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 pad button #8 (Shifted)">
+				<midino>0x94</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.active[8].input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #1 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[1].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #1">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[1].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #1 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[1].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #1 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[1].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #2 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[2].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #2">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[2].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #2 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[2].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #2 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[2].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #3 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[3].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #3">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[3].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #3 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[3].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #3 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[3].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #4 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[4].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #4">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[4].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #4 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[4].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #4 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[4].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #5 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[5].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #5">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[5].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #5 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[5].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #5 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[5].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #6 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[6].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #6">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[6].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #6 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[6].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #6 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[6].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #7 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[7].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #7">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[7].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #7 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[7].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #7 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[7].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #8 (Release)">
+				<midino>0x85</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[8].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #8">
+				<midino>0x95</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[8].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #8 (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[8].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 pad button #8 (Shifted)">
+				<midino>0x95</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.active[8].input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #1 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[1].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #1">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[1].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #1 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[1].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #1 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[1].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #2 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[2].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #2">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[2].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #2 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[2].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #2 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[2].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #3 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[3].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #3">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[3].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #3 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[3].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #3 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[3].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #4 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[4].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #4">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[4].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #4 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[4].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #4 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[4].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #5 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[5].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #5">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[5].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #5 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[5].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #5 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[5].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #6 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[6].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #6">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[6].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #6 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[6].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #6 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[6].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #7 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[7].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #7">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[7].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #7 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[7].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #7 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[7].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #8 (Release)">
+				<midino>0x86</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[8].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #8">
+				<midino>0x96</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[8].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #8 (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[8].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 pad button #8 (Shifted)">
+				<midino>0x96</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.active[8].input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #1 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[1].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #1">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[1].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #1 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[1].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #1 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[1].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #2 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[2].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #2">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[2].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #2 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[2].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #2 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[2].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #3 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[3].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #3">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[3].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #3 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[3].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #3 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[3].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #4 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[4].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #4">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[4].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #4 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[4].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #4 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[4].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #5 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[5].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #5">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[5].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #5 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[5].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #5 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[5].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #6 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[6].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #6">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[6].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #6 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[6].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #6 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[6].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #7 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[7].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #7">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[7].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #7 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[7].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #7 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[7].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #8 (Release)">
+				<midino>0x87</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[8].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #8">
+				<midino>0x97</midino>
+				<status>0x14</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[8].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #8 (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[8].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 pad button #8 (Shifted)">
+				<midino>0x97</midino>
+				<status>0x1c</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.active[8].input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 cues pad section selector (Release)">
+				<midino>0x84</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.cues.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 cues pad section selector">
+				<midino>0x94</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.cues.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 cues pad section selector (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.cues.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 cues pad section selector (Shifted)">
+				<midino>0x94</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.cues.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 autoloops pad section selector (Release)">
+				<midino>0x84</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.autoloops.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 autoloops pad section selector">
+				<midino>0x94</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.autoloops.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 fadercuts pad section selector (Release)">
+				<midino>0x84</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 fadercuts pad section selector">
+				<midino>0x94</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 samplers pad section selector (Release)">
+				<midino>0x84</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.samplers.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 samplers pad section selector">
+				<midino>0x94</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.samplers.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 samplers pad section selector (Release) (Shifted)">
+				<midino>0x84</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.samplers.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #1 samplers pad section selector (Shifted)">
+				<midino>0x94</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[1].pads.samplers.inputs.select.input</key>
+				<group>[Channel1]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 cues pad section selector (Release)">
+				<midino>0x85</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.cues.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 cues pad section selector">
+				<midino>0x95</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.cues.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 cues pad section selector (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.cues.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 cues pad section selector (Shifted)">
+				<midino>0x95</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.cues.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 autoloops pad section selector (Release)">
+				<midino>0x85</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.autoloops.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 autoloops pad section selector">
+				<midino>0x95</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.autoloops.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 fadercuts pad section selector (Release)">
+				<midino>0x85</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 fadercuts pad section selector">
+				<midino>0x95</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 samplers pad section selector (Release)">
+				<midino>0x85</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.samplers.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 samplers pad section selector">
+				<midino>0x95</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.samplers.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 samplers pad section selector (Release) (Shifted)">
+				<midino>0x85</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.samplers.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #2 samplers pad section selector (Shifted)">
+				<midino>0x95</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[2].pads.samplers.inputs.select.input</key>
+				<group>[Channel2]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 cues pad section selector (Release)">
+				<midino>0x86</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.cues.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 cues pad section selector">
+				<midino>0x96</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.cues.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 cues pad section selector (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.cues.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 cues pad section selector (Shifted)">
+				<midino>0x96</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.cues.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 autoloops pad section selector (Release)">
+				<midino>0x86</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.autoloops.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 autoloops pad section selector">
+				<midino>0x96</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.autoloops.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 fadercuts pad section selector (Release)">
+				<midino>0x86</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 fadercuts pad section selector">
+				<midino>0x96</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 samplers pad section selector (Release)">
+				<midino>0x86</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.samplers.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 samplers pad section selector">
+				<midino>0x96</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.samplers.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 samplers pad section selector (Release) (Shifted)">
+				<midino>0x86</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.samplers.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #3 samplers pad section selector (Shifted)">
+				<midino>0x96</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[3].pads.samplers.inputs.select.input</key>
+				<group>[Channel3]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 cues pad section selector (Release)">
+				<midino>0x87</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.cues.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 cues pad section selector">
+				<midino>0x97</midino>
+				<status>0x0</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.cues.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 cues pad section selector (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.cues.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 cues pad section selector (Shifted)">
+				<midino>0x97</midino>
+				<status>0x2</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.cues.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 autoloops pad section selector (Release)">
+				<midino>0x87</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.autoloops.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 autoloops pad section selector">
+				<midino>0x97</midino>
+				<status>0xd</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.autoloops.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 fadercuts pad section selector (Release)">
+				<midino>0x87</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 fadercuts pad section selector">
+				<midino>0x97</midino>
+				<status>0x7</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.fadercuts.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 samplers pad section selector (Release)">
+				<midino>0x87</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.samplers.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 samplers pad section selector">
+				<midino>0x97</midino>
+				<status>0xb</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.samplers.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 samplers pad section selector (Release) (Shifted)">
+				<midino>0x87</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.samplers.inputs.select.input</key>
+				<group>[Channel4]</group>
+				<options>
+					<script-binding/>
+				</options>
+			</control>
+			<control for="Channel #4 samplers pad section selector (Shifted)">
+				<midino>0x97</midino>
+				<status>0xf</status>
+				<key>MixtrackPlatinumFX.$components.channels[4].pads.samplers.inputs.select.input</key>
 				<group>[Channel4]</group>
 				<options>
 					<script-binding/>
