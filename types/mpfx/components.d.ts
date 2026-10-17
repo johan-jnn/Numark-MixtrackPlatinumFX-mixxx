@@ -1,17 +1,48 @@
 namespace mpfx {
-  class Pads extends components.ComponentContainer {
+  type SectionName = string; //keyof typeof MixtrackPlatinumFX.CONFIG.pads.sections;
+  type SectionMode = "primary" | "secondary" | "alt";
+
+  class ChannelPads extends components.ComponentContainer {
     constructor(channel: typeof this.channel);
+
     readonly channel: Channel;
+    [key: PadSection["name"]]: PadSection;
+    get sections(): PadSection[];
+
+    active: PadSection;
+
+    /**
+     * Select the given pad section as the active one
+     */
+    select(section: SectionName | PadSection): void;
   }
-  class PadFolder extends components.ComponentContainer {
-    constructor(name: typeof this.name);
-    readonly name: string;
-    pads: ContainerOf<Pad>;
+  class PadSection extends components.ComponentContainer {
+    constructor(
+      name: typeof this.name,
+      channel: typeof this.channel,
+      alt: typeof this.alt,
+
+      selectButtonStatus?: number,
+    );
+    readonly name: SectionName;
+    readonly channel: Channel;
+    readonly alt?: PadSection;
+
+    inputs: {
+      select?: components.Button & { status: number };
+    };
+    get isVirtual(): boolean;
+
+    mode: SectionMode;
+
+    [key: PadButton["id"]]: PadButton;
+    get pads(): PadButton[];
   }
-  class Pad extends components.Button {
-    constructor(id: typeof this.id, folder: typeof this.folder);
+
+  class PadButton extends components.Button {
+    constructor(id: typeof this.id, section: typeof this.section);
     readonly id: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
-    readonly folder: PadFolder;
+    readonly section: PadSection;
   }
 
   class Wheel extends components.JogWheelBasic {
@@ -51,6 +82,7 @@ namespace mpfx {
       pitchBendDown: components.Button & { currentRangeIndex: number };
     };
     wheel: Wheel;
+    pads: ChannelPads;
 
     /**
      * The deck that actually tracks this channel (if undefined, then the channel is not tracked by a physical deck)

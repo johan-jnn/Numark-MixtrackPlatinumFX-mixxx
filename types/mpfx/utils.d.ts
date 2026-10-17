@@ -61,7 +61,7 @@ namespace mpfx {
       ? (this: ChildThis, ...args: ChildParameters) => void
       : (
           this: ChildThis,
-          parent: SuperFunction,
+          parent: SuperFunction & InstanceType<ParentClass>,
           ...args: ChildParameters
         ) => void,
     ConstructorArgument extends

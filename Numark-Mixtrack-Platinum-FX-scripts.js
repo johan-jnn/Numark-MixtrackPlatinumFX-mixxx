@@ -88,14 +88,6 @@ var MixtrackPlatinumFX = {
       sensitivity: 10,
       ranges: [0.08, 0.16, 0.5],
     },
-    sampler: {
-      /**
-       * If you use the full-layout sample (= 16 samples on the skin),
-       * then set this setting to `true` to make the sampler's layout matching
-       * with the controller's one.
-       */
-      orderByLayout: true,
-    },
     leds: {
       /**
        * Mixmum powers of the different controller's leds.
@@ -136,13 +128,6 @@ var MixtrackPlatinumFX = {
     },
     loops: {
       /**
-       * Available sizes:
-       * 0.03125, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
-       * @see https://manual.mixxx.org/2.4/en/chapters/appendix/mixxx_controls.html#control-[ChannelN]-beatloop_X_toggle
-       */
-      sizes: [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
-
-      /**
        * If enabled, the controller will use the "in" and "out" functionnality
        * if the looping is not enabled (without having to press shift).
        * When this is enabled and you're not looping, pressing shift on "in" and "out"
@@ -150,14 +135,6 @@ var MixtrackPlatinumFX = {
        * This takes effect only if the track is playing.
        */
       useInOutWhenNotLooping: false,
-    },
-    beatJumps: {
-      /**
-       * Available sizes:
-       * 0.03125, 0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
-       * @see https://manual.mixxx.org/2.4/en/chapters/appendix/mixxx_controls.html#control-[ChannelN]-beatjump_X_forward
-       */
-      sizes: [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
     },
     screen: {
       time: {
@@ -180,6 +157,79 @@ var MixtrackPlatinumFX = {
          * If `true`, the spin will be indicated by a turned-off led instead of a turned-on led.
          */
         filledSpin: true,
+      },
+    },
+    /**
+     * Settings associed to the different controller's pads section.
+     *
+     * Each section a primary/secondary mode which you can get by pressing/double-pressing
+     * the section's button.
+     *
+     * By using shift-press, you can access to the alternative mode of the section.
+     * This corresponds to a virtual section that you define.
+     * On each physical sections' (the one that are noted on the controller) settings,
+     * there is an "alt" key. This correspond to the virtual section that the alt mode
+     * should use.
+     */
+    pads: {
+      /**
+       * Set this to `true` if you want to access the secondary mode by shift-pressing the section's
+       * button and the alt mode by pressing a second time the section's button.
+       */
+      useShiftToAccessSecondaryMode: false,
+
+      /**
+       * Default section to use at first usage
+       */
+      defaultSection: "cues",
+
+      sections: {
+        /**
+         * -> PHYSICAL
+         */
+        cues: {
+          alt: "keyShift",
+        },
+        /**
+         * -> PHYSICAL
+         */
+        autoloops: {
+          alt: null,
+
+          /**
+           * The list of the autoloop sizes.
+           * Corresponding from left to right, top to bottom.
+           * @see https://manual.mixxx.org/2.4/en/chapters/appendix/mixxx_controls.html#control-[ChannelN]-beatjump_X_forward
+           */
+          sizes: [0.0625, 0.125, 0.25, 0.5, 1, 2, 4, 8, 16],
+        },
+        /**
+         * -> PHYSICAL
+         */
+        fadecuts: {
+          alt: null,
+        },
+        /**
+         * -> PHYSICAL
+         */
+        samples: {
+          alt: "samplesVolume",
+
+          /**
+           * If you use the full-layout sample (= 16 samples on the skin),
+           * does the controller samplers order be synced with the mixxx's one
+           */
+          syncBySamplerSkin: true,
+        },
+
+        /**
+         * -> VIRTUAL
+         */
+        keyShift: {},
+        /**
+         * -> VIRTUAL
+         */
+        samplesVolume: {},
       },
     },
   },
@@ -530,6 +580,142 @@ var MixtrackPlatinumFX = {
   /* #endregion */
 
   /* #region Components */
+  /**@type {typeof mpfx.PadButton} */
+  PadButton: createMPFXComponent(function (parent, id, section) {
+    parent({
+      id,
+      section,
+      input: (...args) => {
+        if (this.section.mode === "alt") {
+          return this.section.alt?.pads[this.id].input(...args);
+        }
+
+        parent.input(...args);
+      },
+    });
+  }, components.Button),
+
+  /**@type {typeof mpfx.PadSection} */
+  PadSection: createMPFXComponent(function (
+    parent,
+    name,
+    channel,
+    alt,
+    selectButtonStatus,
+  ) {
+    this.mpfx.debug(
+      `Initializing pads' section ${name} on channel #${channel.id}.`,
+    );
+    this.mpfx.debug(`̀Alternative section : ${alt?.name ?? "<none>"}`);
+
+    Object.defineProperties(this, {
+      sections: {
+        get: () =>
+          new Array(8)
+            .fill(null)
+            .map((_, i) => this[i + 1])
+            .filter(Boolean),
+      },
+      isVirtual: {
+        get: () => !!this.inputs.select,
+      },
+    });
+
+    parent({
+      name,
+      channel,
+      alt,
+      /**@type {typeof this.mode} */
+      mode: "primary",
+      inputs: {
+        select: new components.Button({
+          group: channel.group,
+          midi:
+            typeof selectButtonStatus === "number"
+              ? [0x93 + channel.id - 1, selectButtonStatus]
+              : undefined,
+          input: (...args) => {
+            if (!args[2]) return;
+            const { pads } = this.channel;
+
+            const { useShiftToAccessSecondaryMode } = this.mpfx.CONFIG.pads;
+
+            /**@type {mpfx.SectionMode} */
+            let mode = "primary";
+            if (pads.active.name === section.name) {
+              mode = useShiftToAccessSecondaryMode ? "alt" : "secondary";
+            } else if (this.isShifted) {
+              mode = useShiftToAccessSecondaryMode ? "secondary" : "alt";
+            }
+
+            if (mode === "alt" && !this.alt) {
+              mode = "primary";
+
+              this.mpfx.error(
+                `Tried to use the alt mode of section ${this.name} of channel #${this.channel.id}, but it does not have one. Fall back to primary.`,
+              );
+            }
+
+            Object.defineProperty(section, "mode", mode);
+            pads.select(this);
+          },
+        }),
+      },
+    });
+  }, components.ComponentContainer),
+
+  /**@type {typeof mpfx.ChannelPads} */
+  ChannelPads: createMPFXComponent(function (parent, channel) {
+    this.mpfx.debug(`Initializing pads of channel #${channel.id}.`);
+
+    Object.defineProperty(this, "sections", {
+      get: () =>
+        Object.keys(this.mpfx.CONFIG.pads.sections)
+          .map((k) => this[k])
+          .filter(Boolean),
+    });
+
+    parent({
+      channel,
+      active,
+      /**@type {typeof this.select} */
+      select: (section) => {
+        if (typeof section === "string") {
+          if (
+            !(section in this && this[section] instanceof this.mpfx.PadSection)
+          ) {
+            this.mpfx.error(
+              `Can't select pad section ${section} of channel #${this.channel.id} as it does not exist.`,
+            );
+          }
+
+          section = this[section];
+        }
+        if (!(section.name in this)) {
+          this.mpfx.warn(
+            `Selected an unregistered section '${section.name}' in channel #${this.channel.id}`,
+          );
+        }
+
+        Object.defineProperty(this, "active", section);
+
+        this.sections.forEach((brother) => {
+          const { select } = brother.inputs;
+
+          if (select) {
+            select.send(
+              brother.name === section.name ? brother.on : brother.off,
+            );
+          }
+        });
+      },
+    });
+
+    this.select(this.mpfx.CONFIG.pads.defaultSection);
+
+    this.mpfx.debug(`Pads initialized.`);
+  }, components.ComponentContainer),
+
   /**@type {typeof mpfx.Wheel} */
   Wheel: createMPFXComponent(function (parent, channel) {
     this.mpfx.debug(`Initializing wheel of channel ${channel.id}.`);
@@ -1093,6 +1279,7 @@ var MixtrackPlatinumFX = {
 
       Object.assign(this, {
         wheel: new this.mpfx.Wheel(this),
+        pads: new this.mpfx.ChannelPads(this),
       });
 
       this.connections.push(
@@ -1839,10 +2026,22 @@ function createMPFXComponent(statics, constructor, Parent = undefined) {
     if (Parent) {
       // If there is a parent, the code must use the "super"-like function
       parentInitied = false;
-      componentArgs.unshift((...parentArgs) => {
+      const superType = (...parentArgs) => {
         Parent.call(this, ...parentArgs);
         parentInitied = true;
-      });
+      };
+      for (const key in Parent.prototype) {
+        if (key in superType) continue;
+        let value = Parent.prototype[key];
+
+        if (typeof value === "function") {
+          value = value.bind(this);
+        }
+
+        Object.defineProperty(superType, key, value);
+      }
+
+      componentArgs.unshift(superType);
     }
 
     constructor.call(this, ...componentArgs);
